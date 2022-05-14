@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Acerca de mí",
+    "section": "",
+    "text": "Hola mi nombre es Santiago Sotelo y actualmente estudio sociología en la Pontificia Universidad Católica del Perú - PUCP. Me interesan los temas de programación y análisis de data, los cuales complemento con teoría sociológica. Trabajo en el Laboratorio de Inteligencia Artifical y Métodos Computacionales en Ciencias Sociales (QLAB) como practicante de investigación. Para mayor información sobre mi trayectoria puedes revisar mi CV."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Posts",
+    "section": "",
+    "text": "enaho\n\n\n\n\n\n\n\n\n\n\n13 may 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\nHarlow Malloc\n\n\n13 may 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\nTristan O’Malley\n\n\n10 may 2022\n\n\n\n\n\n\n\n\nNo hay resultados"
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#bases-de-datos",
+    "href": "posts/bases_datos/index.html#bases-de-datos",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Bases de datos",
+    "text": "Bases de datos\n\nENAHO 2019\nEl tamaño anual de la muestra 2019 es de 36 994 viviendas particulares, correspondiendo 23 346 viviendas al área urbana y 13 648 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 653 conglomerados al área urbana y 1 706 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 808 conglomerados mientras que el tamaño de la muestra no panel es de 3 551 conglomerados.\nAsimismo, el tamaño de la muestra panel es de 12 514 viviendas particulares mientras que el tamaño de la muestra no panel es de 24 480 viviendas particulares.\n\n\nENAHO 2020\nEl tamaño anual de la muestra 2020 es de 37 103 viviendas particulares, correspondiendo 23 895 viviendas al área urbana y 13 208 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 706 conglomerados al área urbana y 1 653 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 833 conglomerados mientras que el tamaño de la muestra no panel es de 3 526 conglomerados.\nAsimismo, el tamaño de la muestra panel es de 12 702 viviendas particulares mientras que el tamaño de la muestra no panel es de 24 401 viviendas particulares."
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#importación",
+    "href": "posts/bases_datos/index.html#importación",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Importación",
+    "text": "Importación\nSe importan las bases de datos de los años 2019 y 2020 de la ENAHO (actualizado anual). En mi caso, tengo las bases descargas en mi computadora por lo que me resulta más conveniente accederlas desde mis archivos con el siguiente código.\nEn caso no cuente con las bases de datos en su computadora, puede correr el bloque de código que descargará las bases de la página del INEI en un directorio temporal."
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#variables-identificadoras",
+    "href": "posts/bases_datos/index.html#variables-identificadoras",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Variables Identificadoras",
+    "text": "Variables Identificadoras\nLas variables que me servirán para cruzar las bases de datos son las siguientes:\n\n\n\n\nData frame: .\n\nIDNameLabelValuesValue Labels\n\n\n1\nAÑO\nAño de la Encuesta\n\n<output omitted>\n\n\n2\nMES\nMes de Ejecución de la Encuesta\n\n<output omitted>\n\n\n3\nCONGLOME\nNúmero de Conglomerado\n\n<output omitted>\n\n\n4\nVIVIENDA\nNúmero de Selección de Vivienda\n\n<output omitted>\n\n\n5\nHOGAR\nNúmero secuencial del Hogar\n\n<output omitted>\n\n\n6\nUBIGEO\nUbicación geográfica\n\n<output omitted>\n\n\n7\nDOMINIO\nDominio Geográfico\n12345678\nCosta NorteCosta CentroCosta SurSierra NorteSierra CentroSierra SurSelvaLima Metropolitana\n\n\n8\nESTRATO\nEstrato Geográfico\n12345678\n De 500 000 a más habitantes De 100 000 a 499 999 habitantes De 50 000 a 99 999 habitantes De 20 000 a 49 999 habitantesDe 2 000 a 19 999 habitantes De 500 a 1 999 habitantes Área de Empadronamiento Rural (AER) Compuesto Área de Empadronamiento Rural (AER) Simple\n\n\n\n\n\nPara verificar que se tiene el número de conglomerados adecuado y de hogares se realiza la siguiente función:\nNúmero de conglomerados\n\n\n[1] 5359\n\n\nNúmero de hogares\n\n\n[1] 43868"
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#módulo-01",
+    "href": "posts/bases_datos/index.html#módulo-01",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Módulo 01",
+    "text": "Módulo 01\nSe seleccionan las siguientes variables del módulo 01: Características de la Vivienda y del Hogar.\n\n\n\n\nData frame: .\n\nIDNameLabelValuesValue Labels\n\n\n1\nPANEL\n¿El hogar fue entrevistado el año pasado?\n12\nSiNo\n\n\n2\nNBI1\nVivienda inadecuada ( Necesidad BásicaInsatisfecha 1 )\n01\nVivienda adecuadaVivienda inadecuada\n\n\n3\nNBI2\nVivienda con hacinamiento ( Necesidad BásicaInsatisfecha 2 )\n01\nVivienda sin hacinamientoVivienda con hacinamiento\n\n\n4\nNBI3\nHogares con vivienda sin servicios higiénicos (Necesidad Básica Insatisfecha 3 )\n01\nHogares con vivienda con servicios higienicosHogares con vivienda sin servicios hogienicos\n\n\n5\nNBI4\nHogares con niños que no asisten a la escuela (Necesidad Básica Insatisfecha 4 )\n01\nHogares con niños que asisten a la escuelaHogares con niños que no asisten a la escuela\n\n\n6\nNBI5\nHogares con alta dependencia económica ( NecesidadBásica Insatisfecha 5)\n01\nHogares sin alta dependencia económicaHogares con alta dependencia económica\n\n\n7\nFACTOR07\nFactor de Expansión Anual Proyecciones CPV-2007\nrange: 2.8-1751.3"
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#módulo-03",
+    "href": "posts/bases_datos/index.html#módulo-03",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Módulo 03",
+    "text": "Módulo 03\nSe seleccionan las siguientes variables del módulo 03: Educación.\n\n\n\n\nData frame: .\n\nIDNameLabelValuesValue Labels\n\n\n1\nCODPERSO\nCódigo de la persona\n\n<output omitted>\n\n\n2\nP300A\n¿Cuál es el Idioma o lengua materna que aprendióen su niñez?\n12346789\nQuechuaAymaráOtra lengua nativaCastellanoPortuguésOtra lengua extranjeraNo escucha/no hablaLengua de señas peruanas\n\n\n3\nP301A\n¿Cuál es el último año o grado de estudios y nivelque aprobó? - Nivel\n123456789101112\nSin nivelEducación inicialPrimaria incompletaPrimaria completaSecundaria incompletaSecundaria completaSuperior no universitaria IncompletaSuperior no universitaria completaSuperior universitaria incompletaSuperior universitaria completaMaestria/DoctoradoBásica especial\n\n\n4\nFACTOR07\nFactor de expansión anual proyecciones CPV-2007\nrange: 2.8-1751.3"
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#módulo-05",
+    "href": "posts/bases_datos/index.html#módulo-05",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Módulo 05",
+    "text": "Módulo 05\nSe seleccionan las siguientes variables del módulo 05: Empleo e Ingresos.\n\n\n\n\nData frame: .\n\nIDNameLabelValuesValue Labels\n\n\n1\nCODPERSO\nNúmero de orden de la persona\n\n<output omitted>\n\n\n2\nP507\nUd. se desempeño en su ocupación principal onegocio como:\n1234567\nEmpleador o patronoTrabajador IndependienteEmpleadoObreroTrabajador Familiar No RemuneradoTrabajador del HogarOtro\n\n\n3\nP207\nSexo\n12\nHombreMujer\n\n\n4\nP208A\n¿Qué edad tiene en años cumplidos?\nrange: 14-98\n\n\n5\nI520\n(Imputado) Normalmente, ¿Cuántas horas trabaja ala semana en todas sus ocupaciones?\nrange: 1.0-98.0\n\n\n6\nI538A1\n(Imputado, deflactado, anualizado) ¿Cuánto fue suingreso en el mes anterior, incluyendo horasextras, bonificaciones, pago por concepto derefrigerio, etc. en su(s) ocupación(es)secundaria(as)? - Monto Total S/. - Ingreso Total\nrange: 120.0-71854.0\n\n\n7\nI538E1\n(Imputado, deflactado, anualizado) ¿Cuánto fue suingreso en el mes anterior, incluyendo horasextras, bonificaciones, pago por concepto derefrigerio, etc. en su(s) ocupación(es)secundaria(as)? - Monto Total S/. - Ingresolíquido\nrange: 120.0-71854.0\n\n\n8\nOCU500\nIndicador de la PEA\n1234\nOcupadoDesocupado abiertoDesocupado ocultoNo PEA\n\n\n9\nD524A1\n(Deflactado, anualizado) ¿Cuánto fue su ingresototal en el(la) ... anterior, incluyendo las horasextras, bonificaciones, pago por concepto derefrigerio, movilidad, comisiones, etc.? - MontoS/. - Ingreso Total\nrange: 96-303554\n\n\n10\nOCUPINF\nSituación de informalidad (ocup.principal)\n12\nempleo informalempleo formal\n\n\n11\nEMPLPSEC\nEmpleo informal dentro y fuera del Sector informal(ocup. principal)\n12\nempleo informal en el sector informalempleo informal fuera del sector informal\n\n\n12\nFAC500A\nFactor de Expansión de Empleo/Ingresosproyecciones CPV-2007\nrange: 1.9-2210.3"
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#módulo-34",
+    "href": "posts/bases_datos/index.html#módulo-34",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Módulo 34",
+    "text": "Módulo 34\nSe seleccionan las siguientes variables del módulo 34: Sumarias.\n\n\n\n\nData frame: .\n\nIDNameLabelValuesValue Labels\n\n\n1\nMIEPERHO\ntotal de miembros del hogar\nrange: 1-20\n\n\n2\nINGHOG2D\ningreso neto total\nrange: 31.2-503308.2\n\n\n3\nGASHOG2D\ngasto total bruto\nrange: 780.8-301041.1\n\n\n4\nGRU11HD\ngrupo 1 : alimentos - gasto\nrange: 0.0-47024.9\n\n\n5\nESTRSOCIAL\nEstrato Socio-Económico\n123456\nABCDERural\n\n\n6\nPOBREZA\npobreza\n123\nPobre ExtremoPobre No ExtremoNo Pobre\n\n\n7\nFACTOR07\nFactor de Expansión Anual Proyecciones CPV-2007\nrange: 2.8-1751.3"
+  },
+  {
+    "objectID": "posts/bases_datos/index.html#cruzar-la-data",
+    "href": "posts/bases_datos/index.html#cruzar-la-data",
+    "title": "Unificación de bases de datos de la ENAHO",
+    "section": "Cruzar la data",
+    "text": "Cruzar la data\nLa data final tiene las siguientes dimensiones:\n\n\n[1] 183409     35"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2\n\n\n\n\n\n\n\nReutilizarhttps://creativecommons.org/licenses/by/4.0/deed.esCitaciónBibTeX@online{sotelo2022,\n  author = {Santiago Sotelo and Harlow Malloc},\n  title = {Post With Code},\n  date = {2022-05-13},\n  langid = {es}\n}\nPor favor cite este trabajo como:\nSantiago Sotelo, and Harlow Malloc. 2022. “Post With Code.”\nMay 13, 2022."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "Since this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts.\n\n\n\n\n\nReutilizarhttps://creativecommons.org/licenses/by/4.0/deed.esCitaciónBibTeX@online{sotelo2022,\n  author = {Santiago Sotelo and Tristan O’Malley},\n  title = {Welcome To My Blog},\n  date = {2022-05-10},\n  langid = {es}\n}\nPor favor cite este trabajo como:\nSantiago Sotelo, and Tristan O’Malley. 2022. “Welcome To My\nBlog.” May 10, 2022."
+  }
+]

@@ -1,0 +1,27 @@
+project:
+  type: website
+
+lang: es
+
+website:
+  title: "Santiago Sotelo"
+  favicon: favicon.ico
+  navbar:
+    right:
+      - index.qmd
+      - about.qmd
+      - text: CV
+        href: cv.html
+      - icon: github
+        href: https://github.com/aito123/
+      - icon: linkedin
+        href: https://www.linkedin.com/in/santiago-sotelo-989574171/
+      - icon: twitter
+        href: https://twitter.com/Santiag87589621/
+format:
+  html:
+    theme: ember.scss #base on litera
+    css: styles.css
+
+
+
