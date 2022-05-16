@@ -37,7 +37,7 @@ here::i_am("tablas_tesis/index.qmd")
 
 ## Base de datos
 
-Se elaboró una base de datos unificada que incluye el año 2019 y 2020. El proceso de unificación se puede consultar en el archivo `base_de_datos.Rmd`. De manera exploratoria podemos apreciar que la base tiene las siguientes características.
+Se elaboró una base de datos unificada que incluye el año 2019, 2020 y 2021. De manera exploratoria podemos apreciar que la base tiene las siguientes características.
 
 ```{r}
 #BASE UNIFICADA
@@ -47,7 +47,7 @@ dim(base)
 
 ```
 
-Cuenta con 183411 observaciones y 35 variables las cuales son:
+Asimismo, cuenta con las siguientes variables:
 
 ```{r}
 names(base)
@@ -163,10 +163,281 @@ base2<-
     ing_cap=inghog2d/mieperho,
     
     #gasto per capita
-    gas_cap=gashog2d/mieperho
+    gas_cap=gashog2d/mieperho,
+    
+    #Nivel educativo alcanzado
+    educacion=case_when(
+      p301a %in% 1 ~ "Sin nivel",
+      p301a %in% c(2,3,4,5,6,12) ~ "Educación secundaria o menos",
+      p301a %in% c(7,8,9,10) ~ "Educación superior técnica o universitaria",
+      p301a %in% 11 ~ "Posgrado"
+    ),
+    educacion=ordered(as.factor(educacion), 
+                      levels = c("Sin nivel","Educación secundaria o menos","Educación superior técnica o universitaria","Posgrado")),
     
   )
 
 ```
 
 ## Tablas
+
+### Variables de control
+
+Poner una tabla junto a la otra by column by row, quarto side by side
+
+funcion tabla strata
+
+```{r funcion}
+tabla1<-function(data, weight, strata, by, include, percent){
+
+data %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = {{weight}}) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = {{include}},
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+        add_overall(col_label = "Total") %>% 
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+  
+}
+```
+
+```{r notas}
+#| eval = FALSE
+
+tbl_svysummary(
+    statistic = everything()~"({p})%",
+    digits = all_categorical()~c(2)
+    ) %>%
+  modify_header(label = md("**Variable**"))
+
+ trial %>%
+  select(age, grade, stage, trt) %>%
+  mutate(grade = paste("Grade", grade)) %>%
+  tbl_strata(
+    strata = grade,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_summary(by = trt, missing = "no") %>%
+        add_n(),
+    .header = "**{strata}**"
+  )
+
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Dominio"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = dominio, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = dominio, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Estrato geográfico"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrato, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrato, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Sexo"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p207, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p207, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Grupo de edad"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Nivel educativo"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = educacion, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = educacion, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Lengua materna"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p300a, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p300a, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Ocupación principal"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p507, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p507, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Estrato social"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Condición de pobreza"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row")
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| tbl-cap: "Necesidades básicas Insatisfechas (NBI)"
+#| tbl-subcap: 
+#|   - "Porcentaje por columna"
+#|   - "Porcentaje por fila"
+#| layout-ncol: 2
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = nbi, percent = "column")
+
+base2 %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = nbi, percent = "row")
+```
+
+
+
+```{r}
+#| eval = FALSE
+
+base2 %>% 
+  as_label() %>% 
+  select(ano, gedad, ing_cap) %>% 
+  tbl_continuous(variable = ing_cap, 
+                 by = ano,
+                 statistic = list(everything() ~ "{median}")) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Año encuesta**")
+
+```
+
+
+```{r}
+#| eval = FALSE
+
+trial %>%
+  select(trt, grade, marker) %>%
+  tbl_continuous(variable = marker, by = trt) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Treatment Assignment**")
+```
+
+```{r}
+#| eval = FALSE
+
+trial %>%
+  select(grade, response) %>%
+  mutate(grade = paste("Grade", grade)) %>%
+  tbl_strata2(
+    strata = grade,
+    
+    .tbl_fun =
+      ~.x %>%
+      tbl_summary(
+        label = list(response = .y),
+        missing = "no",
+        statistic = response ~ "{p}%"
+      ) %>%
+      add_ci(pattern = "{stat} ({ci})") %>%
+     modify_header(stat_0 = "**Rate (95% CI)**") %>%
+     modify_footnote(stat_0 = NA),
+    
+    .combine_with = "tbl_stack",
+    .combine_args = list(group_header = NULL),
+    .quiet = TRUE
+  ) %>%
+  
+  modify_caption("**Response Rate by Grade**")
+```
+
