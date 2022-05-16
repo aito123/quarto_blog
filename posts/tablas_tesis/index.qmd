@@ -5,6 +5,7 @@ subtitle: |
 date: "2022-05-15"
 categories: [enaho, tablas]
 image: "image.jpg"
+fig-cap-location: top
 
 ---
 
@@ -152,8 +153,8 @@ base2<-
     
     #NBI dicotómica
     nbi=case_when(
-      (nbi1+nbi2+nbi3+nbi4+nbi5) > 0 ~ 1,
-      TRUE ~ 0
+      (nbi1+nbi2+nbi3+nbi4+nbi5) > 0 ~ "Sí",
+      TRUE ~ "No"
     ),
     
     #número de NBI
@@ -182,10 +183,6 @@ base2<-
 ## Tablas
 
 ### Variables de control
-
-Poner una tabla junto a la otra by column by row, quarto side by side
-
-funcion tabla strata
 
 ```{r funcion}
 tabla1<-function(data, weight, strata, by, include, percent, overall=TRUE){
@@ -242,7 +239,7 @@ tbl_svysummary(
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: dominio
+#| label: tbl-dominio
 #| tbl-cap: "Dominio"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -258,7 +255,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: estr
+#| label: tbl-estr
 #| tbl-cap: "Estrato geográfico"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -274,7 +271,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: sex
+#| label: tbl-sex
 #| tbl-cap: "Sexo"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -290,7 +287,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: gedad
+#| label: tbl-gedad
 #| tbl-cap: "Grupo de edad"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -306,7 +303,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: edu
+#| label: tbl-edu
 #| tbl-cap: "Nivel educativo"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -322,7 +319,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: leng
+#| label: tbl-leng
 #| tbl-cap: "Lengua materna"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -338,7 +335,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: ocupi
+#| label: tbl-ocupi
 #| tbl-cap: "Ocupación principal"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -354,7 +351,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: estrsocial
+#| label: tbl-estrsocial
 #| tbl-cap: "Estrato social"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -370,7 +367,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: pobr
+#| label: tbl-pobr
 #| tbl-cap: "Condición de pobreza"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -386,7 +383,7 @@ base2 %>%
 
 ```{r}
 #| column: screen-inset-shaded
-#| label: nbi
+#| label: tbl-nbi
 #| tbl-cap: "Necesidades básicas Insatisfechas (NBI)"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
