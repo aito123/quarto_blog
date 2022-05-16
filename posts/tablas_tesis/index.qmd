@@ -188,7 +188,7 @@ Poner una tabla junto a la otra by column by row, quarto side by side
 funcion tabla strata
 
 ```{r funcion}
-tabla1<-function(data, weight, strata, by, include, percent){
+tabla1<-function(data, weight, strata, by, include, percent, overall=TRUE){
 
 data %>% 
   labelled::drop_unused_value_labels() %>% 
@@ -205,14 +205,16 @@ data %>%
           digits = all_categorical()~c(2),
           percent = percent,
           missing = "no") %>% 
-        add_overall(col_label = "Total") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
         modify_header(label = md("**Variable**"),
                       stat_1 ~ "**{level}**",
                       stat_2 ~ "**{level}**"),
     .header = "**{strata}**"
   )
-  
 }
+
 ```
 
 ```{r notas}
@@ -240,6 +242,7 @@ tbl_svysummary(
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: dominio
 #| tbl-cap: "Dominio"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -250,11 +253,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = dominio, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = dominio, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = dominio, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: estr
 #| tbl-cap: "Estrato geográfico"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -265,11 +269,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrato, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrato, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: sex
 #| tbl-cap: "Sexo"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -280,11 +285,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = p207, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p207, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: gedad
 #| tbl-cap: "Grupo de edad"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -295,11 +301,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: edu
 #| tbl-cap: "Nivel educativo"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -310,11 +317,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = educacion, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = educacion, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: leng
 #| tbl-cap: "Lengua materna"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -325,11 +333,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = p300a, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p300a, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p300a, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: ocupi
 #| tbl-cap: "Ocupación principal"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -340,11 +349,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = p507, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p507, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: estrsocial
 #| tbl-cap: "Estrato social"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -355,11 +365,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: pobr
 #| tbl-cap: "Condición de pobreza"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -370,11 +381,12 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row", overall=FALSE)
 ```
 
 ```{r}
 #| column: screen-inset-shaded
+#| label: nbi
 #| tbl-cap: "Necesidades básicas Insatisfechas (NBI)"
 #| tbl-subcap: 
 #|   - "Porcentaje por columna"
@@ -385,8 +397,10 @@ base2 %>%
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = nbi, percent = "column")
 
 base2 %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = nbi, percent = "row")
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = nbi, percent = "row", overall=FALSE)
 ```
+
+### Ingresos y gastos
 
 
 
