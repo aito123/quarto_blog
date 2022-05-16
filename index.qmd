@@ -2,6 +2,7 @@
 title: "Posts"
 listing:
   contents: posts
+  fields: [image, date, title, categories]
   sort: "date desc"
   type: table
   categories: true
