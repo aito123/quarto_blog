@@ -5,7 +5,7 @@ lang: es
 
 website:
   title: "Santiago Sotelo"
-  favicon: favicon.ico
+  favicon: peru.png
   navbar:
     right:
       - index.qmd

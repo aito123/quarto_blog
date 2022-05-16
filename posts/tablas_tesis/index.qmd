@@ -1,0 +1,13 @@
+---
+title: "Tabulaciones para la ENAHO"
+subtitle: |
+  El objetivo de este post es realizar tabulaciones de algunas variables de la Encuesta Nacional de Hogares (ENAHO).
+date: "2022-05-15"
+categories: [enaho, tablas]
+image: "image.jpg"
+
+---
+
+Este será el post de tablas.
+
+Acá más texto

@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Posts",
     "section": "",
-    "text": "enaho\n\n\n\n\n\n\n\n\n\n\n13 may 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\nHarlow Malloc\n\n\n13 may 2022\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\nTristan O’Malley\n\n\n10 may 2022\n\n\n\n\n\n\n\n\nNo hay resultados"
+    "text": "enaho\n\n\ntablas\n\n\n\n\n\n\n\n\n\n\n15 may 2022\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\nenaho\n\n\n\n\n\n\n\n\n\n\n13 may 2022\n\n\n\n\n\n\n\n\nNo hay resultados"
   },
   {
     "objectID": "posts/bases_datos/index.html#bases-de-datos",
@@ -70,17 +70,10 @@
     "text": "Cruzar la data\nLa data final tiene las siguientes dimensiones:\n\n\n[1] 183409     35"
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "posts/tablas_tesis/index.html",
+    "href": "posts/tablas_tesis/index.html",
+    "title": "Tabulaciones para la ENAHO",
     "section": "",
-    "text": "1 + 1\n\n[1] 2\n\n\n\n\n\n\n\nReutilizarhttps://creativecommons.org/licenses/by/4.0/deed.esCitaciónBibTeX@online{sotelo2022,\n  author = {Santiago Sotelo and Harlow Malloc},\n  title = {Post With Code},\n  date = {2022-05-13},\n  langid = {es}\n}\nPor favor cite este trabajo como:\nSantiago Sotelo, and Harlow Malloc. 2022. “Post With Code.”\nMay 13, 2022."
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "Since this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts.\n\n\n\n\n\nReutilizarhttps://creativecommons.org/licenses/by/4.0/deed.esCitaciónBibTeX@online{sotelo2022,\n  author = {Santiago Sotelo and Tristan O’Malley},\n  title = {Welcome To My Blog},\n  date = {2022-05-10},\n  langid = {es}\n}\nPor favor cite este trabajo como:\nSantiago Sotelo, and Tristan O’Malley. 2022. “Welcome To My\nBlog.” May 10, 2022."
+    "text": "Acá más texto\n\n\n\n\n\nReutilizarhttps://creativecommons.org/licenses/by/4.0/deed.esCitaciónBibTeX@online{sotelo2022,\n  author = {Santiago Sotelo},\n  title = {Tabulaciones para la ENAHO},\n  date = {2022-05-15},\n  langid = {es}\n}\nPor favor cite este trabajo como:\nSantiago Sotelo. 2022. “Tabulaciones para la ENAHO.” May\n15, 2022."
   }
 ]

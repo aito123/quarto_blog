@@ -2,9 +2,8 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/bases_datos/index.html",
-      "/posts/post-with-code/index.html",
-      "/posts/welcome/index.html"
+      "/posts/tablas_tesis/index.html",
+      "/posts/bases_datos/index.html"
     ]
   }
 ]
