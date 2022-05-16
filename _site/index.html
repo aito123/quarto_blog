@@ -65,9 +65,9 @@ ul.task-list{list-style: none;}
     }
 
     const options = {
-      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -163,72 +163,46 @@ ul.task-list{list-style: none;}
 
 
 
-<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="enaho,tablas" data-listing-date-sort="1652590800000" data-listing-file-modified-sort="1652677794117" data-listing-reading-time-sort="0.04">
-<a href="./posts/tablas_tesis/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="./posts/tablas_tesis/image.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Tabulaciones para la ENAHO
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('enaho'); return false;">
-enaho
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('tablas'); return false;">
-tablas
-</div>
-</div>
-<div class="card-text listing-description">
-Este será el post de tablas.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
+<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
 
-</div>
-<div class="listing-date">
+<table class="quarto-listing-table table">
+<thead>
+<tr>
+<th>
+Fecha
+</th>
+<th>
+Título
+</th>
+<th>
+Autor
+</th>
+</tr>
+</thead>
+<tbody class="list">
+<tr data-index="0" data-categories="enaho,tablas" data-listing-date-sort="1652590800000" data-listing-file-modified-sort="1652678972161" data-listing-reading-time-sort="4.515" data-listing-title-sort="Tabulaciones para la ENAHO" data-listing-filename-sort="index.qmd">
+<td class="listing-date">
 15 may 2022
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="enaho" data-listing-date-sort="1652418000000" data-listing-file-modified-sort="1652567570674" data-listing-reading-time-sort="4.535">
-<a href="./posts/bases_datos/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<div class="card-img-bg" style="height: 150px;">
-&nbsp;
-</div>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Unificación de bases de datos de la ENAHO
-</h5>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('enaho'); return false;">
-enaho
-</div>
-</div>
-<div class="card-text listing-description">
-El tamaño anual de la muestra <strong>2019</strong> es de <strong>36 994</strong> viviendas particulares, correspondiendo 23 346 viviendas al área urbana y 13 648 viviendas al área rural.
-</div>
-<div class="card-attribution card-text-small justify">
-<div class="listing-author">
-
-</div>
-<div class="listing-date">
+</td>
+<td class="listing-title">
+<a href="./posts/tablas_tesis/index.html" class="title">Tabulaciones para la ENAHO</a>
+</td>
+<td class="listing-author">
+</td>
+</tr>
+<tr data-index="1" data-categories="enaho" data-listing-date-sort="1652418000000" data-listing-file-modified-sort="1652567570674" data-listing-reading-time-sort="4.535" data-listing-title-sort="Unificación de bases de datos de la ENAHO" data-listing-filename-sort="index.qmd">
+<td class="listing-date">
 13 may 2022
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
+</td>
+<td class="listing-title">
+<a href="./posts/bases_datos/index.html" class="title">Unificación de bases de datos de la ENAHO</a>
+</td>
+<td class="listing-author">
+</td>
+</tr>
+</tbody>
+
+</table>
 <div class="listing-no-matching d-none">
 No hay resultados
 </div>
