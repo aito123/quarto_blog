@@ -4,10 +4,9 @@ subtitle: |
   El objetivo de este post es unificar distintos módulos de la Encuesta Nacional de Hogares (ENAHO).
 date: "2022-05-13"
 categories: [enaho]
+image: "image.jpg"
 
 ---
-
-## Paquetes
 
 ```{r}
 pacman::p_load(
@@ -41,21 +40,21 @@ El tamaño anual de la muestra **2019** es de **36 994** viviendas particulares,
 
 La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 653 conglomerados al área urbana y 1 706 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 808 conglomerados mientras que el tamaño de la muestra no panel es de 3 551 conglomerados.
 
-Asimismo, el tamaño de la muestra panel es de 12 514 viviendas particulares mientras que el tamaño de la muestra no panel es de 24 480 viviendas particulares.
-
 ### ENAHO 2020
 
 El tamaño anual de la muestra **2020** es de **37 103** viviendas particulares, correspondiendo 23 895 viviendas al área urbana y 13 208 viviendas al área rural.
 
 La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 706 conglomerados al área urbana y 1 653 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 833 conglomerados mientras que el tamaño de la muestra no panel es de 3 526 conglomerados.
 
-Asimismo, el tamaño de la muestra panel es de 12 702 viviendas particulares mientras que el tamaño de la muestra no panel es de 24 401 viviendas particulares.
+### ENAHO 2021
+
+El tamaño anual de la muestra **2021** es de **36 856** viviendas particulares, correspondiendo 24 064 viviendas al área urbana y 12 792 viviendas al área rural.
+
+La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 760 conglomerados al área urbana y 1 599 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 854 conglomerados mientras que el tamaño de la muestra no panel es de 3 505 conglomerados.
 
 ## Importación
 
-Se importan las bases de datos de los años 2019 y 2020 de la ENAHO (actualizado anual). En mi caso, tengo las bases descargas en mi computadora por lo que me resulta más conveniente accederlas desde mis archivos con el siguiente código.
-
-En caso no cuente con las bases de datos en su computadora, puede correr el bloque de código que descargará las bases de la página del INEI en un directorio temporal.
+Se importan las bases de datos de los años 2019, 2020, 2021 de la ENAHO (actualizado anual). En caso no cuente con las bases de datos en su computadora, descarguelas en un directorio temporal.
 
 ```{r}
 
@@ -113,6 +112,25 @@ m05_2020<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/S
 #modulo 34: Sumarias (Variables Calculadas)
 m34_2020<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo34.zip",
                              "737-Modulo34/Sumaria-2020.sav"))
+
+
+#ENAHO 2021 ACTUALIZADA ANUAL
+
+#modulo 01: Características de la Vivienda y del Hogar
+m01_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo01.zip",
+                             "759-Modulo01/Enaho01-2021-100.sav"))
+
+#modulo 03: Educación
+m03_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo03.zip",
+                             "759-Modulo03/Enaho01A-2021-300.sav"))
+
+#modulo 05: Empleo e Ingresos
+m05_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo05.zip",
+                             "759-Modulo05/Enaho01A-2021-500.sav"))
+
+#modulo 34: Sumarias (Variables Calculadas)
+m34_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo34.zip",
+                             "759-Modulo34/Sumaria-2021.sav"))
 
 
 ```
@@ -219,19 +237,30 @@ enaho2020<-
   #modulo34
   left_join(m34_2020 %>% select(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))
 
+#ENAHO 2021
+enaho2021<-
+  #modulo5 = base
+  m05_2021 %>% select(ids,CODPERSO,P507,P207,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) %>% 
+  #modulo1
+  left_join(m01_2021 %>% select(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) %>%
+  #modulo3
+  left_join(m03_2021 %>% select(ids,CODPERSO,P300A,P301A,FACTOR07)) %>% 
+  #modulo34
+  left_join(m34_2021 %>% select(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))
+
 #juntar bases
-enaho19_20<-
-  bind_rows(enaho2019, enaho2020)
+enaho19_20_21<-
+  bind_rows(enaho2019, enaho2020, enaho2021)
 
 #restaura en caso se pierda alguna metadata
-enaho19_20<-
-copy_labels(enaho19_20, enaho2019)
+enaho19_20_21<-
+copy_labels(enaho19_20_21, enaho2019)
 
 #exportar
-enaho19_20 %>% 
+enaho19_20_21 %>% 
   janitor::clean_names() %>% 
-  write_sav("enaho_2019_2020.sav")
+  write_sav("enaho_19_20_21.sav")
 
-dim(enaho19_20)
+dim(enaho19_20_21)
 
 ```

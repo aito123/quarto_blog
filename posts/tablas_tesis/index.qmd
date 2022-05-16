@@ -41,7 +41,7 @@ Se elaboró una base de datos unificada que incluye el año 2019 y 2020. El proc
 
 ```{r}
 #BASE UNIFICADA
-base<-read_sav(here("bases_datos/enaho_2019_2020.sav"))
+base<-read_sav(here("bases_datos/enaho_19_20_21.sav"))
 
 dim(base)
 

@@ -11,21 +11,21 @@
     "href": "index.html",
     "title": "Posts",
     "section": "",
-    "text": "Fecha\n\n\nTítulo\n\n\nCategorías\n\n\n\n\n\n\n\n\n\n15 may 2022\n\n\nTabulaciones para la ENAHO\n\n\nenaho,tablas\n\n\n\n\n\n \n\n\n\n13 may 2022\n\n\nUnificación de bases de datos de la ENAHO\n\n\nenaho\n\n\n\n\n\n\nNo hay resultados"
+    "text": "Fecha\n\n\nTítulo\n\n\nCategorías\n\n\n\n\n\n\n\n\n\n15 may 2022\n\n\nTabulaciones para la ENAHO\n\n\nenaho,tablas\n\n\n\n\n\n\n\n13 may 2022\n\n\nUnificación de bases de datos de la ENAHO\n\n\nenaho\n\n\n\n\n\n\nNo hay resultados"
   },
   {
     "objectID": "posts/bases_datos/index.html#bases-de-datos",
     "href": "posts/bases_datos/index.html#bases-de-datos",
     "title": "Unificación de bases de datos de la ENAHO",
     "section": "Bases de datos",
-    "text": "Bases de datos\n\nENAHO 2019\nEl tamaño anual de la muestra 2019 es de 36 994 viviendas particulares, correspondiendo 23 346 viviendas al área urbana y 13 648 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 653 conglomerados al área urbana y 1 706 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 808 conglomerados mientras que el tamaño de la muestra no panel es de 3 551 conglomerados.\nAsimismo, el tamaño de la muestra panel es de 12 514 viviendas particulares mientras que el tamaño de la muestra no panel es de 24 480 viviendas particulares.\n\n\nENAHO 2020\nEl tamaño anual de la muestra 2020 es de 37 103 viviendas particulares, correspondiendo 23 895 viviendas al área urbana y 13 208 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 706 conglomerados al área urbana y 1 653 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 833 conglomerados mientras que el tamaño de la muestra no panel es de 3 526 conglomerados.\nAsimismo, el tamaño de la muestra panel es de 12 702 viviendas particulares mientras que el tamaño de la muestra no panel es de 24 401 viviendas particulares."
+    "text": "Bases de datos\n\nENAHO 2019\nEl tamaño anual de la muestra 2019 es de 36 994 viviendas particulares, correspondiendo 23 346 viviendas al área urbana y 13 648 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 653 conglomerados al área urbana y 1 706 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 808 conglomerados mientras que el tamaño de la muestra no panel es de 3 551 conglomerados.\n\n\nENAHO 2020\nEl tamaño anual de la muestra 2020 es de 37 103 viviendas particulares, correspondiendo 23 895 viviendas al área urbana y 13 208 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 706 conglomerados al área urbana y 1 653 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 833 conglomerados mientras que el tamaño de la muestra no panel es de 3 526 conglomerados.\n\n\nENAHO 2021\nEl tamaño anual de la muestra 2021 es de 36 856 viviendas particulares, correspondiendo 24 064 viviendas al área urbana y 12 792 viviendas al área rural.\nLa muestra de conglomerados en el ámbito nacional es de 5 359, corresponde 3 760 conglomerados al área urbana y 1 599 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 854 conglomerados mientras que el tamaño de la muestra no panel es de 3 505 conglomerados."
   },
   {
     "objectID": "posts/bases_datos/index.html#importación",
     "href": "posts/bases_datos/index.html#importación",
     "title": "Unificación de bases de datos de la ENAHO",
     "section": "Importación",
-    "text": "Importación\nSe importan las bases de datos de los años 2019 y 2020 de la ENAHO (actualizado anual). En mi caso, tengo las bases descargas en mi computadora por lo que me resulta más conveniente accederlas desde mis archivos con el siguiente código.\nEn caso no cuente con las bases de datos en su computadora, puede correr el bloque de código que descargará las bases de la página del INEI en un directorio temporal."
+    "text": "Importación\nSe importan las bases de datos de los años 2019, 2020, 2021 de la ENAHO (actualizado anual). En caso no cuente con las bases de datos en su computadora, descarguelas en un directorio temporal."
   },
   {
     "objectID": "posts/bases_datos/index.html#variables-identificadoras",
@@ -67,7 +67,7 @@
     "href": "posts/bases_datos/index.html#cruzar-la-data",
     "title": "Unificación de bases de datos de la ENAHO",
     "section": "Cruzar la data",
-    "text": "Cruzar la data\nLa data final tiene las siguientes dimensiones:\n\n\n[1] 183409     35"
+    "text": "Cruzar la data\nLa data final tiene las siguientes dimensiones:\n\n\n[1] 270215     35"
   },
   {
     "objectID": "posts/tablas_tesis/index.html#base-de-datos",
