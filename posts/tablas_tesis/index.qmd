@@ -176,6 +176,9 @@ base2<-
     educacion=ordered(as.factor(educacion), 
                       levels = c("Sin nivel","Educación secundaria o menos","Educación superior técnica o universitaria","Posgrado")),
     
+    #Nivel nacional
+    nacional="A nivel nacional"
+    
   )
 
 ```
@@ -399,6 +402,19 @@ base2 %>%
 
 ### Ingresos y gastos
 
+```{r}
+base2 %>% 
+  as_label() %>% 
+  select(ing_cap, ano, nacional, dominio) %>% 
+  tbl_continuous(variable = ing_cap, 
+                 by = ano,
+                 statistic = list(everything() ~ "{median}"))
+
+```
+
+
+
+
 
 
 ```{r}
@@ -423,6 +439,7 @@ trial %>%
   tbl_continuous(variable = marker, by = trt) %>%
   modify_spanning_header(all_stat_cols() ~ "**Treatment Assignment**")
 ```
+
 
 ```{r}
 #| eval = FALSE
