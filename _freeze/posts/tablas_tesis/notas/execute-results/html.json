@@ -1,0 +1,14 @@
+{
+  "hash": "93533907021368cb31a6babb71a9515d",
+  "result": {
+    "markdown": "---\ntitle: \"notas\"\ndraft: true\nexecute: \n  eval: false\n\n---\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n\nPrimera tabla numérica\n\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n\n::: {.cell}\n\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}
