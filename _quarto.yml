@@ -6,6 +6,7 @@ lang: es
 website:
   title: "Santiago Sotelo"
   favicon: peru.png
+  page-footer: "Copyright 2022, Santiago Sotelo"
   navbar:
     right:
       - index.qmd
