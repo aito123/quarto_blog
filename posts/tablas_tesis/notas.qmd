@@ -6,6 +6,58 @@ execute:
 
 ---
 
+```{r}
+# base2 %>% filter(dominio %in% 8 & ano %in% "2019") %>% filter(ing_cap == 1920.38439941406 | ing_cap == 2420.76844618056 | ing_cap == 2773.28385416667 | ing_cap == 3153.9033203125 | ing_cap == 3264.26846590909 | ing_cap == 3283.44856770833 | ing_cap == 4211.30403645833) %>% select(pobreza, ing_cap, fac500a, factor07, ocupinf) %>% 
+#   mutate(ing_cap=as.character(ing_cap)) %>% 
+#   count(ing_cap)
+# 
+base2 %>% filter(dominio %in% 8 & ano %in% "2019") %>% select(ing_cap, fac500a, ocupinf, pobreza)  %>% filter(pobreza == 1 | pobreza == 2) %>% arrange(pobreza) %>% slice(1:100) %>% dput()
+  #mutate(ing_cap=as.numeric(ing_cap)) %>%
+  #labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata2(
+    strata = pobreza,
+    ~ .x %>%
+      tbl_svysummary(
+        by = ocupinf,
+        include = ing_cap,
+        missing = "no",
+        statistic = list(all_continuous() ~ "{mean}"),
+        label = list(ing_cap = .y)
+      ) %>%
+      modify_header(all_stat_cols() ~ "**{level}**") %>%
+      add_overall(., col_label = "Total"),
+    .combine_with = "tbl_stack",
+    .combine_args = list(group_header = NULL)
+  ) %>%
+  modify_table_body(
+    ~ .x %>%
+      mutate(variable = "pobreza", row_type = "level") %>%
+      tibble::add_row(
+        row_type = "label",
+        variable = "pobreza",
+        label = "pobreza",
+        .before = 1L
+      )
+  ) %>%
+  modify_column_indent(columns = label, rows = row_type == "level") %>%
+  bold_labels() %>%
+  modify_footnote(all_stat_cols() ~ "ing_cap: Mean")
+
+#ingreso
+base2 %>% filter(dominio %in% 8) %>%
+  #filtré a propósito 2019 hasta subsanar error
+  # mutate(
+  #   ing_cap=as.numeric(ing_cap),
+  #   ing_cap=case_when(
+  #     ano %in% "2019" ~ NA_real_, 
+  #     TRUE~ ing_cap)) %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = ing_cap)
+
+```
+
+
 ```{r notas}
 #| eval = FALSE
 
