@@ -56,7 +56,7 @@ names(base)
 Estos nombres han sido puestos en formato `clean_names()` el cual pone en minúscula, sin caracteres especiales y sin espacios a los nombres para efectos de una mejor manipulación de datos. A continuación, se presenta un diccionario de códigos de las variables con las que se va a trabajar:
 
 ```{r}
-#| column: screen-inset
+#| column: screen-inset-right
 base %>%
   sjPlot::view_df()
 
@@ -103,23 +103,6 @@ Me apoyo en la página [GeoDir](https://account.geodir.co/recursos/ubigeo-inei-p
 base2<-
   base1 %>% 
   mutate(
-    # #ocupacion principal fix bug, se arregló filtrando otros
-    # p507=case_when(
-    #   p507 %in% 1~1,
-    #   p507 %in% 2~2,
-    #   p507 %in% 3~3,
-    #   p507 %in% 4~4,
-    #   p507 %in% 5~5,
-    #   p507 %in% 6~6,
-    #   p507 %in% 7~7,
-    #   TRUE~7
-    # ),
-    # p507=labelled_spss(p507,
-    #                    label = "Ud. se desempeño en su ocupación principal o negocio como:",
-    #                    labels = c("Empleador o patrono"=1,"Trabajador Independiente"=2,"Empleado"=3,
-    #                               "Obrero"=4,"Trabajador Familiar No Remunerado"=5,"Trabajador del Hogar"=6,
-    #                               "Otro"=7)),
-    
     #departamento
     dpto=str_sub(ubigeo, 1,2),
     dpto=case_when(
@@ -227,8 +210,8 @@ base2<-
 
 Los códigos de las variables creadas es el siguiente:
 
-```{r, fig.align='center'}
-#| column: screen-inset
+```{r}
+#| column: screen-inset-right
 base2 %>%
   select(dpto, gedad, nbi, nbi_total, ing_cap, gas_cap, educacion, lengua) %>% 
   sjPlot::view_df()
