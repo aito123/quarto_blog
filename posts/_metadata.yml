@@ -37,3 +37,11 @@ citation: true
 
 #Lenguaje español
 lang: es
+
+#discuss comments
+comments:
+  giscus:
+    repo: aito123/quarto_blog
+    category: Blog
+    reactions-enabled: true
+    language: es
