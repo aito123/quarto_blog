@@ -4,6 +4,9 @@ project:
 lang: es
 
 website:
+  comments:
+    giscus:
+      repo: aito123/quarto_blog
   title: "Santiago Sotelo"
   favicon: peru.png
   page-footer: "Copyright 2022, Santiago Sotelo"
