@@ -1,0 +1,133 @@
+---
+title: "Exploración de mapas en R"
+subtitle: |
+   El objetivo de este post es explorar distintas herramientas en R para elaborar mapas.
+date: "2022-05-22"
+categories: [mapas]
+image: "image.jpg"
+fig-cap-location: top
+execute:
+  echo: true
+format:
+  html:
+    code-fold: true
+---
+
+En el rubro de elaboración de mapas, existen geo-*softwares* que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el *command line interface (CLI)* que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.
+
+Es así como me centraré en explorar las herramientas más recientes en R para elaborar mapas y, para probar la utilidad de estas funciones, las aplicaré a un caso práctico: lugares de interés en el [distrito de Miraflores](https://es.wikipedia.org/wiki/Distrito_de_Miraflores_(Lima)) (Lima, Perú).
+
+# El mapa
+
+Los *geo-softwares* trabajan principalmente con archivos `.shp` o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es [GPS Perú](https://www.geogpsperu.com/) la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de *Open Street Maps* la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos en el paquete `{osmdata}` y `{sf}`.
+
+```{r}
+#importar paquetes necesarios.
+pacman::p_load(tidyverse, janitor, haven, rio, sjlabelled, flextable, knitr, kableExtra, DT, gtsummary, gt, osmdata, sf, ggmap, leaflet)
+
+
+```
+
+```{r mapa base}
+
+mira_map<-get_map(
+  getbb("Distrito de Miraflores"), 
+  source = "stamen", 
+  maptype = "toner-lite", 
+  color = c("bw"), 
+  force = TRUE #importante cuando quieres volver a llamar un mismo mapa.
+  )
+
+ggmap(mira_map, darken = c(0.8, "white")) +
+  theme_void()
+```
+
+```{r mapa limites}
+
+mira_bordes<-getbb("Distrito de Miraflores") %>% 
+  opq() %>% 
+  add_osm_feature(key = 'admin_level', value = '8') %>% 
+  osmdata_sf() %>%  #ha importado miraflores y sus alrededores.
+  .$osm_multipolygons %>%  #alternativa para subsetear un objeto dentro de una lista , tan facil que da miedo.
+  mutate(
+    #agregando un repel específico
+    nudge_y=case_when(
+      name %in% "Barranco" ~ -0.001,
+      name %in% "Miraflores" ~ -0.001,
+      name %in% "San Borja" ~ -0.001,
+      name %in% "San Isidro" ~ -0.001,
+      name %in% "Santiago de Surco" ~ -0.001,
+      name %in% "Surquillo" ~ -0.001
+    ),
+    nudge_x=case_when(
+      name %in% "Barranco" ~ -0.001,
+      name %in% "Miraflores" ~ -0.001,
+      name %in% "San Borja" ~ -0.001,
+      name %in% "San Isidro" ~ -0.001,
+      name %in% "Santiago de Surco" ~ -0.001,
+      name %in% "Surquillo" ~ -0.005
+    )
+  )
+
+mira_bordes2<-mira_bordes %>% 
+  filter(name %in% "Miraflores")
+
+ggmap(mira_map, darken = c(0.8, "white")) +
+  #utilizando coordinate reference system (CRS) to 4326. The bounding box of the ggmap object is in WGS84 (EPSG:4326), but the actual raster is in EPSG:3857. You have to hack the bounding box of the ggmap object to be in the same CRS as the underlying data.
+  geom_sf(data= mira_bordes, aes(fill=name), inherit.aes = FALSE) + #bruh inherit aes es lo mejor
+  
+  geom_sf_label(
+    data=mira_bordes, aes(label=name, nudge_x = nudge_x, nudge_y = nudge_y), 
+    inherit.aes = FALSE,
+    size = 3, 
+    alpha = 0.8,
+    label.r = unit(0.5, "lines"), 
+    label.size = 0.5) +
+  
+  coord_sf(crs = st_crs(4326)) + #para que se alineen las capas en el mismo CRS
+  
+  theme_void()
+```
+
+```{r notas, eval=FALSE}
+plot(st_transform(mira_bordes$osm_multipolygons, crs = 3857)[1], bgMap = mira_map)
+
+
+ggplot() +
+  geom_sf(data= mira_bordes$osm_multipolygons)
+
+getbb("Lima, Perú") %>%
+  opq() %>%
+  add_osm_feature(key = 'admin_level', value = '8') %>% 
+  #add_osm_feature(key = "boundary", value = "administrative") %>%
+  osmdata_sf() %>% 
+  st_geometry() %>% 
+  plot()
+
+ggplot() +
+  geom_sf(data= lima$osm_polygons)
+
+leaflet(lima) %>% 
+  addTiles() %>% 
+  addPolygons()
+
+#importar datos mapa base
+mira_map <- 
+  get_map(getbb("Miraflores, Lima")) %>% 
+  ggmap()
+
+
+ob1<-
+  getbb("Distrito de Miraflores") %>%
+  opq() %>%
+  add_osm_feature(key = 'admin_level', value = '8') %>% 
+  #add_osm_feature(key = "boundary", value = "administrative") %>%
+  osmdata_sf() 
+  
+  ggplot() +
+  geom_sf(data= ob1$osm_polygons)
+  
+mad_map <- get_map(getbb("Lima"), zoom = 15, maptype = "roadmap",source="osm",color="bw")
+
+ggmap(mad_map)
+```

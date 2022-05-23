@@ -2,9 +2,9 @@
 title: "Posts"
 listing:
   contents: posts
-  fields: [image, date, title, categories]
+  fields: [image, date, title, categories, subtitle]
   sort: "date desc"
-  type: table
+  type: default
   categories: true
   sort-ui: false
   filter-ui: false

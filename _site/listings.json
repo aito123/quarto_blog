@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/mapas/index.html",
       "/posts/tablas_tesis/index.html",
       "/posts/bases_datos/index.html"
     ]
