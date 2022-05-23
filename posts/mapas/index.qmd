@@ -90,19 +90,19 @@ ggmap(mira_map, darken = c(0.8, "white")) +
     #"Barranco","Miraflores","San Borja","San Isidro",
     #"Santiago de Surco","Surquillo" 
     nudge_x = c(
-      0.012, #B
+      0, #B
       -0.005, #M
       0.01, #SB
       0.01, #SI
       0.01, #SS
-      0.01), #S
+      0), #S
     nudge_y = c(
       0.007, #B
       0, #M
       0.01, #SB
       -0.001, #SI
       0.01, #SS
-      0.01), #S
+      0), #S
     inherit.aes = FALSE,
     size = 3, 
     alpha = 0.8,
