@@ -230,18 +230,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>En el rubro de elaboración de mapas, existen geo-<em>softwares</em> que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el <em>command line interface (CLI)</em> que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.</p>
+<p>En el rubro de elaboración de mapas, existen geo-<em>softwares</em> que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Open Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el <em>command line interface (CLI)</em> que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.</p>
 <p>Es así como me centraré en explorar las herramientas más recientes en R para elaborar mapas y, para probar la utilidad de estas funciones, las aplicaré a un caso práctico: lugares de interés en el <a href="https://es.wikipedia.org/wiki/Distrito_de_Miraflores_(Lima)">distrito de Miraflores</a> (Lima, Perú).</p>
 <section id="el-mapa" class="level1">
 <h1>El mapa</h1>
-<p>Los <em>geo-softwares</em> trabajan principalmente con archivos <code>.shp</code> o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es <a href="https://www.geogpsperu.com/">GPS Perú</a> la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de <em>Open Street Maps</em> la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos en el paquete <code>{osmdata}</code> y <code>{sf}</code>.</p>
+<p>Los <em>geo-softwares</em> trabajan principalmente con archivos <code>.shp</code> o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es <a href="https://www.geogpsperu.com/">GPS Perú</a> la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de <em>Open Street Maps</em> la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos principalmente en los paquetes <code>{osmdata}</code> y <code>{sf}</code>.</p>
 <div class="cell">
-<details>
+<details open="">
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#importar paquetes necesarios.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, janitor, haven, rio, sjlabelled, flextable, knitr, kableExtra, DT, gtsummary, gt, osmdata, sf, ggmap, leaflet)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>En primer lugar, nos encargaremos de importar el mapa que irá en la base de nuestros polígonos. Este mapa tiene el siguiente aspecto:</p>
 <div class="cell">
 <details>
 <summary>Código</summary>
@@ -253,13 +254,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">force =</span> <span class="cn">TRUE</span> <span class="co">#importante cuando quieres volver a llamar un mismo mapa.</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map, <span class="at">darken =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="st">"white"</span>)) <span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map) <span class="sc">+</span> </span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/mapa%20base-1.png" class="img-fluid" width="672"></p>
+<div id="fig-mapa_base" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p></p><figcaption aria-hidden="true" class="figure-caption">Figura 1: Mapa de las vías principales del Distrito de Miraflores (Lima, Perú)</figcaption><p></p>
+<p><img src="index_files/figure-html/fig-mapa_base-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Como podemos observar en la Figura <a href="#fig-mapa_base">Figura&nbsp;1</a>, hemos importado un mapa base de las vías principales del Distrito de Miraflores en Lima, Perú. Se ha especificado que el mapa se encuentre en escala de grises para que resalten las capaz que se posicionen encima de este mapa base. Asimismo, la función <code>ggmap()</code> nos permite matizar aún más este mapa para que sea más claro y semitransparente.</p>
+<p>En segundo lugar, insertamos los límites distritales de Miraflores y sus distritos vecinos (Barranco, San Borja, San Isidro, Santiago de Surco y Surquillo).</p>
 <div class="cell">
 <details>
 <summary>Código</summary>
@@ -276,7 +284,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Borja"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Isidro"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Santiago de Surco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.0001</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x=</span><span class="fu">case_when</span>(</span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Barranco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
@@ -284,28 +292,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Borja"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Isidro"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Santiago de Surco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.005</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.009</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>mira_bordes2<span class="ot">&lt;-</span>mira_bordes <span class="sc">%&gt;%</span> </span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> <span class="st">"Miraflores"</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map, <span class="at">darken =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="st">"white"</span>)) <span class="sc">+</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#utilizando coordinate reference system (CRS) to 4326. The bounding box of the ggmap object is in WGS84 (EPSG:4326), but the actual raster is in EPSG:3857. You have to hack the bounding box of the ggmap object to be in the same CRS as the underlying data.</span></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> mira_bordes, <span class="fu">aes</span>(<span class="at">fill=</span>name), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> <span class="co">#bruh inherit aes es lo mejor</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>mira_bordes, <span class="fu">aes</span>(<span class="at">label=</span>name, <span class="at">nudge_x =</span> nudge_x, <span class="at">nudge_y =</span> nudge_y), </span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, </span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>,</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.r =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>)) <span class="sc">+</span> <span class="co">#para que se alineen las capas en el mismo CRS</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map, <span class="at">darken =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="st">"white"</span>)) <span class="sc">+</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#utilizando coordinate reference system (CRS) to 4326. The bounding box of the ggmap object is in WGS84 (EPSG:4326), but the actual raster is in EPSG:3857. You have to hack the bounding box of the ggmap object to be in the same CRS as the underlying data.</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> mira_bordes, <span class="fu">aes</span>(<span class="at">fill=</span>name), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="co">#bruh inherit aes es lo mejor</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  viridis<span class="sc">::</span><span class="fu">scale_fill_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>mira_bordes, <span class="fu">aes</span>(<span class="at">label=</span>name),</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">#"Barranco","Miraflores","San Borja","San Isidro",</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">#"Santiago de Surco","Surquillo" </span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x =</span> <span class="fu">c</span>(</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.012</span>, <span class="co">#B</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span><span class="fl">0.005</span>, <span class="co">#M</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SB</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SI</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SS</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>), <span class="co">#S</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fu">c</span>(</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.007</span>, <span class="co">#B</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>      <span class="dv">0</span>, <span class="co">#M</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SB</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span><span class="fl">0.001</span>, <span class="co">#SI</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SS</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>), <span class="co">#S</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>,</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.r =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>)) <span class="sc">+</span> <span class="co">#para que se alineen las capas en el mismo CRS</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/mapa%20limites-1.png" class="img-fluid" width="672"></p>
@@ -519,124 +542,149 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>En el rubro de elaboración de mapas, existen geo-*softwares* que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el *command line interface (CLI)* que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>En el rubro de elaboración de mapas, existen geo-*softwares* que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Open Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el *command line interface (CLI)* que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>Es así como me centraré en explorar las herramientas más recientes en R para elaborar mapas y, para probar la utilidad de estas funciones, las aplicaré a un caso práctico: lugares de interés en el <span class="co">[</span><span class="ot">distrito de Miraflores</span><span class="co">]</span>(https://es.wikipedia.org/wiki/Distrito_de_Miraflores_(Lima)) (Lima, Perú).</span>
 <span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="fu"># El mapa</span></span>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>Los *geo-softwares* trabajan principalmente con archivos `.shp` o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es [GPS Perú](https://www.geogpsperu.com/) la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de *Open Street Maps* la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos en el paquete <span class="in">`{osmdata}`</span> y <span class="in">`{sf}`</span>.</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>Los *geo-softwares* trabajan principalmente con archivos `.shp` o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es [GPS Perú](https://www.geogpsperu.com/) la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de *Open Street Maps* la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos principalmente en los paquetes <span class="in">`{osmdata}`</span> y <span class="in">`{sf}`</span>.</span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#importar paquetes necesarios.</span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, janitor, haven, rio, sjlabelled, flextable, knitr, kableExtra, DT, gtsummary, gt, osmdata, sf, ggmap, leaflet)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: show</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#importar paquetes necesarios.</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, janitor, haven, rio, sjlabelled, flextable, knitr, kableExtra, DT, gtsummary, gt, osmdata, sf, ggmap, leaflet)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{r mapa base}</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>mira_map<span class="ot">&lt;-</span><span class="fu">get_map</span>(</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getbb</span>(<span class="st">"Distrito de Miraflores"</span>), </span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">source =</span> <span class="st">"stamen"</span>, </span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">maptype =</span> <span class="st">"toner-lite"</span>, </span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"bw"</span>), </span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">force =</span> <span class="cn">TRUE</span> <span class="co">#importante cuando quieres volver a llamar un mismo mapa.</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map, <span class="at">darken =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="st">"white"</span>)) <span class="sc">+</span></span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r mapa limites}</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>En primer lugar, nos encargaremos de importar el mapa que irá en la base de nuestros polígonos. Este mapa tiene el siguiente aspecto:</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="in">```{r mapa base}</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-mapa_base</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Mapa de las vías principales del Distrito de Miraflores (Lima, Perú)</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>mira_map<span class="ot">&lt;-</span><span class="fu">get_map</span>(</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getbb</span>(<span class="st">"Distrito de Miraflores"</span>), </span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="at">source =</span> <span class="st">"stamen"</span>, </span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="at">maptype =</span> <span class="st">"toner-lite"</span>, </span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"bw"</span>), </span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">force =</span> <span class="cn">TRUE</span> <span class="co">#importante cuando quieres volver a llamar un mismo mapa.</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>mira_bordes<span class="ot">&lt;-</span><span class="fu">getbb</span>(<span class="st">"Distrito de Miraflores"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opq</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">'admin_level'</span>, <span class="at">value =</span> <span class="st">'8'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>() <span class="sc">%&gt;%</span>  <span class="co">#ha importado miraflores y sus alrededores.</span></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  .<span class="sc">$</span>osm_multipolygons <span class="sc">%&gt;%</span>  <span class="co">#alternativa para subsetear un objeto dentro de una lista , tan facil que da miedo.</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">#agregando un repel específico</span></span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y=</span><span class="fu">case_when</span>(</span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Barranco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Miraflores"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Borja"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Isidro"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Santiago de Surco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span></span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x=</span><span class="fu">case_when</span>(</span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Barranco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Miraflores"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Borja"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Isidro"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Santiago de Surco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.005</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>mira_bordes2<span class="ot">&lt;-</span>mira_bordes <span class="sc">%&gt;%</span> </span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">%in%</span> <span class="st">"Miraflores"</span>)</span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map, <span class="at">darken =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="st">"white"</span>)) <span class="sc">+</span></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>  <span class="co">#utilizando coordinate reference system (CRS) to 4326. The bounding box of the ggmap object is in WGS84 (EPSG:4326), but the actual raster is in EPSG:3857. You have to hack the bounding box of the ggmap object to be in the same CRS as the underlying data.</span></span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> mira_bordes, <span class="fu">aes</span>(<span class="at">fill=</span>name), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> <span class="co">#bruh inherit aes es lo mejor</span></span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(</span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>mira_bordes, <span class="fu">aes</span>(<span class="at">label=</span>name, <span class="at">nudge_x =</span> nudge_x, <span class="at">nudge_y =</span> nudge_y), </span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, </span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>,</span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.r =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>)) <span class="sc">+</span> <span class="co">#para que se alineen las capas en el mismo CRS</span></span>
-<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
-<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r notas, eval=FALSE}</span></span>
-<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_transform</span>(mira_bordes<span class="sc">$</span>osm_multipolygons, <span class="at">crs =</span> <span class="dv">3857</span>)[<span class="dv">1</span>], <span class="at">bgMap =</span> mira_map)</span>
-<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> mira_bordes<span class="sc">$</span>osm_multipolygons)</span>
-<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a><span class="fu">getbb</span>(<span class="st">"Lima, Perú"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opq</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">'admin_level'</span>, <span class="at">value =</span> <span class="st">'8'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_osm_feature(key = "boundary", value = "administrative") %&gt;%</span></span>
-<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
-<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> lima<span class="sc">$</span>osm_polygons)</span>
-<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(lima) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>()</span>
-<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a><span class="co">#importar datos mapa base</span></span>
-<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>mira_map <span class="ot">&lt;-</span> </span>
-<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_map</span>(<span class="fu">getbb</span>(<span class="st">"Miraflores, Lima"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggmap</span>()</span>
-<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map) <span class="sc">+</span> </span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>Como podemos observar en la Figura @fig-mapa_base, hemos importado un mapa base de las vías principales del Distrito de Miraflores en Lima, Perú. Se ha especificado que el mapa se encuentre en escala de grises para que resalten las capaz que se posicionen encima de este mapa base. Asimismo, la función <span class="in">`ggmap()`</span> nos permite matizar aún más este mapa para que sea más claro y semitransparente.</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>En segundo lugar, insertamos los límites distritales de Miraflores y sus distritos vecinos (Barranco, San Borja, San Isidro, Santiago de Surco y Surquillo).</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="in">```{r mapa limites}</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>mira_bordes<span class="ot">&lt;-</span><span class="fu">getbb</span>(<span class="st">"Distrito de Miraflores"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opq</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">'admin_level'</span>, <span class="at">value =</span> <span class="st">'8'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>() <span class="sc">%&gt;%</span>  <span class="co">#ha importado miraflores y sus alrededores.</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>  .<span class="sc">$</span>osm_multipolygons <span class="sc">%&gt;%</span>  <span class="co">#alternativa para subsetear un objeto dentro de una lista , tan facil que da miedo.</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">#agregando un repel específico</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y=</span><span class="fu">case_when</span>(</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Barranco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Miraflores"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Borja"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Isidro"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Santiago de Surco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.0001</span></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x=</span><span class="fu">case_when</span>(</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Barranco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Miraflores"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Borja"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"San Isidro"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Santiago de Surco"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.001</span>,</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>      name <span class="sc">%in%</span> <span class="st">"Surquillo"</span> <span class="sc">~</span> <span class="sc">-</span><span class="fl">0.009</span></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mira_map, <span class="at">darken =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="st">"white"</span>)) <span class="sc">+</span></span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>  <span class="co">#utilizando coordinate reference system (CRS) to 4326. The bounding box of the ggmap object is in WGS84 (EPSG:4326), but the actual raster is in EPSG:3857. You have to hack the bounding box of the ggmap object to be in the same CRS as the underlying data.</span></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> mira_bordes, <span class="fu">aes</span>(<span class="at">fill=</span>name), <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="co">#bruh inherit aes es lo mejor</span></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>  viridis<span class="sc">::</span><span class="fu">scale_fill_viridis</span>(<span class="at">discrete =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf_label</span>(</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>mira_bordes, <span class="fu">aes</span>(<span class="at">label=</span>name),</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>    <span class="co">#"Barranco","Miraflores","San Borja","San Isidro",</span></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>    <span class="co">#"Santiago de Surco","Surquillo" </span></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_x =</span> <span class="fu">c</span>(</span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.012</span>, <span class="co">#B</span></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span><span class="fl">0.005</span>, <span class="co">#M</span></span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SB</span></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SI</span></span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SS</span></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>), <span class="co">#S</span></span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fu">c</span>(</span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.007</span>, <span class="co">#B</span></span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a>      <span class="dv">0</span>, <span class="co">#M</span></span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SB</span></span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a>      <span class="sc">-</span><span class="fl">0.001</span>, <span class="co">#SI</span></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>, <span class="co">#SS</span></span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a>      <span class="fl">0.01</span>), <span class="co">#S</span></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.8</span>,</span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.r =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"lines"</span>), </span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>)) <span class="sc">+</span> <span class="co">#para que se alineen las capas en el mismo CRS</span></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a><span class="in">```{r notas, eval=FALSE}</span></span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_transform</span>(mira_bordes<span class="sc">$</span>osm_multipolygons, <span class="at">crs =</span> <span class="dv">3857</span>)[<span class="dv">1</span>], <span class="at">bgMap =</span> mira_map)</span>
 <span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>ob1<span class="ot">&lt;-</span></span>
-<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getbb</span>(<span class="st">"Distrito de Miraflores"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opq</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">'admin_level'</span>, <span class="at">value =</span> <span class="st">'8'</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_osm_feature(key = "boundary", value = "administrative") %&gt;%</span></span>
-<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>() </span>
-<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> ob1<span class="sc">$</span>osm_polygons)</span>
-<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>mad_map <span class="ot">&lt;-</span> <span class="fu">get_map</span>(<span class="fu">getbb</span>(<span class="st">"Lima"</span>), <span class="at">zoom =</span> <span class="dv">15</span>, <span class="at">maptype =</span> <span class="st">"roadmap"</span>,<span class="at">source=</span><span class="st">"osm"</span>,<span class="at">color=</span><span class="st">"bw"</span>)</span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> mira_bordes<span class="sc">$</span>osm_multipolygons)</span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a><span class="fu">getbb</span>(<span class="st">"Lima, Perú"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opq</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">'admin_level'</span>, <span class="at">value =</span> <span class="st">'8'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_osm_feature(key = "boundary", value = "administrative") %&gt;%</span></span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_geometry</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>()</span>
 <span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mad_map)</span>
-<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> lima<span class="sc">$</span>osm_polygons)</span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(lima) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addPolygons</span>()</span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a><span class="co">#importar datos mapa base</span></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a>mira_map <span class="ot">&lt;-</span> </span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_map</span>(<span class="fu">getbb</span>(<span class="st">"Miraflores, Lima"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-144"><a href="#cb5-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggmap</span>()</span>
+<span id="cb5-145"><a href="#cb5-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-146"><a href="#cb5-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-147"><a href="#cb5-147" aria-hidden="true" tabindex="-1"></a>ob1<span class="ot">&lt;-</span></span>
+<span id="cb5-148"><a href="#cb5-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getbb</span>(<span class="st">"Distrito de Miraflores"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-149"><a href="#cb5-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opq</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-150"><a href="#cb5-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">'admin_level'</span>, <span class="at">value =</span> <span class="st">'8'</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-151"><a href="#cb5-151" aria-hidden="true" tabindex="-1"></a>  <span class="co">#add_osm_feature(key = "boundary", value = "administrative") %&gt;%</span></span>
+<span id="cb5-152"><a href="#cb5-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osmdata_sf</span>() </span>
+<span id="cb5-153"><a href="#cb5-153" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-154"><a href="#cb5-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-155"><a href="#cb5-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span> ob1<span class="sc">$</span>osm_polygons)</span>
+<span id="cb5-156"><a href="#cb5-156" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-157"><a href="#cb5-157" aria-hidden="true" tabindex="-1"></a>mad_map <span class="ot">&lt;-</span> <span class="fu">get_map</span>(<span class="fu">getbb</span>(<span class="st">"Lima"</span>), <span class="at">zoom =</span> <span class="dv">15</span>, <span class="at">maptype =</span> <span class="st">"roadmap"</span>,<span class="at">source=</span><span class="st">"osm"</span>,<span class="at">color=</span><span class="st">"bw"</span>)</span>
+<span id="cb5-158"><a href="#cb5-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-159"><a href="#cb5-159" aria-hidden="true" tabindex="-1"></a><span class="fu">ggmap</span>(mad_map)</span>
+<span id="cb5-160"><a href="#cb5-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

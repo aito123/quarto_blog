@@ -13,22 +13,28 @@ format:
     code-fold: true
 ---
 
-En el rubro de elaboración de mapas, existen geo-*softwares* que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el *command line interface (CLI)* que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.
+En el rubro de elaboración de mapas, existen geo-*softwares* que se especializan en la construcción de mapas estéticamente agradables y geográficamente rigurosos como es el caso de ArcGis, QGis, Google Earth, Open Street Maps, entre otros. No obstante, en la actualidad, R se posiciona como una opción cada vez más atractiva dado que combina gran parte de las herramientas de las aplicaciones mencionadas junto con el *command line interface (CLI)* que permite llevar un registro de las funciones aplicadas para llegar a un determinado resultado.
 
 Es así como me centraré en explorar las herramientas más recientes en R para elaborar mapas y, para probar la utilidad de estas funciones, las aplicaré a un caso práctico: lugares de interés en el [distrito de Miraflores](https://es.wikipedia.org/wiki/Distrito_de_Miraflores_(Lima)) (Lima, Perú).
 
 # El mapa
 
-Los *geo-softwares* trabajan principalmente con archivos `.shp` o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es [GPS Perú](https://www.geogpsperu.com/) la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de *Open Street Maps* la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos en el paquete `{osmdata}` y `{sf}`.
+Los *geo-softwares* trabajan principalmente con archivos `.shp` o shapefiles que incluye información sobre la forma del mapa y sus elementos. Por lo que si quisiéramos visualizar el mapa de Miraflores como un polígono tendríamos que dirigirnos a una galería de mapas en el formato deseado. Una página muy utilizada dado su amplia biblioteca de mapas es [GPS Perú](https://www.geogpsperu.com/) la cual cuenta con una galería de los distritos de Lima la cual podemos descargar como un archivo zipeado e importarlo como una base de datos al R. Sin embargo, resulta más conveniente apoyarse en la base de datos de *Open Street Maps* la cual se encuentra constantemente en actualización y además nos ahorra el proceso de tener de descargar un zip y abrirlo. Para ello, nos apoyaremos principalmente en los paquetes `{osmdata}` y `{sf}`.
 
 ```{r}
+#| code-fold: show
+
 #importar paquetes necesarios.
 pacman::p_load(tidyverse, janitor, haven, rio, sjlabelled, flextable, knitr, kableExtra, DT, gtsummary, gt, osmdata, sf, ggmap, leaflet)
 
 
 ```
 
+En primer lugar, nos encargaremos de importar el mapa que irá en la base de nuestros polígonos. Este mapa tiene el siguiente aspecto:
+
 ```{r mapa base}
+#| label: fig-mapa_base
+#| fig-cap: Mapa de las vías principales del Distrito de Miraflores (Lima, Perú)
 
 mira_map<-get_map(
   getbb("Distrito de Miraflores"), 
@@ -38,9 +44,13 @@ mira_map<-get_map(
   force = TRUE #importante cuando quieres volver a llamar un mismo mapa.
   )
 
-ggmap(mira_map, darken = c(0.8, "white")) +
+ggmap(mira_map) + 
   theme_void()
 ```
+
+Como podemos observar en la Figura @fig-mapa_base, hemos importado un mapa base de las vías principales del Distrito de Miraflores en Lima, Perú. Se ha especificado que el mapa se encuentre en escala de grises para que resalten las capaz que se posicionen encima de este mapa base. Asimismo, la función `ggmap()` nos permite matizar aún más este mapa para que sea más claro y semitransparente.
+
+En segundo lugar, insertamos los límites distritales de Miraflores y sus distritos vecinos (Barranco, San Borja, San Isidro, Santiago de Surco y Surquillo).
 
 ```{r mapa limites}
 
@@ -57,7 +67,7 @@ mira_bordes<-getbb("Distrito de Miraflores") %>%
       name %in% "San Borja" ~ -0.001,
       name %in% "San Isidro" ~ -0.001,
       name %in% "Santiago de Surco" ~ -0.001,
-      name %in% "Surquillo" ~ -0.001
+      name %in% "Surquillo" ~ -0.0001
     ),
     nudge_x=case_when(
       name %in% "Barranco" ~ -0.001,
@@ -65,19 +75,34 @@ mira_bordes<-getbb("Distrito de Miraflores") %>%
       name %in% "San Borja" ~ -0.001,
       name %in% "San Isidro" ~ -0.001,
       name %in% "Santiago de Surco" ~ -0.001,
-      name %in% "Surquillo" ~ -0.005
+      name %in% "Surquillo" ~ -0.009
     )
   )
 
-mira_bordes2<-mira_bordes %>% 
-  filter(name %in% "Miraflores")
-
 ggmap(mira_map, darken = c(0.8, "white")) +
   #utilizando coordinate reference system (CRS) to 4326. The bounding box of the ggmap object is in WGS84 (EPSG:4326), but the actual raster is in EPSG:3857. You have to hack the bounding box of the ggmap object to be in the same CRS as the underlying data.
-  geom_sf(data= mira_bordes, aes(fill=name), inherit.aes = FALSE) + #bruh inherit aes es lo mejor
+  geom_sf(data= mira_bordes, aes(fill=name), inherit.aes = FALSE, show.legend = FALSE, alpha = 0.2) + #bruh inherit aes es lo mejor
+  
+  viridis::scale_fill_viridis(discrete = TRUE) +
   
   geom_sf_label(
-    data=mira_bordes, aes(label=name, nudge_x = nudge_x, nudge_y = nudge_y), 
+    data=mira_bordes, aes(label=name),
+    #"Barranco","Miraflores","San Borja","San Isidro",
+    #"Santiago de Surco","Surquillo" 
+    nudge_x = c(
+      0.012, #B
+      -0.005, #M
+      0.01, #SB
+      0.01, #SI
+      0.01, #SS
+      0.01), #S
+    nudge_y = c(
+      0.007, #B
+      0, #M
+      0.01, #SB
+      -0.001, #SI
+      0.01, #SS
+      0.01), #S
     inherit.aes = FALSE,
     size = 3, 
     alpha = 0.8,
