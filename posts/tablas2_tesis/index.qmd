@@ -1,0 +1,648 @@
+---
+title: "Descripción del mercado laboral a partir de la ENAHO"
+subtitle: |
+  El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).
+date: "2022-05-19"
+categories: [enaho, tablas, graficos]
+image: "image.jpg"
+fig-cap-location: top
+execute:
+  cache: true
+  
+---
+
+```{r}
+#importar los necesarios
+pacman::p_load(
+  #Working directory
+  here,
+  #data tools
+  tidyverse, janitor, glue, scales, Hmisc,
+  #importar / exportar
+  haven, rio,
+  #Etiquetas
+  sjlabelled,
+  #tablas
+  xtable, flextable, knitr, kableExtra, DT, gtsummary, gt,
+  #Trabajar con encuestas
+  survey, srvyr
+  )
+
+#Set working directory de manera relativa
+here::i_am("tablas2_tesis/index.qmd")
+
+```
+
+# Base de datos
+
+Se elaboró una base de datos unificada que incluye a los trabajadores en el área urbana para el año 2019, 2020 y 2021.
+
+```{r}
+#BASE UNIFICADA
+base<-
+  read_sav(here("bases_datos/enaho_19_20_21.sav")) %>% 
+  #filtrar lo que no es urbano y a la PEAO
+  filter(!(estrato %in% c(7,8)) & !(estrsocial %in% 6) & !is.na(estrsocial) & ocu500 %in% 1) %>% 
+  #nuevas variables
+  mutate(
+    #departamento
+    dpto=str_sub(ubigeo, 1,2),
+    dpto=case_when(
+      dpto %in% "01" ~ 1,
+      dpto %in% "02" ~ 2,
+      dpto %in% "03" ~ 3,
+      dpto %in% "04" ~ 4,
+      dpto %in% "05" ~ 5,
+      dpto %in% "06" ~ 6,
+      dpto %in% "07" ~ 7,
+      dpto %in% "08" ~ 8,
+      dpto %in% "09" ~ 9,
+      dpto %in% "10" ~ 10,
+      dpto %in% "11" ~ 11,
+      dpto %in% "12" ~ 12,
+      dpto %in% "13" ~ 13,
+      dpto %in% "14" ~ 14,
+      dpto %in% "15" ~ 15,
+      dpto %in% "16" ~ 16,
+      dpto %in% "17" ~ 17,
+      dpto %in% "18" ~ 18,
+      dpto %in% "19" ~ 19,
+      dpto %in% "20" ~ 20,
+      dpto %in% "21" ~ 21,
+      dpto %in% "22" ~ 22,
+      dpto %in% "23" ~ 23,
+      dpto %in% "24" ~ 24,
+      dpto %in% "25" ~ 25
+    ),
+    dpto=labelled_spss(dpto,
+                       label = "Departamento de residencia",
+                       labels = c("Amazonas"=1,"Áncash"=2,"Apurímac"=3,"Arequipa"=4,
+                                  "Ayacucho"=5,"Cajamarca"=6,"Callao"=7,"Cusco"=8,
+                                  "Huancavelica"=9,"Huánuco"=10,"Ica"=11,"Junín"=12,
+                                  "La Libertad"=13,"Lambayeque"=14,"Lima"=15,"Loreto"=16,
+                                  "Madre de Dios"=17,"Moquegua"=18,"Pasco"=19,"Piura"=20,
+                                  "Puno"=21,"San Martín"=22,"Tacna"=23,"Tumbes"=24,"Ucayali"=25)),
+    
+    #gedad
+    gedad=cut2(p208a, cuts = c(25,35,45,55,65)),
+    gedad=case_when(
+      gedad %in% "[14,25)" ~ 1,
+      gedad %in% "[25,35)" ~ 2,
+      gedad %in% "[35,45)" ~ 3,
+      gedad %in% "[45,55)" ~ 4,
+      gedad %in% "[55,65)" ~ 5,
+      gedad %in% "[65,97]" ~ 6
+    ),
+    gedad=labelled_spss(gedad,
+                       label = "Grupos de edad",
+                       labels = c("De 24 años a menos"=1,"De 25 a 34 años"=2,"De 35 a 44 años"=3,
+                                  "De 45 a 54 años"=4,"De 55 a 64 años"=5,"De 65 años a más"=6)),
+    
+    #NBI dicotómica
+    nbi=case_when(
+      (nbi1+nbi2+nbi3+nbi4+nbi5) > 0 ~ 1,
+      TRUE ~ 2
+    ),
+    nbi=labelled_spss(nbi,
+                      label = "Presencia de necesidades básicas insatisfechas (NBI)",
+                      labels = c("Sí"=1,"No"=2)),
+    
+    #número de NBI
+    nbi_total=nbi1+nbi2+nbi3+nbi4+nbi5,
+    nbi_total=labelled_spss(nbi_total,
+                      label = "N° total de necesidades básicas insatisfechas (NBI)"),
+    
+    #ingreso per capita
+    ing_cap=(inghog2d/mieperho)/12,
+    ing_cap=labelled_spss(ing_cap,
+                      label = "Ingreso per cápita en el hogar"),
+    
+    #gasto per capita
+    gas_cap=(gashog2d/mieperho)/12,
+    gas_cap=labelled_spss(gas_cap,
+                      label = "Gasto per cápita en el hogar"),
+    
+    #Nivel educativo alcanzado
+    educacion=case_when(
+      p301a %in% 1 ~ 1,
+      p301a %in% c(2,3,4,5,6,12) ~ 2,
+      p301a %in% c(7,8,9,10) ~ 3,
+      p301a %in% 11 ~ 4,
+      TRUE ~ 1
+    ),
+    educacion=labelled_spss(educacion,
+                            label="Nivel educativo", 
+                            labels = c("Sin nivel"=1,"Educación secundaria o menos"=2,
+                                       "Educación superior técnica o universitaria"=3,"Posgrado"=4)),
+    
+    #Lengua materna resumida
+    lengua=case_when(
+      p300a %in% 4 ~ 1,
+      p300a %in% 1 ~ 2,
+      p300a %in% c(2,3,9) ~ 3,
+      p300a %in% c(6,7,8) ~ 4,
+      TRUE ~ 4
+    ),
+    lengua=labelled_spss(lengua,
+                         label="Lengua materna resumida", 
+                         labels = c("Castellano"=1,"Quechua"=2,"Otra lengua nativa"=3,"Otros"=4)) 
+  )
+
+```
+
+# Preguntas de investigación
+
+Como pregunta principal, nos planteamos, ¿qué tanto los cambios provocados por la pandemia del COVID-19 afectaron las condiciones de vida de las familias de trabajadores del sector informal urbano en el Perú?
+
+Como preguntas específicas nos planteamos las siguientes:
+- ¿Cuáles eran las condiciones de vida de los trabajadores informales urbanos en el 2019 y cómo estas cambiaron en el 2021?
+- ¿Hasta qué punto estos cambios fueron más radicales o importantes respecto a los que experimentaron las familias de trabajadores del sector formal?
+- ¿Qué diferencias podemos identificar en los cambios experimentados por las familias de distintos tipos de trabajadores informales según rubro de actividad económica, nivel educativo, género y edad?
+
+# Tablas
+
+## Variables de control
+
+```{r funcion tabla1}
+tabla1<-function(data, weight, strata, by, include, percent, overall=TRUE){
+
+ tbl1<-data %>% 
+  mutate(nacional="Nacional") %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = {{weight}}) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = nacional,
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+        remove_row_type(nacional, type = "header") %>% 
+        bold_levels() %>%
+        modify_column_indent(columns = label, undo = TRUE) %>% 
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+   
+  
+ tbl2<-data %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = {{weight}}) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = {{include}},
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+      bold_labels() %>% 
+      
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+ 
+ tbl_stack(list(tbl1, tbl2))
+}
+
+```
+
+A nivel nacional, en el área urbana, el empleo informal ha aumentado en, aproximadamente, 5% entre 2019 y 2021 llegando a un 71.77%. 
+
+En la @tbl-dominio, podemos observar que el dominio con mayor empleo informal es la Selva. Esto se mantiene consistente y en aumento a través de los años 2019-2021. En cambio, Lima Metropolitana se mantiene constante como el dominio con menor porcentaje de empleo informal a través de los años. En todos los casos, el empleo informal es mayor al 50% del empleo total.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-dominio
+#| tbl-cap: "Dominio"
+
+base %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = dominio, percent = "row", overall=FALSE)
+  
+```
+
+Asimismo, en la @tbl-estr vemos que a través de los años el empleo informal es más común en los estratos de 2 000 a 19 999 habitantes, es decir los más reducidos en el área urbana, y en este estrato se ha dado un aumento en el empleo informal de 5.25% entre 2019 y 2021.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-estr
+#| tbl-cap: "Estrato geográfico"
+
+base %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE)
+```
+
+Según la @tbl-sex, el empleo informal en los jefes de hogar hombres ha aumentado 5.5 puntos porcentuales entre 2019 y 2021, mientras que en jefas de hogar mujeres ha aumentado en 3% por lo que se observa un mayor aumento en los trabajadores hombres por 2.5%.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-sex
+#| tbl-cap: "Sexo del jefe de hogar"
+
+base %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE)
+```
+
+Si precisamos qué grupo etario ha sido más afectado entre los jefes de hogar trabajadores, podemos revisar en la @tbl-gedad que el grupo de 24 años a menos se ha mantenido como el más involucrado en el empleo informal a través de 2019 y 2021 con un aumento de 2.62%. Sin embargo, el grupo con mayor crecimiento, en el periodo indicado, han sido las personas entre 55 a 64 años con un aumento de 8% aproximadamente.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-gedad
+#| tbl-cap: "Grupo de edad del jefe de hogar"
+
+base %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
+```
+
+Respecto al nivel educativo del jefe de hogar trabajador, podemos observar en la @tbl-edu que cerca del 100% de los que no cuentan con ningún nivel educativo se encuentran bajo el empleo informal. Se puede observar que a mayor nivel educativo, menor participación en la informalidad; no obstante, el grupo con mayor aumento ha sido los que tienen educación superior técnica o universitaria incrementando en 4.3%. Sorpresivamente, el único que grupo que ha disminuido su incidencia en la informalidad han sido los que tenían estudios de posgrado reduciéndose en 1.67%.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-edu
+#| tbl-cap: "Nivel educativo del jefe de hogar"
+
+base %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE)
+```
+
+Según la @tbl-leng, los trabajadores con lengua materna castellano han aumentado en 4.95% entre 2019 y 2021 en la informalidad. Asimismo, los trabajadores con lengua materna quechua han aumentado en 2.61%. En todos los casos, el empleo informal no desciende del 60%.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-leng
+#| tbl-cap: "Lengua materna"
+
+base %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE)
+```
+
+Por otro lado, en la @tbl-estrsocial, podemos observar que a menor estrato social, mayor presencia en la informalidad de los trabajadores. Si bien en todos los casos se ha visto un aumento entre el año 2019 y 2021, no menor de 2%, en el caso del estrato C se puede ver el mayor incremento sumando un 8.19% al 2021.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-estrsocial
+#| tbl-cap: "Estrato social"
+
+base %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "row", overall=FALSE)
+```
+
+Adicionalmente, podemos apreciar en la @tbl-pobr, que los trabajadores pobres no extremos y pobres extremos disminuyeron en 2.94 y 4.64 respectivamente hacia el 2021. En cambio, la presencia de trabajadores no pobres en la informalidad aumentó en 4.63%.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-pobr
+#| tbl-cap: "Condición de pobreza"
+
+base %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row", overall=FALSE)
+```
+
+Por último, en el caso de las necesidades básicas insatisfechas (NBI), la @tbl-nbi nos muestra que aumentó en 3.98% la cantidad de trabajadores con alguna NBI. En el caso del empleo formal, vemos que se ha reducido la presencia de NBI en 3.98 para el 2021.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-nbi
+#| tbl-cap: "Necesidades básicas Insatisfechas (NBI)"
+
+base %>% 
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = nbi, percent = "row", overall=FALSE)
+```
+
+## Ingresos y gastos (3 tablas)
+
+```{r funcion tabla2}
+
+tabla2<-function(data, weight, strata, by, include, fill){
+  
+  variable1 <- data %>% select({{include}}) %>% names()
+  #label1 <- data %>% select({{include}}) %>% sjlabelled::label_to_colnames() %>% names()
+  label2 <- data %>% select({{fill}}) %>% sjlabelled::label_to_colnames() %>% names()
+  
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = {{weight}}) %>%
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+      tbl_strata2(
+        #grade irá en la fila, solo puede ser una.
+        strata = {{include}},
+        ~ .x %>%
+          tbl_svysummary(
+            #by irá en las columnas, solo puede ser una
+            by = {{by}},
+            #include irá en los valores, de preferencia que sea una, antes era age
+            include = {{fill}},
+            #filtrar missing
+            missing = "no",
+            #type
+            type= everything() ~ "continuous",
+            #le pone la etiqueta a cada valor de las filas de grade
+            label = list(all_continuous() ~ .y),
+            statistic = list(all_continuous() ~ "{mean}")
+          ) %>%
+          #negrita trt
+          modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+          #añadir columna de totales y en negrita
+          add_overall(., col_label = "Total"),
+        #una tabla debajo de la otra en vez de una al costado
+        .combine_with = "tbl_stack",
+        #borra las filas en blanco
+        .combine_args = list(group_header = NULL)
+      ) %>%
+
+      #añade el encabezado Grade en la fila
+      modify_table_body(
+        ~ .x %>%
+          mutate(variable = variable1, row_type = "level") %>%
+          tibble::add_row(
+            row_type = "label",
+            variable = variable1,#label1
+            label = variable1,
+            .before = 1L
+          )
+      ) %>%
+
+      #esto no me queda muy claro que hace pero bueno creo que explicita
+      modify_column_indent(columns = label, rows = row_type == "level") %>%
+      #poner en negrita el Grade
+      bold_labels() %>%
+      #encabezado de la variable de las columnas
+      #modify_spanning_header(all_stat_cols() ~ "**Treatment**") %>%
+      #override el footnote para explicitar que estamos hablando de Age
+      modify_footnote(all_stat_cols() ~ glue("{label2}: Promedio"))
+
+  )
+  
+
+}
+
+```
+
+### A nivel nacional
+
+A nivel nacional, se tiene que el ingreso per cápita del hogar mensual se redujo entre 2019 y 2021 en s/.59 pasando de s/.1,113 a s/.1,054. En el caso del empleo informal, el ingreso per capita se ha reducido en s/.26, y para el empleo formal se ha reducido en s/.25. El dominio con mayor reducción de los ingresos ha sido Lima Metropolitana con una disminución de s/.81.
+
+Por otro lado, como podemos ver en la @tbl-ing_dominio, el gasto per cápita del hogar mensual igualmente se ha reducido en s/.44 pasando de s/.835 a s/.791. En el caso del empleo informal, el gasto per cápita se ha reducido en s/.15, y para el empleo formal se ha reducido en s/.46. El dominio con mayor reducción del gasto ha sido Lima Metropolitana con una variación de s/.85.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_dominio
+#| tbl-cap: "Según dominio"
+#| tbl-subcap: 
+#|  - Ingreso promedio per cápita del hogar mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_ing_nacional<-
+  base %>% 
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata(
+    strata = ano,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = ocupinf,
+          include = ing_cap,
+          missing = "no",
+          type= everything() ~ "continuous",
+          statistic = list(all_continuous() ~ "{mean}"),
+          label = list(all_continuous() ~ "Nacional")
+        ) %>%
+        modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+        add_overall(., col_label = "Total") %>% 
+      bold_labels() %>%
+      modify_footnote(all_stat_cols() ~ glue("{base %>% select(ing_cap) %>% sjlabelled::label_to_colnames() %>% names()}: Promedio"))
+      )
+
+tbl_ing_dominio<-
+  base %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = dominio, fill = ing_cap)
+
+tbl_stack(list(tbl_ing_nacional, tbl_ing_dominio))
+
+#gasto
+tbl_gas_nacional<-
+  base %>% 
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata(
+    strata = ano,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = ocupinf,
+          include = gas_cap,
+          missing = "no",
+          type= everything() ~ "continuous",
+          statistic = list(all_continuous() ~ "{mean}"),
+          label = list(all_continuous() ~ "Nacional")
+        ) %>%
+        modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+        add_overall(., col_label = "Total") %>% 
+      bold_labels() %>%
+      modify_footnote(all_stat_cols() ~ glue("{base %>% select(gas_cap) %>% sjlabelled::label_to_colnames() %>% names()}: Promedio"))
+      )
+
+tbl_gas_dominio<-
+  base %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = dominio, fill = gas_cap)
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_dominio))
+
+```
+
+En la @tbl-ing_sexo, podemos apreciar que las mujeres han tenido una mayor reducción en el ingreso mensual per cápita con una variación de s/.68 entre el 2019 y 2021. En cambio, los trabajadores hombres variaron su ingreso en s/.53. Asimismo, dentro del grupo de las mujeres, vemos que han sido más afectadas las que contaban con un empleo formal dado su ingreso ha variado en s/.77 a diferencia de las que contaban con empleo formal quienes variaron en s/.28.
+
+Por otro lado, respecto al gasto per capita, vemos que de igual manera las mujeres han sido las más afectadas con una reducción de su gasto en s/.50. En adición, el gasto mensual per capita de las mujeres con un empleo formal se redujo en s/.62 a comparación de las que tenían un empleo informal quienes redujeron en s/.23
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_sexo
+#| tbl-cap: "Según sexo"
+#| tbl-subcap: 
+#|  - Ingreso per cápita del hogar (promedio)
+#|  - Gasto per cápita del hogar (promedio)
+#| layout-ncol: 2
+
+#ingreso
+tbl_ing_sexo<-
+  base %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = ing_cap)
+
+tbl_stack(list(tbl_ing_nacional, tbl_ing_sexo))
+
+#gasto
+tbl_gas_sexo<-
+  base %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = gas_cap)
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo))
+
+```
+
+En la @tbl-ing_gedad, podemos apreciar que el grupo más afectado fueron los trabajadores entre 55 a 64 años quienes vieron su ingreso per cápita mensual reducido en s/.117. Dentro de este grupo los más afectados fueron los trabajadores con un empleo formal dado que vieron su ingreso reducido en s/.100.
+
+Por otro lado, respecto al gasto per capita, vemos que de igual manera los trabajadores entre 55 a 64 años fueron los más afectados con una reducción de sus gastos en s/.72. Asimismo, dentro de este grupo, los trabajadores con empleo formal disminuyeron sus gastos en s/.101.
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_gedad
+#| tbl-cap: "Según grupo de edad"
+#| tbl-subcap: 
+#|  - Ingreso per cápita del hogar (promedio)
+#|  - Gasto per cápita del hogar (promedio)
+#| layout-ncol: 2
+
+#ingreso
+tbl_ing_gedad<-
+  base %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = ing_cap)
+
+tbl_stack(list(tbl_ing_nacional, tbl_ing_gedad))
+
+#gasto
+tbl_gas_gedad<-
+  base %>% 
+  tabla2(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = gas_cap)
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_gedad))
+
+```
+
+```{r, eval=FALSE, include=FALSE}
+
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble()#MEJOR Y LUEGO CAMBIAR EL FORMATO A LONG
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble() %>% clean_names() %>% mutate(across(c(2:10), as.numeric)) %>% View()#clean_names al rescate, pero tengo que borrar la coma
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble() %>% clean_names() %>% mutate(across(everything(), ~str_remove_all(., ","))) %>% mutate(across(c(2:10), as.numeric)) %>% View()#i love R
+
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot(aes(x=gedad, y=prop, fill = p207)) +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(y=..count..*(-1)), stat="identity") +
+  scale_y_continuous(
+    # scale the y-lab
+    breaks = seq(-0.4, 0.4, 0.05),
+  ) +
+  # scale_y_continuous(
+  #   # scale the y-lab
+  #   breaks = seq(-10, 10, 1),
+  #   labels = function(x) {
+  #     paste(abs(x), '%')
+  #   }
+  # ) +
+  # scale_y_continuous(labels = paste0(as.character(c(seq(2, 0, -1), seq(1, 2, 1))), "%")) +
+  coord_flip()
+
+
+  #seq(from, to, by)
+
+
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, fill = p207), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=-prop, fill = p207), stat="identity") +
+  #scale_y_continuous(name = abs * 100) +
+  scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  coord_flip()
+  
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
+```
+
+# Análisis
+
+Para responder a la pregunta principal: ¿qué tanto los cambios provocados por la pandemia del COVID-19 afectaron las condiciones de vida de las familias de trabajadores del sector informal urbano en el Perú?, debemos revisar el cambio en las condiciones de vida de los trabajadores urbanos entre 2019 y 2021, periodo que comprende el desencadenamiento de la pandemia COVID-19. 
+
+Durante este periodo, hemos podido observar que 
+
+¿DONDE FUE MÁS RADICAL?
+
+
+# Notas
+
+```{r}
+#| fig-cap: "Según grupo de edad barras"
+
+#Prueba de gráfico de edades
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, fill = p207), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=-prop, fill = p207), stat="identity") +
+  #scale_y_continuous(name = abs * 100) +
+  scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  coord_flip() + 
+  theme_bw()
+
+```
+
+```{r}
+#| fig-cap: "Según grupo de edad líneas"
+
+#Prueba de gráfico de edades
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_line(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, group = p207), stat="identity",  colour = "red", size = 2) +
+  geom_line(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=prop, group = p207), stat="identity",  colour = "blue", size = 2) +
+  #scale_y_continuous(name = abs * 100) +
+  # scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  # coord_flip() + 
+  theme_bw()
+
+```
+

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-0.9.393">
+<meta name="generator" content="quarto-0.9.471">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -81,23 +81,6 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<link href="../../peru.png" rel="icon" type="image/png">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -120,7 +103,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <link rel="stylesheet" href="../../styles.css">
-</head>
+<script src="..\..\site_libs\quarto-nav\quarto-nav.js"></script><script src="..\..\site_libs\quarto-nav\headroom.min.js"></script><script src="..\..\site_libs\clipboard\clipboard.min.js"></script><script src="..\..\site_libs\quarto-search\autocomplete.umd.js"></script><script src="..\..\site_libs\quarto-search\fuse.min.js"></script><script src="..\..\site_libs\quarto-search\quarto-search.js"></script><meta name="quarto:offset" content="../../"><link href="../../peru.png" rel="icon" type="image/png"><script src="..\..\site_libs\quarto-html\quarto.js"></script><script src="..\..\site_libs\quarto-html\popper.min.js"></script><script src="..\..\site_libs\quarto-html\tippy.umd.min.js"></script><script src="..\..\site_libs\quarto-html\anchor.min.js"></script><link href="..\..\site_libs\quarto-html\tippy.css" rel="stylesheet"><link href="..\..\site_libs\quarto-html\quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><script src="..\..\site_libs\bootstrap\bootstrap.min.js"></script><link href="..\..\site_libs\bootstrap\bootstrap-icons.css" rel="stylesheet"><link href="..\..\site_libs\bootstrap\bootstrap.min.css" rel="stylesheet"></head>
 
 <body class="floating nav-fixed">
 
@@ -172,13 +155,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Unificación de bases de datos de la ENAHO</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
             <p class="subtitle lead"></p><p>El objetivo de este post es unificar distintos módulos de la Encuesta Nacional de Hogares (ENAHO).</p><p></p>
-                          <div class="quarto-categories">
+                                <div class="quarto-categories">
                 <div class="quarto-category">enaho</div>
               </div>
                   </div>
   </div>
     
-  
   <div class="quarto-title-meta-author">
     <div class="quarto-title-meta-heading">Autor</div>
     <div class="quarto-title-meta-heading">Afiliación</div>
@@ -194,8 +176,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             </p>
         </div>
       </div>
-
-
 
   <div class="quarto-title-meta">
 
@@ -779,264 +759,271 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2022-05-13"</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [enaho]</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "image.jpg"</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">  cache: true</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Working directory</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  here,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#data tools</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  tidyverse, janitor, glue, lubridate, scales, Hmisc,lazyeval,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Gráficos</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  plotly, ggrepel, cowplot, grid,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#importar / exportar</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  haven, rio, officer, officedown,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Etiquetas</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  sjlabelled,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#tablas</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  xtable, flextable, knitr, kableExtra, DT, gtsummary, gt,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Visualización</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  ggpubr, paletteer, RColorBrewer, grid, ggthemes, rvg, cowplot,  scales, ggtext, ggrepel,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#mapas</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  sf, sfheaders, leaflet, osmdata,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Trabajar con encuestas</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  survey, srvyr</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Working directory</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  here,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#data tools</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  tidyverse, janitor, glue, lubridate, scales, Hmisc,lazyeval,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Gráficos</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  plotly, ggrepel, cowplot, grid,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#importar / exportar</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  haven, rio, officer, officedown,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Etiquetas</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  sjlabelled,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">#tablas</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  xtable, flextable, knitr, kableExtra, DT, gtsummary, gt,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Visualización</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  ggpubr, paletteer, RColorBrewer, grid, ggthemes, rvg, cowplot,  scales, ggtext, ggrepel,</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#mapas</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  sf, sfheaders, leaflet, osmdata,</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Trabajar con encuestas</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  survey, srvyr</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bases de datos</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="fu">### ENAHO 2019</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bases de datos</span></span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>El tamaño anual de la muestra **2019** es de **36 994** viviendas particulares, correspondiendo 23 346 viviendas al área urbana y 13 648 viviendas al área rural.</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### ENAHO 2019</span></span>
 <span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 653 conglomerados al área urbana y 1 706 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 808 conglomerados mientras que el tamaño de la muestra no panel es de 3 551 conglomerados.</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>El tamaño anual de la muestra **2019** es de **36 994** viviendas particulares, correspondiendo 23 346 viviendas al área urbana y 13 648 viviendas al área rural.</span>
 <span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="fu">### ENAHO 2020</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 653 conglomerados al área urbana y 1 706 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 808 conglomerados mientras que el tamaño de la muestra no panel es de 3 551 conglomerados.</span>
 <span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>El tamaño anual de la muestra **2020** es de **37 103** viviendas particulares, correspondiendo 23 895 viviendas al área urbana y 13 208 viviendas al área rural.</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="fu">### ENAHO 2020</span></span>
 <span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 706 conglomerados al área urbana y 1 653 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 833 conglomerados mientras que el tamaño de la muestra no panel es de 3 526 conglomerados.</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>El tamaño anual de la muestra **2020** es de **37 103** viviendas particulares, correspondiendo 23 895 viviendas al área urbana y 13 208 viviendas al área rural.</span>
 <span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">### ENAHO 2021</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 706 conglomerados al área urbana y 1 653 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 833 conglomerados mientras que el tamaño de la muestra no panel es de 3 526 conglomerados.</span>
 <span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>El tamaño anual de la muestra **2021** es de **36 856** viviendas particulares, correspondiendo 24 064 viviendas al área urbana y 12 792 viviendas al área rural.</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a><span class="fu">### ENAHO 2021</span></span>
 <span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 760 conglomerados al área urbana y 1 599 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 854 conglomerados mientras que el tamaño de la muestra no panel es de 3 505 conglomerados.</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>El tamaño anual de la muestra **2021** es de **36 856** viviendas particulares, correspondiendo 24 064 viviendas al área urbana y 12 792 viviendas al área rural.</span>
 <span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importación</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>La muestra de **conglomerados** en el ámbito nacional es de **5 359**, corresponde 3 760 conglomerados al área urbana y 1 599 conglomerados al área rural. Con respecto al tamaño de la muestra panel es de 1 854 conglomerados mientras que el tamaño de la muestra no panel es de 3 505 conglomerados.</span>
 <span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>Se importan las bases de datos de los años 2019, 2020, 2021 de la ENAHO (actualizado anual). En caso no cuente con las bases de datos en su computadora, descarguelas en un directorio temporal.</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## Importación</span></span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>descargar<span class="ot">&lt;-</span><span class="cf">function</span>(ruta_web,archivo){</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>  <span class="co">#cortesía de Claudio Pacheco</span></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>  temp <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>  tf <span class="ot">=</span> <span class="fu">tempfile</span>(<span class="at">tmpdir=</span>temp, <span class="at">fileext=</span><span class="st">".zip"</span>)</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(ruta_web, tf)</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>Se importan las bases de datos de los años 2019, 2020, 2021 de la ENAHO (actualizado anual). En caso no cuente con las bases de datos en su computadora, descárguelas en un directorio temporal.</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>descargar<span class="ot">&lt;-</span><span class="cf">function</span>(ruta_web,archivo){</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>  <span class="co">#cortesía de Claudio Pacheco</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>  temp <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>  tf <span class="ot">=</span> <span class="fu">tempfile</span>(<span class="at">tmpdir=</span>temp, <span class="at">fileext=</span><span class="st">".zip"</span>)</span>
 <span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unzip</span>(tf, <span class="at">files=</span>archivo, <span class="at">exdir=</span>temp, <span class="at">overwrite=</span><span class="cn">TRUE</span>)</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(ruta_web, tf)</span>
 <span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>  fpath<span class="ot">=</span><span class="fu">file.path</span>(temp,archivo)</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unzip</span>(tf, <span class="at">files=</span>archivo, <span class="at">exdir=</span>temp, <span class="at">overwrite=</span><span class="cn">TRUE</span>)</span>
 <span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlink</span>(temp)</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>  fpath<span class="ot">=</span><span class="fu">file.path</span>(temp,archivo)</span>
 <span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(fpath)</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unlink</span>(temp)</span>
 <span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2019 ACTUALIZADA ANUAL</span></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(fpath)</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 01: Características de la Vivienda y del Hogar</span></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>m01_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo01.zip"</span>,</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo01/Enaho01-2019-100.sav"</span>))</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 03: Educación</span></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>m03_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo03.zip"</span>,</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo03/Enaho01A-2019-300.sav"</span>))</span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 05: Empleo e Ingresos</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>m05_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo05.zip"</span>,</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo05/Enaho01a-2019-500.sav"</span>))</span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 34: Sumarias (Variables Calculadas)</span></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>m34_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo34.zip"</span>,</span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo34/Sumaria-2019.sav"</span>))</span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2020 ACTUALIZADA ANUAL</span></span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2019 ACTUALIZADA ANUAL</span></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 01: Características de la Vivienda y del Hogar</span></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>m01_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo01.zip"</span>,</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo01/Enaho01-2019-100.sav"</span>))</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 03: Educación</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>m03_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo03.zip"</span>,</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo03/Enaho01A-2019-300.sav"</span>))</span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 05: Empleo e Ingresos</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>m05_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo05.zip"</span>,</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo05/Enaho01a-2019-500.sav"</span>))</span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 34: Sumarias (Variables Calculadas)</span></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>m34_2019<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo34.zip"</span>,</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"687-Modulo34/Sumaria-2019.sav"</span>))</span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 01: Características de la Vivienda y del Hogar</span></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>m01_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo01.zip"</span>,</span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo01/Enaho01-2020-100.sav"</span>))</span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 03: Educación</span></span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>m03_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo03.zip"</span>,</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo03/Enaho01A-2020-300.sav"</span>))</span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 05: Empleo e Ingresos</span></span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>m05_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo05.zip"</span>,</span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo05/Enaho01A-2020-500.sav"</span>))</span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 34: Sumarias (Variables Calculadas)</span></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>m34_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo34.zip"</span>,</span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo34/Sumaria-2020.sav"</span>))</span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2021 ACTUALIZADA ANUAL</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2020 ACTUALIZADA ANUAL</span></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 01: Características de la Vivienda y del Hogar</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>m01_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo01.zip"</span>,</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo01/Enaho01-2020-100.sav"</span>))</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 03: Educación</span></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>m03_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo03.zip"</span>,</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo03/Enaho01A-2020-300.sav"</span>))</span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 05: Empleo e Ingresos</span></span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a>m05_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo05.zip"</span>,</span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo05/Enaho01A-2020-500.sav"</span>))</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 34: Sumarias (Variables Calculadas)</span></span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>m34_2020<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo34.zip"</span>,</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"737-Modulo34/Sumaria-2020.sav"</span>))</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 01: Características de la Vivienda y del Hogar</span></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>m01_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo01.zip"</span>,</span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo01/Enaho01-2021-100.sav"</span>))</span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 03: Educación</span></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>m03_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo03.zip"</span>,</span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo03/Enaho01A-2021-300.sav"</span>))</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 05: Empleo e Ingresos</span></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>m05_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo05.zip"</span>,</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo05/Enaho01A-2021-500.sav"</span>))</span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 34: Sumarias (Variables Calculadas)</span></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>m34_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo34.zip"</span>,</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo34/Sumaria-2021.sav"</span>))</span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2021 ACTUALIZADA ANUAL</span></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 01: Características de la Vivienda y del Hogar</span></span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>m01_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo01.zip"</span>,</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo01/Enaho01-2021-100.sav"</span>))</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 03: Educación</span></span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>m03_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo03.zip"</span>,</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo03/Enaho01A-2021-300.sav"</span>))</span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 05: Empleo e Ingresos</span></span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>m05_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo05.zip"</span>,</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo05/Enaho01A-2021-500.sav"</span>))</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 34: Sumarias (Variables Calculadas)</span></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>m34_2021<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo34.zip"</span>,</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"759-Modulo34/Sumaria-2021.sav"</span>))</span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variables Identificadoras</span></span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a>Las variables que me servirán para cruzar las bases de datos son las siguientes:</span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## Variables Identificadoras</span></span>
 <span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span></span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">AÑO</span><span class="st">`</span>,MES,CONGLOME,VIVIENDA,HOGAR,UBIGEO,DOMINIO,ESTRATO) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a>Para verificar que se tiene el número de conglomerados adecuado y de hogares se realiza la siguiente función:</span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a>**Número de conglomerados**</span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CONGLOME) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>**Número de hogares**</span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CONGLOME,VIVIENDA,HOGAR) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span>
-<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 01</span></span>
-<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 01: Características de la Vivienda y del Hogar.**</span>
-<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span></span>
-<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
-<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 03</span></span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>Las variables que me servirán para cruzar las bases de datos son las siguientes:</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: screen-inset-right</span></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">AÑO</span><span class="st">`</span>,MES,CONGLOME,VIVIENDA,HOGAR,UBIGEO,DOMINIO,ESTRATO) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>Para verificar que se tiene el número de conglomerados adecuado y de hogares se realiza la siguiente función:</span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>**Número de conglomerados**</span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CONGLOME) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>**Número de hogares**</span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(CONGLOME,VIVIENDA,HOGAR) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>()</span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 01</span></span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 01: Características de la Vivienda y del Hogar.**</span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: screen-inset-right</span></span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a>m01_2019 <span class="sc">%&gt;%</span></span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
 <span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 03: Educación.**</span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a>m03_2019 <span class="sc">%&gt;%</span></span>
-<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CODPERSO,P300A,P301A,FACTOR07)<span class="sc">%&gt;%</span></span>
-<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
-<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 05</span></span>
-<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 05: Empleo e Ingresos.**</span>
-<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>m05_2019 <span class="sc">%&gt;%</span></span>
-<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CODPERSO,P507,P207,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A)<span class="sc">%&gt;%</span></span>
-<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
-<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 34</span></span>
-<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 34: Sumarias.**</span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 03</span></span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 03: Educación.**</span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: screen-inset-right</span></span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>m03_2019 <span class="sc">%&gt;%</span></span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CODPERSO,P300A,P301A,FACTOR07)<span class="sc">%&gt;%</span></span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 05</span></span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 05: Empleo e Ingresos.**</span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: screen-inset-right</span></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>m05_2019 <span class="sc">%&gt;%</span></span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A)<span class="sc">%&gt;%</span></span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
 <span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a>m34_2019 <span class="sc">%&gt;%</span></span>
-<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07)<span class="sc">%&gt;%</span><span class="co">#no deberia ser ingreso bruto INGHOG1D?</span></span>
-<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
-<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cruzar la data</span></span>
-<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>La data final tiene las siguientes dimensiones:</span>
-<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>ids<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"AÑO"</span>,<span class="st">"MES"</span>,<span class="st">"CONGLOME"</span>,<span class="st">"VIVIENDA"</span>,<span class="st">"HOGAR"</span>,<span class="st">"UBIGEO"</span>,<span class="st">"DOMINIO"</span>,<span class="st">"ESTRATO"</span>)</span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a><span class="fu">## Módulo 34</span></span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>Se seleccionan las siguientes variables del **módulo 34: Sumarias.**</span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a><span class="co">#| column: screen-inset-right</span></span>
+<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a>m34_2019 <span class="sc">%&gt;%</span></span>
+<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07)<span class="sc">%&gt;%</span><span class="co">#no deberia ser ingreso bruto INGHOG1D?</span></span>
+<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">view_df</span>()</span>
+<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cruzar la data</span></span>
 <span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2019</span></span>
-<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>enaho2019<span class="ot">&lt;-</span></span>
-<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo5 = base</span></span>
-<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a>  m05_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P507,P207,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo1</span></span>
-<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m01_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo3</span></span>
-<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m03_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P300A,P301A,FACTOR07)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo34</span></span>
-<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m34_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))</span>
-<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2020</span></span>
-<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a>enaho2020<span class="ot">&lt;-</span></span>
-<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo5 = base</span></span>
-<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>  m05_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P507,P207,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo1</span></span>
-<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m01_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo3</span></span>
-<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m03_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P300A,P301A,FACTOR07)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo34</span></span>
-<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m34_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))</span>
-<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2021</span></span>
-<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>enaho2021<span class="ot">&lt;-</span></span>
-<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo5 = base</span></span>
-<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>  m05_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P507,P207,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo1</span></span>
-<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m01_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo3</span></span>
-<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m03_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P300A,P301A,FACTOR07)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo34</span></span>
-<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m34_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))</span>
-<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a><span class="co">#juntar bases</span></span>
-<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>enaho19_20_21<span class="ot">&lt;-</span></span>
-<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(enaho2019, enaho2020, enaho2021)</span>
-<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a><span class="co">#restaura en caso se pierda alguna metadata</span></span>
-<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>enaho19_20_21<span class="ot">&lt;-</span></span>
-<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_labels</span>(enaho19_20_21, enaho2019)</span>
-<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a><span class="co">#exportar</span></span>
-<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>enaho19_20_21 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">"enaho_19_20_21.sav"</span>)</span>
-<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(enaho19_20_21)</span>
+<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>La data final tiene las siguientes dimensiones:</span>
+<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a>ids<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"AÑO"</span>,<span class="st">"MES"</span>,<span class="st">"CONGLOME"</span>,<span class="st">"VIVIENDA"</span>,<span class="st">"HOGAR"</span>,<span class="st">"UBIGEO"</span>,<span class="st">"DOMINIO"</span>,<span class="st">"ESTRATO"</span>)</span>
+<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2019</span></span>
+<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>enaho2019<span class="ot">&lt;-</span></span>
+<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo5 = base</span></span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>  m05_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo1</span></span>
+<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m01_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo3</span></span>
+<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m03_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P300A,P301A,FACTOR07)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo34</span></span>
+<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m34_2019 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))</span>
+<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2020</span></span>
+<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>enaho2020<span class="ot">&lt;-</span></span>
+<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo5 = base</span></span>
+<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>  m05_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo1</span></span>
+<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m01_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo3</span></span>
+<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m03_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P300A,P301A,FACTOR07)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo34</span></span>
+<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m34_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))</span>
+<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a><span class="co">#ENAHO 2021</span></span>
+<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>enaho2021<span class="ot">&lt;-</span></span>
+<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo5 = base</span></span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>  m05_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo1</span></span>
+<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m01_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo3</span></span>
+<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m03_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,CODPERSO,P300A,P301A,FACTOR07)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a>  <span class="co">#modulo34</span></span>
+<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m34_2021 <span class="sc">%&gt;%</span> <span class="fu">select</span>(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))</span>
+<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a><span class="co">#juntar bases</span></span>
+<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>enaho19_20_21<span class="ot">&lt;-</span></span>
+<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(enaho2019, enaho2020, enaho2021)</span>
+<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a><span class="co">#restaura en caso se pierda alguna metadata</span></span>
+<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>enaho19_20_21<span class="ot">&lt;-</span></span>
+<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a><span class="fu">copy_labels</span>(enaho19_20_21, enaho2019)</span>
 <span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a><span class="co">#exportar</span></span>
+<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>enaho19_20_21 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">"enaho_19_20_21.sav"</span>)</span>
+<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(enaho19_20_21)</span>
+<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
