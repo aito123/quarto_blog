@@ -8700,50 +8700,66 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-629"><a href="#cb1-629" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-630"><a href="#cb1-630" aria-hidden="true" tabindex="-1"></a>¿DONDE FUE MÁS RADICAL?</span>
 <span id="cb1-631"><a href="#cb1-631" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-632"><a href="#cb1-632" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a><span class="fu"># Notas</span></span>
+<span id="cb1-632"><a href="#cb1-632" aria-hidden="true" tabindex="-1"></a>'</span>
+<span id="cb1-633"><a href="#cb1-633" aria-hidden="true" tabindex="-1"></a>conclu</span>
 <span id="cb1-634"><a href="#cb1-634" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Según grupo de edad barras"</span></span>
-<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a><span class="co">#Prueba de gráfico de edades</span></span>
-<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a>base <span class="sc">%&gt;%</span> </span>
-<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">drop_unused_value_labels</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> factor07) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(p207,gedad) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-646"><a href="#cb1-646" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prop=</span><span class="fu">survey_mean</span>(),</span>
-<span id="cb1-647"><a href="#cb1-647" aria-hidden="true" tabindex="-1"></a>            <span class="at">total=</span><span class="fu">survey_total</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-648"><a href="#cb1-648" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb1-649"><a href="#cb1-649" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Mujer"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span>prop, <span class="at">fill =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb1-650"><a href="#cb1-650" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Hombre"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span><span class="sc">-</span>prop, <span class="at">fill =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb1-651"><a href="#cb1-651" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_continuous(name = abs * 100) +</span></span>
-<span id="cb1-652"><a href="#cb1-652" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span> (<span class="at">labels =</span> <span class="cf">function</span>(x){<span class="fu">paste</span>(<span class="fu">abs</span>(x <span class="sc">*</span><span class="dv">100</span>), <span class="st">"%"</span>)}) <span class="sc">+</span></span>
-<span id="cb1-653"><a href="#cb1-653" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
-<span id="cb1-654"><a href="#cb1-654" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb1-635"><a href="#cb1-635" aria-hidden="true" tabindex="-1"></a>sexo</span>
+<span id="cb1-636"><a href="#cb1-636" aria-hidden="true" tabindex="-1"></a>edad</span>
+<span id="cb1-637"><a href="#cb1-637" aria-hidden="true" tabindex="-1"></a>informal formal</span>
+<span id="cb1-638"><a href="#cb1-638" aria-hidden="true" tabindex="-1"></a>dominio</span>
+<span id="cb1-639"><a href="#cb1-639" aria-hidden="true" tabindex="-1"></a>estrato</span>
+<span id="cb1-640"><a href="#cb1-640" aria-hidden="true" tabindex="-1"></a>educacion</span>
+<span id="cb1-641"><a href="#cb1-641" aria-hidden="true" tabindex="-1"></a>lengua</span>
+<span id="cb1-642"><a href="#cb1-642" aria-hidden="true" tabindex="-1"></a>estrato social</span>
+<span id="cb1-643"><a href="#cb1-643" aria-hidden="true" tabindex="-1"></a>ha aumentado la porbreza?</span>
+<span id="cb1-644"><a href="#cb1-644" aria-hidden="true" tabindex="-1"></a>nbi</span>
+<span id="cb1-645"><a href="#cb1-645" aria-hidden="true" tabindex="-1"></a>gastos ingresos</span>
+<span id="cb1-646"><a href="#cb1-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-647"><a href="#cb1-647" aria-hidden="true" tabindex="-1"></a>'</span>
+<span id="cb1-648"><a href="#cb1-648" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-649"><a href="#cb1-649" aria-hidden="true" tabindex="-1"></a><span class="fu"># Notas</span></span>
+<span id="cb1-650"><a href="#cb1-650" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-653"><a href="#cb1-653" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-654"><a href="#cb1-654" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Según grupo de edad barras"</span></span>
 <span id="cb1-655"><a href="#cb1-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-656"><a href="#cb1-656" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb1-657"><a href="#cb1-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-660"><a href="#cb1-660" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-661"><a href="#cb1-661" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Según grupo de edad líneas"</span></span>
-<span id="cb1-662"><a href="#cb1-662" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-663"><a href="#cb1-663" aria-hidden="true" tabindex="-1"></a><span class="co">#Prueba de gráfico de edades</span></span>
-<span id="cb1-664"><a href="#cb1-664" aria-hidden="true" tabindex="-1"></a>base <span class="sc">%&gt;%</span> </span>
-<span id="cb1-665"><a href="#cb1-665" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">drop_unused_value_labels</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-666"><a href="#cb1-666" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-667"><a href="#cb1-667" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> factor07) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-668"><a href="#cb1-668" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(p207,gedad) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-669"><a href="#cb1-669" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prop=</span><span class="fu">survey_mean</span>(),</span>
-<span id="cb1-670"><a href="#cb1-670" aria-hidden="true" tabindex="-1"></a>            <span class="at">total=</span><span class="fu">survey_total</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-671"><a href="#cb1-671" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb1-672"><a href="#cb1-672" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Mujer"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span>prop, <span class="at">group =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>,  <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb1-673"><a href="#cb1-673" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Hombre"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span>prop, <span class="at">group =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>,  <span class="at">colour =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb1-674"><a href="#cb1-674" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_continuous(name = abs * 100) +</span></span>
-<span id="cb1-675"><a href="#cb1-675" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +</span></span>
-<span id="cb1-676"><a href="#cb1-676" aria-hidden="true" tabindex="-1"></a>  <span class="co"># coord_flip() + </span></span>
-<span id="cb1-677"><a href="#cb1-677" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb1-656"><a href="#cb1-656" aria-hidden="true" tabindex="-1"></a><span class="co">#Prueba de gráfico de edades</span></span>
+<span id="cb1-657"><a href="#cb1-657" aria-hidden="true" tabindex="-1"></a>base <span class="sc">%&gt;%</span> </span>
+<span id="cb1-658"><a href="#cb1-658" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">drop_unused_value_labels</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-659"><a href="#cb1-659" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-660"><a href="#cb1-660" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> factor07) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-661"><a href="#cb1-661" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(p207,gedad) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-662"><a href="#cb1-662" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prop=</span><span class="fu">survey_mean</span>(),</span>
+<span id="cb1-663"><a href="#cb1-663" aria-hidden="true" tabindex="-1"></a>            <span class="at">total=</span><span class="fu">survey_total</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-664"><a href="#cb1-664" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1-665"><a href="#cb1-665" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Mujer"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span>prop, <span class="at">fill =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb1-666"><a href="#cb1-666" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Hombre"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span><span class="sc">-</span>prop, <span class="at">fill =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb1-667"><a href="#cb1-667" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_continuous(name = abs * 100) +</span></span>
+<span id="cb1-668"><a href="#cb1-668" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span> (<span class="at">labels =</span> <span class="cf">function</span>(x){<span class="fu">paste</span>(<span class="fu">abs</span>(x <span class="sc">*</span><span class="dv">100</span>), <span class="st">"%"</span>)}) <span class="sc">+</span></span>
+<span id="cb1-669"><a href="#cb1-669" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span> </span>
+<span id="cb1-670"><a href="#cb1-670" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb1-671"><a href="#cb1-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-672"><a href="#cb1-672" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-673"><a href="#cb1-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-676"><a href="#cb1-676" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-677"><a href="#cb1-677" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Según grupo de edad líneas"</span></span>
 <span id="cb1-678"><a href="#cb1-678" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-679"><a href="#cb1-679" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-679"><a href="#cb1-679" aria-hidden="true" tabindex="-1"></a><span class="co">#Prueba de gráfico de edades</span></span>
+<span id="cb1-680"><a href="#cb1-680" aria-hidden="true" tabindex="-1"></a>base <span class="sc">%&gt;%</span> </span>
+<span id="cb1-681"><a href="#cb1-681" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">drop_unused_value_labels</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-682"><a href="#cb1-682" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-683"><a href="#cb1-683" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> factor07) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-684"><a href="#cb1-684" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(p207,gedad) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-685"><a href="#cb1-685" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">prop=</span><span class="fu">survey_mean</span>(),</span>
+<span id="cb1-686"><a href="#cb1-686" aria-hidden="true" tabindex="-1"></a>            <span class="at">total=</span><span class="fu">survey_total</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-687"><a href="#cb1-687" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1-688"><a href="#cb1-688" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Mujer"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span>prop, <span class="at">group =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>,  <span class="at">colour =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-689"><a href="#cb1-689" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> . <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p207 <span class="sc">%in%</span> <span class="st">"Hombre"</span>), <span class="fu">aes</span>(<span class="at">x=</span>gedad, <span class="at">y=</span>prop, <span class="at">group =</span> p207), <span class="at">stat=</span><span class="st">"identity"</span>,  <span class="at">colour =</span> <span class="st">"blue"</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb1-690"><a href="#cb1-690" aria-hidden="true" tabindex="-1"></a>  <span class="co">#scale_y_continuous(name = abs * 100) +</span></span>
+<span id="cb1-691"><a href="#cb1-691" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +</span></span>
+<span id="cb1-692"><a href="#cb1-692" aria-hidden="true" tabindex="-1"></a>  <span class="co"># coord_flip() + </span></span>
+<span id="cb1-693"><a href="#cb1-693" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb1-694"><a href="#cb1-694" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-695"><a href="#cb1-695" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

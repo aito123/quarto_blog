@@ -80,59 +80,47 @@ descargar<-function(ruta_web,archivo){
 
 #ENAHO 2019 ACTUALIZADA ANUAL
 
-#modulo 01: Características de la Vivienda y del Hogar
-m01_2019<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo01.zip",
-                             "687-Modulo01/Enaho01-2019-100.sav"))
-
 #modulo 03: Educación
 m03_2019<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo03.zip",
-                             "687-Modulo03/Enaho01A-2019-300.sav"))
+                             "687-Modulo03/Enaho01A-2019-300.sav")) %>% clean_names()
 
 #modulo 05: Empleo e Ingresos
 m05_2019<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo05.zip",
-                             "687-Modulo05/Enaho01a-2019-500.sav"))
+                             "687-Modulo05/Enaho01a-2019-500.sav")) %>% clean_names()
 
 #modulo 34: Sumarias (Variables Calculadas)
 m34_2019<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/687-Modulo34.zip",
-                             "687-Modulo34/Sumaria-2019.sav"))
+                             "687-Modulo34/Sumaria-2019.sav")) %>% clean_names()
 
 
 #ENAHO 2020 ACTUALIZADA ANUAL
 
-#modulo 01: Características de la Vivienda y del Hogar
-m01_2020<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo01.zip",
-                             "737-Modulo01/Enaho01-2020-100.sav"))
-
 #modulo 03: Educación
 m03_2020<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo03.zip",
-                             "737-Modulo03/Enaho01A-2020-300.sav"))
+                             "737-Modulo03/Enaho01A-2020-300.sav")) %>% clean_names()
 
 #modulo 05: Empleo e Ingresos
 m05_2020<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo05.zip",
-                             "737-Modulo05/Enaho01A-2020-500.sav"))
+                             "737-Modulo05/Enaho01A-2020-500.sav")) %>% clean_names()
 
 #modulo 34: Sumarias (Variables Calculadas)
 m34_2020<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/737-Modulo34.zip",
-                             "737-Modulo34/Sumaria-2020.sav"))
+                             "737-Modulo34/Sumaria-2020.sav")) %>% clean_names()
 
 
 #ENAHO 2021 ACTUALIZADA ANUAL
 
-#modulo 01: Características de la Vivienda y del Hogar
-m01_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo01.zip",
-                             "759-Modulo01/Enaho01-2021-100.sav"))
-
 #modulo 03: Educación
 m03_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo03.zip",
-                             "759-Modulo03/Enaho01A-2021-300.sav"))
+                             "759-Modulo03/Enaho01A-2021-300.sav")) %>% clean_names()
 
 #modulo 05: Empleo e Ingresos
 m05_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo05.zip",
-                             "759-Modulo05/Enaho01A-2021-500.sav"))
+                             "759-Modulo05/Enaho01A-2021-500.sav")) %>% clean_names()
 
 #modulo 34: Sumarias (Variables Calculadas)
 m34_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo34.zip",
-                             "759-Modulo34/Sumaria-2021.sav"))
+                             "759-Modulo34/Sumaria-2021.sav")) %>% clean_names()
 
 
 ```
@@ -143,8 +131,8 @@ Las variables que me servirán para cruzar las bases de datos son las siguientes
 
 ```{r}
 #| column: screen-inset-right
-m01_2019 %>%
-  select(`AÑO`,MES,CONGLOME,VIVIENDA,HOGAR,UBIGEO,DOMINIO,ESTRATO) %>% 
+m03_2019 %>%
+  select(ano, mes, conglome, vivienda, hogar, ubigeo, dominio, estrato) %>% 
   sjPlot::view_df()
 
 ```
@@ -154,28 +142,17 @@ Para verificar que se tiene el número de conglomerados adecuado y de hogares se
 **Número de conglomerados**
 
 ```{r}
-m01_2019 %>% 
-  count(CONGLOME) %>% 
+m03_2019 %>% 
+  count(conglome) %>% 
   nrow()
 ```
+
 **Número de hogares**
 
 ```{r}
-m01_2019 %>% 
-  count(CONGLOME,VIVIENDA,HOGAR) %>% 
+m03_2019 %>% 
+  count(conglome, vivienda, hogar) %>% 
   nrow()
-```
-
-## Módulo 01
-
-Se seleccionan las siguientes variables del **módulo 01: Características de la Vivienda y del Hogar.**
-
-```{r}
-#| column: screen-inset-right
-m01_2019 %>%
-  select(PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07) %>% 
-  sjPlot::view_df()
-
 ```
 
 ## Módulo 03
@@ -185,7 +162,7 @@ Se seleccionan las siguientes variables del **módulo 03: Educación.**
 ```{r}
 #| column: screen-inset-right
 m03_2019 %>%
-  select(CODPERSO,P300A,P301A,FACTOR07)%>%
+  select(codperso, p300a, factor07)%>%
   sjPlot::view_df()
 
 ```
@@ -197,7 +174,7 @@ Se seleccionan las siguientes variables del **módulo 05: Empleo e Ingresos.**
 ```{r}
 #| column: screen-inset-right
 m05_2019 %>%
-  select(CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A)%>%
+  select(codperso, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a)%>%
   sjPlot::view_df()
 
 ```
@@ -209,7 +186,7 @@ Se seleccionan las siguientes variables del **módulo 34: Sumarias.**
 ```{r}
 #| column: screen-inset-right
 m34_2019 %>%
-  select(MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07)%>%#no deberia ser ingreso bruto INGHOG1D?
+  select(mieperho, gashog2d, pobreza, factor07)%>%
   sjPlot::view_df()
 
 ```
@@ -219,41 +196,40 @@ m34_2019 %>%
 La data final tiene las siguientes dimensiones:
 
 ```{r}
-ids<-c("AÑO","MES","CONGLOME","VIVIENDA","HOGAR","UBIGEO","DOMINIO","ESTRATO")
+ids<-c("ano", "mes", "conglome", "vivienda", "hogar", "ubigeo", "dominio", "estrato")
 
 #ENAHO 2019
 enaho2019<-
   #modulo5 = base
-  m05_2019 %>% select(ids,CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) %>% 
-  #modulo1
-  left_join(m01_2019 %>% select(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) %>%
+  m05_2019 %>% select(ids,codperso, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
-  left_join(m03_2019 %>% select(ids,CODPERSO,P300A,P301A,FACTOR07)) %>% 
+  left_join(m03_2019 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
-  left_join(m34_2019 %>% select(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))
+  left_join(m34_2019 %>% select(ids,mieperho, gashog2d, pobreza, factor07))
   
 
 #ENAHO 2020
 enaho2020<-
   #modulo5 = base
-  m05_2020 %>% select(ids,CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) %>% 
-  #modulo1
-  left_join(m01_2020 %>% select(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) %>%
+  m05_2020 %>% select(ids,codperso, dominio, estrato, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
-  left_join(m03_2020 %>% select(ids,CODPERSO,P300A,P301A,FACTOR07)) %>% 
+  left_join(m03_2020 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
-  left_join(m34_2020 %>% select(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))
+  left_join(m34_2020 %>% select(ids,mieperho, gashog2d, pobreza, factor07))
 
 #ENAHO 2021
 enaho2021<-
   #modulo5 = base
-  m05_2021 %>% select(ids,CODPERSO,P507,P207,P203,P208A,I520,I538A1,I538E1,OCU500,D524A1,OCUPINF,EMPLPSEC,FAC500A) %>% 
-  #modulo1
-  left_join(m01_2021 %>% select(ids,PANEL,NBI1,NBI2,NBI3,NBI4,NBI5,FACTOR07)) %>%
+  m05_2021 %>% select(ids,codperso, dominio, estrato, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
-  left_join(m03_2021 %>% select(ids,CODPERSO,P300A,P301A,FACTOR07)) %>% 
+  left_join(m03_2021 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
-  left_join(m34_2021 %>% select(ids,MIEPERHO,INGHOG2D,GASHOG2D,GRU11HD,ESTRSOCIAL,POBREZA,FACTOR07))
+  left_join(m34_2021 %>% select(ids,mieperho, gashog2d, pobreza, factor07))
+
+# enaho2019 %>% 
+#   labelled::look_for() %>%
+#   left_join(enaho2020 %>% labelled::look_for(), by=c("variable")) %>% 
+#   left_join(enaho2021 %>% labelled::look_for(), by=c("variable")) %>% select(starts_with("value_label")) %>% View()
 
 #juntar bases
 enaho19_20_21<-
@@ -263,11 +239,248 @@ enaho19_20_21<-
 enaho19_20_21<-
 copy_labels(enaho19_20_21, enaho2019)
 
+```
+
+## Creación de variables y exportación
+
+```{r}
+
+enaho19_20_21_1<-
+  enaho19_20_21 %>% 
+  mutate(
+    #area
+    area = case_when(estrato <= 5 ~ 1,
+                     TRUE ~ 2), 
+    area = labelled_spss(area, label = "Área", labels = c("Urbano"=1, "Rural"=2)),
+  ) %>% 
+  #filtrar población objetivo
+  filter(area %in% 1 & ocu500 %in% 1) %>% 
+  mutate(
+    #gedad
+    gedad=cut2(p208a, cuts = c(25,35,45,55,65)),
+    gedad=case_when(
+      gedad %in% "[14,25)" ~ 1,
+      gedad %in% "[25,35)" ~ 2,
+      gedad %in% "[35,45)" ~ 3,
+      gedad %in% "[45,55)" ~ 4,
+      gedad %in% "[55,65)" ~ 5,
+      gedad %in% "[65,97]" ~ 6
+    ),
+    gedad=labelled_spss(gedad,
+                       label = "Grupos de edad",
+                       labels = c("De 24 años a menos"=1,"De 25 a 34 años"=2,"De 35 a 44 años"=3,
+                                  "De 45 a 54 años"=4,"De 55 a 64 años"=5,"De 65 años a más"=6)),
+    
+    #ingreso por trabajo mensual
+    across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), ~replace(., is.na(.), 0)),
+    ingtrabw = rowSums(across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),
+    ingtrabw = labelled_spss(ingtrabw, label = "ingreso por trabajo anual"),
+    ingtra_n = ingtrabw / 12,
+    ingtra_n = labelled_spss(ingtra_n, label = "ingreso por trabajo mensual"),
+    
+    #gasto per capita
+    gas_cap=(gashog2d/mieperho)/12,
+    gas_cap=labelled_spss(gas_cap,
+                      label = "Gasto per cápita en el hogar"),
+    
+    #Nivel educativo alcanzado
+    educacion=case_when(
+      p301a %in% 1 ~ 1,
+      p301a %in% c(2,3,4,5,12) ~ 2,
+      p301a %in% c(6) ~ 3,
+      p301a %in% c(7) ~ 4,
+      p301a %in% c(8) ~ 5,
+      p301a %in% c(9) ~ 6,
+      p301a %in% c(10) ~ 7,
+      p301a %in% c(11) ~ 8,
+      TRUE ~ 1
+    ),
+    educacion=labelled_spss(educacion,
+                            label="Nivel educativo", 
+                            labels = c("Sin nivel"=1,"Educación secundaria incompleta o menos"=2,
+                                       "Educación secundaria completa"=3,"Educación técnica incompleta"=4,
+                                       "Educación técnica completa"=5,"Educación universitaria incompleta"=6,
+                                       "Educación universitaria completa"=7,"Posgrado"=8)),
+    
+    #Lengua materna resumida
+    lengua=case_when(
+      p300a %in% 4 ~ 1,
+      p300a %in% c(1,2,3,9) ~ 2,
+      p300a %in% c(6,7,8) ~ 3,
+      TRUE ~ 3
+    ),
+    lengua=labelled_spss(lengua,
+                         label="Lengua materna", 
+                         labels = c("Castellano"=1,"Quechua y otras lenguas nativas"=2,"Otros"=3)),
+    
+  )
+
 #exportar
 enaho19_20_21 %>% 
   janitor::clean_names() %>% 
-  write_sav("enaho_19_20_21.sav")
+  write_sav("enaho_19_20_21.sav") %>% 
+  save(file="enaho_19_20_21.rda")
 
 dim(enaho19_20_21)
 
 ```
+
+```{r}
+#| eval: false
+#| include: false
+
+# Example 2 ----------------------------------
+# updating headers, remove all footnotes, add spanning header
+modify_ex2 <- tbl %>%
+  modify_header(all_stat_cols() ~ "**{level}**, N = {n} ({style_percent(p)}%)") %>%
+  # use `modify_footnote(everything() ~ NA, abbreviation = TRUE)` to delete abbrev. footnotes
+  modify_footnote(update = everything() ~ NA) %>%
+  modify_spanning_header(all_stat_cols() ~ "**Treatment Received**")
+
+#modulo 5 2017
+m05_2017_spss<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/603-Modulo05.zip",
+                             "603-Modulo05/Enaho01a-2017-500.sav"))
+
+
+
+
+m05_2017_stata<-read_dta("C:/Users/Lenovo/Downloads/603-Modulo05 (1)/603-Modulo05/enaho01a-2017-500_new.dta") %>% clean_names()
+
+
+m05_2017_spss_2<-
+  m05_2017_spss %>% 
+  clean_names() %>% 
+  mutate(
+    area = case_when(estrato <= 5 ~ 1,
+                     TRUE ~ 2), 
+    area = labelled_spss(area, label = "area", labels = c("urbano"=1, "rural"=2)),
+    across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), ~replace(., is.na(.), 0)),
+    ingtrabw = rowSums(across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),#ptrme estaba sumando variables que no eran...
+    ingtrabw = labelled_spss(ingtrabw, label = "ingreso por trabajo anual"),
+    ingtra_n = ingtrabw / 12,
+    ingtra_n = labelled_spss(ingtra_n, label = "ingreso por trabajo mensual"),
+    resi = case_when(((p204 == 1 & p205 == 2) | (p204==2 & p206==1)) ~ 1)
+    ) %>% 
+  filter(ocu500 == 1 & ingtra_n > 0)
+
+m05_2017_stata_2<-
+  m05_2017_stata %>% 
+  select(-dpto)
+
+names(m05_2017_stata_2)<-names(m05_2017_spss_2)
+
+m05_2017<-
+  m05_2017_stata_2 %>% 
+  #select(1:11, i524a1, d529t, i530a, d536, i538a1, d541a, d543, d544t, ingtrabw, ingtra_n) %>%
+  left_join(m05_2017_spss_2) %>% 
+  select(sort(current_vars()))
+
+  
+
+m05_2017_2 %>%
+  filter(resi == 1) %>%
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata2(
+    strata = area,
+    ~ .x %>%
+      tbl_svysummary(
+        include = ingtra_n,
+        missing = "no",
+        type = everything() ~ "continuous",
+        label = list(ingtra_n ~ .y),
+        statistic = list(ingtra_n ~ "{mean}")
+      ),
+    .combine_with = "tbl_stack",
+    .combine_args = list(group_header = NULL)
+  )
+
+m05_2017_spss_2 %>% #ya salió por lo menos, queda como función para las tablas.
+  as_label() %>% 
+  labelled::unlabelled() %>%
+  filter(resi == 1) %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata2(
+      strata = area,
+      ~ .x %>%
+          tbl_svysummary(
+              include = ingtra_n,
+              missing = "no",
+              type = everything() ~ "continuous",digits = list(everything() ~ c(3)),
+              label = list(ingtra_n ~ .y),
+              statistic = list(ingtra_n ~ "{mean}")
+          ),
+      .combine_with = "tbl_stack",
+      .combine_args = list(group_header = NULL)
+  )
+
+#con la base stata, el problema no esta en gtsummary sino en la manipulacion previa
+m05_2017 %>% remove_label() %>% 
+    filter(resi == 1) %>%
+    as_label() %>%
+    as_survey_design(weight = fac500a) %>%
+    tbl_strata2(
+        strata = area,
+        ~ .x %>%
+            tbl_svysummary(
+                include = ingtra_n,
+                missing = "no", digits = list(everything() ~ c(3)),
+                type = everything() ~ "continuous",
+                label = list(ingtra_n ~ .y),
+                statistic = list(ingtra_n ~ "{mean}")
+            ),
+        .combine_with = "tbl_stack",
+        .combine_args = list(group_header = NULL)
+    )
+
+  #añade el encabezado Grade en la fila
+  modify_table_body(
+    ~ .x %>%
+      mutate(variable = "area", row_type = "level") %>%
+      tibble::add_row(
+        row_type = "label",
+        variable = "area",#label1
+        label = "Area",
+        .before = 1L
+      )
+  ) %>%
+
+      #esto no me queda muy claro que hace pero bueno creo que explicita
+      modify_column_indent(columns = label, rows = row_type == "level") %>%
+      #poner en negrita el Grade
+      bold_labels()
+
+  
+  tbl_svysummary(
+          by = {{by}},
+          include = {{include}},
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no")
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = {{include}},
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+      bold_labels() %>% 
+      
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+
+```
+
