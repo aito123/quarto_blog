@@ -254,7 +254,8 @@ enaho19_20_21_1<-
     area = labelled_spss(area, label = "Área", labels = c("Urbano"=1, "Rural"=2)),
   ) %>% 
   #filtrar población objetivo
-  filter(area %in% 1 & ocu500 %in% 1) %>% 
+  filter(area %in% 1 & ocu500 %in% 1) %>%
+  filter(!(estrato %in% c(7,8))) %>%
   mutate(
     #gedad
     gedad=cut2(p208a, cuts = c(25,35,45,55,65)),
@@ -313,13 +314,15 @@ enaho19_20_21_1<-
                          label="Lengua materna", 
                          labels = c("Castellano"=1,"Quechua y otras lenguas nativas"=2,"Otros"=3)),
     
-  )
+  ) %>% 
+  var_labels(pobreza = "Pobreza")
 
 #exportar
-enaho19_20_21 %>% 
+enaho19_20_21_1 %>% 
   janitor::clean_names() %>% 
-  write_sav("enaho_19_20_21.sav") %>% 
-  save(file="enaho_19_20_21.rda")
+  write_sav("enaho_19_20_21.sav")
+
+save(enaho19_20_21_1, file="enaho_19_20_21.RData")
 
 dim(enaho19_20_21)
 
