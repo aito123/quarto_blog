@@ -32,6 +32,8 @@ pacman::p_load(
   survey, srvyr
   )
 
+here::i_am("index.qmd")
+
 ```
 
 ## Bases de datos
@@ -233,11 +235,20 @@ enaho2021<-
 
 #juntar bases
 enaho19_20_21<-
-  bind_rows(enaho2019, enaho2020, enaho2021)
+  sjmisc::add_rows(enaho2019, enaho2020, enaho2021) %>% 
+  mutate(
+    pea = sjmisc::rec(ocu500,
+                      rec = "0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]")
+  )
 
 #restaura en caso se pierda alguna metadata
-enaho19_20_21<-
-copy_labels(enaho19_20_21, enaho2019)
+# enaho19_20_21<-
+# copy_labels(enaho19_20_21, enaho2019)
+
+#exportar
+enaho19_20_21 %>% 
+  janitor::clean_names() %>% 
+  write_sav("enaho_19_20_21_total.sav")
 
 ```
 
@@ -322,7 +333,7 @@ enaho19_20_21_1 %>%
   janitor::clean_names() %>% 
   write_sav("enaho_19_20_21.sav")
 
-save(enaho19_20_21_1, file="enaho_19_20_21.RData")
+# save(enaho19_20_21_1, file="enaho_19_20_21.RData")
 
 dim(enaho19_20_21)
 

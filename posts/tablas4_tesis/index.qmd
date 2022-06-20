@@ -1,0 +1,54 @@
+---
+title: "Descripción del mercado laboral a partir de la ENAHO (tablas finales)"
+subtitle: |
+  El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).
+date: "2022-06-18"
+categories: [enaho, tablas, graficos]
+image: "image.jpg"
+fig-cap-location: top
+execute:
+  cache: true
+  
+---
+
+```{r}
+#importar los necesarios
+pacman::p_load(
+  #Working directory
+  here,
+  #data tools
+  tidyverse, janitor, glue,
+  #importar / exportar
+  haven, rio,
+  #Etiquetas
+  sjlabelled,
+  #tablas
+  gtsummary, flextable,
+  #Trabajar con encuestas
+  survey, srvyr
+  )
+
+#Set working directory de manera relativa
+here::i_am("tablas2_tesis/index.qmd")
+
+```
+
+```{r}
+#| label: funciones para parte 1,2,3
+#parte1
+
+
+#parte2
+
+
+#parte3
+
+
+```
+
+
+# Parte 1: PEA OCUPADA URBANA
+
+# Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
+
+# Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
