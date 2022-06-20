@@ -1,5 +1,5 @@
 ---
-title: "Unificación de bases de datos de la ENAHO"
+title: "Unificación de bases de datos de la ENAHO "
 subtitle: |
   El objetivo de este post es unificar distintos módulos de la Encuesta Nacional de Hogares (ENAHO).
 date: "2022-05-13"
