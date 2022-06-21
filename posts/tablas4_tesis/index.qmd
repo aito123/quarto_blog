@@ -2,53 +2,592 @@
 title: "Descripción del mercado laboral a partir de la ENAHO (tablas finales)"
 subtitle: |
   El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).
-date: "2022-06-18"
+date: "2022-06-21"
 categories: [enaho, tablas, graficos]
 image: "image.jpg"
 fig-cap-location: top
 execute:
-  cache: true
+  cache: false
   
 ---
 
 ```{r}
 #importar los necesarios
-pacman::p_load(
-  #Working directory
-  here,
-  #data tools
-  tidyverse, janitor, glue,
-  #importar / exportar
-  haven, rio,
-  #Etiquetas
-  sjlabelled,
-  #tablas
-  gtsummary, flextable,
-  #Trabajar con encuestas
-  survey, srvyr
-  )
+pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr)
 
 #Set working directory de manera relativa
-here::i_am("tablas2_tesis/index.qmd")
+here::i_am("tablas4_tesis/index.qmd")
 
 ```
 
 ```{r}
 #| label: funciones para parte 1,2,3
-#parte1
+
+#tabla_gen
+tabla_gen<-function(data, weight, strata, include, sin_nacional=FALSE){
+  
+  #style_number_10K <- function(x) paste0(style_number(x, scale = 0.001), "M")
+  style_number_10K <- function(x) style_number(x, scale = 0.001)
+
+  tbl1<-
+  data %>%
+    mutate(nacional="Nacional") %>% 
+    labelled::drop_unused_value_labels() %>% 
+    haven::as_factor() %>% 
+    as_survey_design(weight = {{weight}}) %>% 
+    tbl_strata(
+      strata = {{strata}},
+      .tbl_fun =
+        ~ .x %>%
+          tbl_svysummary(
+            include = nacional,
+            statistic = everything()~"{n} ({p}%)",
+            digits = all_categorical()~c(style_number_10K, 2),
+            percent = "column",
+            missing = "no") %>%
+        bold_labels() %>% 
+        remove_row_type(nacional, type = "header") %>% 
+        modify_header(label = md("**Variable**"),
+                      update = stat_0 ~ "Total en miles (%)") %>% 
+        modify_footnote(update = everything() ~ NA) %>% 
+        bold_levels() %>%
+        modify_column_indent(columns = label, undo = TRUE)
+)
 
 
-#parte2
+  etiqueta<-data %>% select({{include}}) %>%  get_label()
 
+  tbl2<-
+    data %>%
+      labelled::drop_unused_value_labels() %>% 
+      haven::as_factor() %>% 
+      as_survey_design(weight = {{weight}}) %>% 
+      tbl_strata(
+        strata = {{strata}},
+        .tbl_fun =
+          ~ .x %>%
+            tbl_svysummary(
+              include = {{include}},
+              label = everything() ~ etiqueta,
+              statistic = everything()~"{n} ({p}%)",
+              digits = all_categorical()~c(style_number_10K, 2),
+              percent = "column",
+              missing = "no") %>%
+          bold_labels() %>% 
+          modify_header(label = md("**Variable**"),
+                        update = stat_0 ~ "Total en miles (%)") %>% 
+          modify_footnote(update = everything() ~ NA),
+        .header = "**{strata}**"
+      )
+     
+      if(sin_nacional==FALSE) {
+        tbl_stack(list(tbl1, tbl2))
+  } else {
+    tbl2
+  }
+}
+
+
+#tab_esp_cat
+tab_esp_cat<-function(data, weight, strata, by, include, percent, overall=TRUE){
+
+ tbl1<-data %>% 
+  mutate(nacional="Nacional") %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = {{weight}}) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = nacional,
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+        remove_row_type(nacional, type = "header") %>% 
+        modify_footnote(update = everything() ~ NA) %>%
+        bold_levels() %>%
+        modify_column_indent(columns = label, undo = TRUE) %>% 
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+   
+ etiqueta<-data %>% select({{include}}) %>%  get_label() 
+ 
+ tbl2<-data %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = {{weight}}) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = {{include}},
+          label = everything() ~ etiqueta,
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+      modify_footnote(update = everything() ~ NA) %>%
+      bold_labels() %>% 
+      
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+ 
+ tbl_stack(list(tbl1, tbl2))
+}
+
+#tab_esp_num
+tab_esp_num<-function(data, weight, strata, by, include, fill){
+  
+  variable1 <- data %>% select({{include}}) %>% names()
+  #label1 <- data %>% select({{include}}) %>% sjlabelled::label_to_colnames() %>% names()
+  label2 <- data %>% select({{fill}}) %>% sjlabelled::label_to_colnames() %>% names()
+  
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = {{weight}}) %>%
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+      tbl_strata2(
+        #grade irá en la fila, solo puede ser una.
+        strata = {{include}},
+        ~ .x %>%
+          tbl_svysummary(
+            #by irá en las columnas, solo puede ser una
+            by = {{by}},
+            #include irá en los valores, de preferencia que sea una, antes era age
+            include = {{fill}},
+            #filtrar missing
+            missing = "no",
+            #type
+            type= everything() ~ "continuous",
+            #le pone la etiqueta a cada valor de las filas de grade
+            label = list(all_continuous() ~ .y),
+            statistic = list(all_continuous() ~ "{mean}")
+          ) %>%
+          #negrita trt
+          modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+          #añadir columna de totales y en negrita
+          add_overall(., col_label = "Total"),
+        #una tabla debajo de la otra en vez de una al costado
+        .combine_with = "tbl_stack",
+        #borra las filas en blanco
+        .combine_args = list(group_header = NULL)
+      ) %>%
+
+      #añade el encabezado Grade en la fila
+      modify_table_body(
+        ~ .x %>%
+          mutate(variable = variable1, row_type = "level") %>%
+          tibble::add_row(
+            row_type = "label",
+            variable = variable1,#label1
+            label = variable1,
+            .before = 1L
+          )
+      ) %>%
+
+      #esto no me queda muy claro que hace pero bueno creo que explicita
+      modify_column_indent(columns = label, rows = row_type == "level") %>%
+      #poner en negrita el Grade
+      bold_labels() %>%
+      #encabezado de la variable de las columnas
+      #modify_spanning_header(all_stat_cols() ~ "**Treatment**") %>%
+      #override el footnote para explicitar que estamos hablando de Age
+      modify_footnote(update = everything() ~ NA)
+
+  )
+  
+
+}
 
 #parte3
 
+theme_gtsummary_journal("jama")
+```
+
+```{r}
+#| label: data
+
+base1<-read_sav(here("bases_datos/enaho_19_20_21.sav"))
+base2<-read_sav(here("bases_datos/enaho_19_20_21_total.sav"))
 
 ```
 
-
 # Parte 1: PEA OCUPADA URBANA
+
+```{r}
+#| column: screen-inset
+#| label: tbl-pea
+#| tbl-cap: "Características de la PEA entre 2019 y 2021"
+
+base2 %>% 
+  tabla_gen(weight = fac500a, include = pea, strata = ano, sin_nacional = FALSE)
+
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-peadomes
+#| tbl-cap: "Características de la PEA ocupada urbana según dominio y estrato entre 2019 y 2021"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = dominio, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = estrato, strata = ano, sin_nacional = TRUE)
+  ))
+
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-peasexedaedpo
+#| tbl-cap: "Características de la PEA ocupada urbana según sexo, grupo de edad, nivel educativo y pobreza entre 2019 y 2021"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE),
+    base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano, sin_nacional = TRUE),
+    base1 %>% tabla_gen(weight = fac500a, include = pobreza, strata = ano, sin_nacional = TRUE)
+  ))
+
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-peaocupinf
+#| tbl-cap: "Características de la PEA ocupada urbana según ocupación principal y situación de informalidad entre 2019 y 2021"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = p507, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = ocupinf, strata = ano, sin_nacional = TRUE)
+  ))
+```
 
 # Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
 
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-dominio
+#| tbl-cap: "Dominio de la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = dominio, percent = "row", overall=FALSE)
+  
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-estr
+#| tbl-cap: "Estrato geográfico de la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE)
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-sex
+#| tbl-cap: "Sexo del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE)
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-gedad
+#| tbl-cap: "Grupo de edad del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-edu
+#| tbl-cap: "Nivel educativo del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE)
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-leng
+#| tbl-cap: "Lengua materna de la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE)
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-ocupi
+#| tbl-cap: "Ocupación principal de la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE)
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-pobr
+#| tbl-cap: "Condición de pobreza de la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row", overall=FALSE)
+```
+
 # Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
+
+```{r}
+#| label: tablas encabezados
+#| include: false
+
+tbl_ing_nacional<-
+  base1 %>% 
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata(
+    strata = ano,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = ocupinf,
+          include = ingtra_n,
+          missing = "no",
+          type= everything() ~ "continuous",
+          statistic = list(all_continuous() ~ "{mean}"),
+          label = list(all_continuous() ~ "Nacional")
+        ) %>%
+        modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+        add_overall(., col_label = "Total") %>% 
+      bold_labels() %>%
+      modify_footnote(update = everything() ~ NA)
+      )
+
+tbl_gas_nacional<-
+  base1 %>% 
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = factor07) %>%
+  tbl_strata(
+    strata = ano,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = ocupinf,
+          include = gas_cap,
+          missing = "no",
+          type= everything() ~ "continuous",
+          statistic = list(all_continuous() ~ "{mean}"),
+          label = list(all_continuous() ~ "Nacional")
+        ) %>%
+        modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+        add_overall(., col_label = "Total") %>% 
+      bold_labels() %>%
+      modify_footnote(update = everything() ~ NA)
+      )
+
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-ing_dominio
+#| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según dominio entre 2019 y 2021"
+#| tbl-subcap: 
+#|  - Ingreso promedio por trabajo mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = dominio, fill = ingtra_n)
+  
+  ))
+
+#gasto
+tbl_stack(list(
+  
+  tbl_gas_nacional,  
+  base1 %>% 
+  tab_esp_num(weight = factor07, strata = ano, by = ocupinf, include = dominio, fill = gas_cap)
+  
+  ))
+
+```
+
+```{r}
+#| column: screen-inset
+#| label: tbl-ing_estrato
+#| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según estrato entre 2019 y 2021"
+#| tbl-subcap: 
+#|  - Ingreso promedio por trabajo mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = estrato, fill = ingtra_n)
+  
+  ))
+
+#gasto
+tbl_stack(list(
+  
+  tbl_gas_nacional,  
+  base1 %>% 
+  tab_esp_num(weight = factor07, strata = ano, by = ocupinf, include = estrato, fill = gas_cap)
+  
+  ))
+
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_sexo
+#| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según sexo entre 2019 y 2021"
+#| tbl-subcap: 
+#|  - Ingreso promedio por trabajo mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = ingtra_n)
+  
+  ))
+
+#gasto
+tbl_stack(list(
+  
+  tbl_gas_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = gas_cap)
+  
+  ))
+
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_gedad
+#| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según grupo de edad entre 2019 y 2021"
+#| tbl-subcap: 
+#|  - Ingreso promedio por trabajo mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = ingtra_n)
+  
+  ))
+
+#gasto
+tbl_stack(list(
+  
+  tbl_gas_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = gas_cap)
+  
+  ))
+
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_p507
+#| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
+#| tbl-subcap: 
+#|  - Ingreso promedio por trabajo mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = ingtra_n)
+  
+  ))
+
+#gasto
+tbl_stack(list(
+  
+  tbl_gas_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = gas_cap)
+  
+  ))
+
+```
+
+```{r}
+#| column: screen-inset-shaded
+#| label: tbl-ing_pobreza
+#| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según situación de pobreza entre 2019 y 2021"
+#| tbl-subcap: 
+#|  - Ingreso promedio por trabajo mensual (soles)
+#|  - Gasto promedio per cápita del hogar mensual (soles)
+#| layout-ncol: 2
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = ingtra_n)
+  
+  ))
+
+#gasto
+tbl_stack(list(
+  
+  tbl_gas_nacional, 
+  base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = gas_cap)
+  
+  ))
+
+```

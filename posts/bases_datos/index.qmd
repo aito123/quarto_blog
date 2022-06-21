@@ -124,8 +124,49 @@ m05_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/S
 m34_2021<-read_sav(descargar("http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/759-Modulo34.zip",
                              "759-Modulo34/Sumaria-2021.sav")) %>% clean_names()
 
-
+#utils::browseURL(tempdir())
 ```
+
+```{r}
+#| label: "local data"
+#| eval: false
+
+#ENAHO 2019 ACTUALIZADA ANUAL
+
+#modulo 03: Educación
+m03_2019<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/687-Modulo03/Enaho01A-2019-300.sav") %>% clean_names()
+
+#modulo 05: Empleo e Ingresos
+m05_2019<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/687-Modulo05/Enaho01a-2019-500.sav") %>% clean_names()
+
+#modulo 34: Sumarias (Variables Calculadas)
+m34_2019<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/687-Modulo34/Sumaria-2019.sav") %>% clean_names()
+
+
+#ENAHO 2020 ACTUALIZADA ANUAL
+
+#modulo 03: Educación
+m03_2020<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/737-Modulo03/Enaho01A-2020-300.sav") %>% clean_names()
+
+#modulo 05: Empleo e Ingresos
+m05_2020<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/737-Modulo05/Enaho01A-2020-500.sav") %>% clean_names()
+
+#modulo 34: Sumarias (Variables Calculadas)
+m34_2020<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/737-Modulo34/Sumaria-2020.sav") %>% clean_names()
+
+
+#ENAHO 2021 ACTUALIZADA ANUAL
+
+#modulo 03: Educación
+m03_2021<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/759-Modulo03/Enaho01A-2021-300.sav") %>% clean_names()
+
+#modulo 05: Empleo e Ingresos
+m05_2021<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/759-Modulo05/Enaho01A-2021-500.sav") %>% clean_names()
+
+#modulo 34: Sumarias (Variables Calculadas)
+m34_2021<-read_sav("C:/Users/aitos/OneDrive - Universidad del Pacífico/Bases de datos/enaho/759-Modulo34/Sumaria-2021.sav") %>% clean_names()
+```
+
 
 ## Variables Identificadoras
 
@@ -176,7 +217,7 @@ Se seleccionan las siguientes variables del **módulo 05: Empleo e Ingresos.**
 ```{r}
 #| column: screen-inset-right
 m05_2019 %>%
-  select(codperso, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a)%>%
+  select(codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a)%>%
   sjPlot::view_df()
 
 ```
@@ -203,7 +244,7 @@ ids<-c("ano", "mes", "conglome", "vivienda", "hogar", "ubigeo", "dominio", "estr
 #ENAHO 2019
 enaho2019<-
   #modulo5 = base
-  m05_2019 %>% select(ids,codperso, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
+  m05_2019 %>% select(ids,codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
   left_join(m03_2019 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
@@ -213,7 +254,7 @@ enaho2019<-
 #ENAHO 2020
 enaho2020<-
   #modulo5 = base
-  m05_2020 %>% select(ids,codperso, dominio, estrato, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
+  m05_2020 %>% select(ids,codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
   left_join(m03_2020 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
@@ -222,7 +263,7 @@ enaho2020<-
 #ENAHO 2021
 enaho2021<-
   #modulo5 = base
-  m05_2021 %>% select(ids,codperso, dominio, estrato, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
+  m05_2021 %>% select(ids,codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
   left_join(m03_2021 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
@@ -237,8 +278,13 @@ enaho2021<-
 enaho19_20_21<-
   sjmisc::add_rows(enaho2019, enaho2020, enaho2021) %>% 
   mutate(
-    pea = sjmisc::rec(ocu500,
-                      rec = "0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]")
+    pea = as_labelled(sjmisc::rec(ocu500,
+                      rec = "0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]"))
+  ) %>% 
+  var_labels(
+    p507 = "Posición en ocupación principal o negocio",
+    mieperho = "Total de miembros del hogar",
+    gashog2d = "Gasto total bruto"
   )
 
 #restaura en caso se pierda alguna metadata
@@ -286,9 +332,9 @@ enaho19_20_21_1<-
     #ingreso por trabajo mensual
     across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), ~replace(., is.na(.), 0)),
     ingtrabw = rowSums(across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),
-    ingtrabw = labelled_spss(ingtrabw, label = "ingreso por trabajo anual"),
+    ingtrabw = labelled_spss(ingtrabw, label = "Ingreso por trabajo anual"),
     ingtra_n = ingtrabw / 12,
-    ingtra_n = labelled_spss(ingtra_n, label = "ingreso por trabajo mensual"),
+    ingtra_n = labelled_spss(ingtra_n, label = "Ingreso por trabajo mensual"),
     
     #gasto per capita
     gas_cap=(gashog2d/mieperho)/12,
@@ -335,7 +381,7 @@ enaho19_20_21_1 %>%
 
 # save(enaho19_20_21_1, file="enaho_19_20_21.RData")
 
-dim(enaho19_20_21)
+dim(enaho19_20_21_1)
 
 ```
 
@@ -369,7 +415,7 @@ m05_2017_spss_2<-
                      TRUE ~ 2), 
     area = labelled_spss(area, label = "area", labels = c("urbano"=1, "rural"=2)),
     across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), ~replace(., is.na(.), 0)),
-    ingtrabw = rowSums(across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),#ptrme estaba sumando variables que no eran...
+    ingtrabw = rowSums(across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),#estaba sumando variables que no eran...
     ingtrabw = labelled_spss(ingtrabw, label = "ingreso por trabajo anual"),
     ingtra_n = ingtrabw / 12,
     ingtra_n = labelled_spss(ingtra_n, label = "ingreso por trabajo mensual"),

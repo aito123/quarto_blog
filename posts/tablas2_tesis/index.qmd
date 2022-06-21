@@ -7,7 +7,8 @@ categories: [enaho, tablas, graficos]
 image: "image.jpg"
 fig-cap-location: top
 execute:
-  cache: true
+  cache: false
+  eval: false
   
 ---
 
@@ -40,113 +41,7 @@ Se elaboró una base de datos unificada que incluye a los trabajadores en el ár
 ```{r}
 #BASE UNIFICADA
 base<-
-  read_sav(here("bases_datos/enaho_19_20_21.sav")) %>% 
-  #filtrar lo que no es urbano y a la PEAO
-  filter(!(estrato %in% c(7,8)) & !(estrsocial %in% 6) & !is.na(estrsocial) & ocu500 %in% 1) %>% 
-  #nuevas variables
-  mutate(
-    #departamento
-    dpto=str_sub(ubigeo, 1,2),
-    dpto=case_when(
-      dpto %in% "01" ~ 1,
-      dpto %in% "02" ~ 2,
-      dpto %in% "03" ~ 3,
-      dpto %in% "04" ~ 4,
-      dpto %in% "05" ~ 5,
-      dpto %in% "06" ~ 6,
-      dpto %in% "07" ~ 7,
-      dpto %in% "08" ~ 8,
-      dpto %in% "09" ~ 9,
-      dpto %in% "10" ~ 10,
-      dpto %in% "11" ~ 11,
-      dpto %in% "12" ~ 12,
-      dpto %in% "13" ~ 13,
-      dpto %in% "14" ~ 14,
-      dpto %in% "15" ~ 15,
-      dpto %in% "16" ~ 16,
-      dpto %in% "17" ~ 17,
-      dpto %in% "18" ~ 18,
-      dpto %in% "19" ~ 19,
-      dpto %in% "20" ~ 20,
-      dpto %in% "21" ~ 21,
-      dpto %in% "22" ~ 22,
-      dpto %in% "23" ~ 23,
-      dpto %in% "24" ~ 24,
-      dpto %in% "25" ~ 25
-    ),
-    dpto=labelled_spss(dpto,
-                       label = "Departamento de residencia",
-                       labels = c("Amazonas"=1,"Áncash"=2,"Apurímac"=3,"Arequipa"=4,
-                                  "Ayacucho"=5,"Cajamarca"=6,"Callao"=7,"Cusco"=8,
-                                  "Huancavelica"=9,"Huánuco"=10,"Ica"=11,"Junín"=12,
-                                  "La Libertad"=13,"Lambayeque"=14,"Lima"=15,"Loreto"=16,
-                                  "Madre de Dios"=17,"Moquegua"=18,"Pasco"=19,"Piura"=20,
-                                  "Puno"=21,"San Martín"=22,"Tacna"=23,"Tumbes"=24,"Ucayali"=25)),
-    
-    #gedad
-    gedad=cut2(p208a, cuts = c(25,35,45,55,65)),
-    gedad=case_when(
-      gedad %in% "[14,25)" ~ 1,
-      gedad %in% "[25,35)" ~ 2,
-      gedad %in% "[35,45)" ~ 3,
-      gedad %in% "[45,55)" ~ 4,
-      gedad %in% "[55,65)" ~ 5,
-      gedad %in% "[65,97]" ~ 6
-    ),
-    gedad=labelled_spss(gedad,
-                       label = "Grupos de edad",
-                       labels = c("De 24 años a menos"=1,"De 25 a 34 años"=2,"De 35 a 44 años"=3,
-                                  "De 45 a 54 años"=4,"De 55 a 64 años"=5,"De 65 años a más"=6)),
-    
-    #NBI dicotómica
-    nbi=case_when(
-      (nbi1+nbi2+nbi3+nbi4+nbi5) > 0 ~ 1,
-      TRUE ~ 2
-    ),
-    nbi=labelled_spss(nbi,
-                      label = "Presencia de necesidades básicas insatisfechas (NBI)",
-                      labels = c("Sí"=1,"No"=2)),
-    
-    #número de NBI
-    nbi_total=nbi1+nbi2+nbi3+nbi4+nbi5,
-    nbi_total=labelled_spss(nbi_total,
-                      label = "N° total de necesidades básicas insatisfechas (NBI)"),
-    
-    #ingreso per capita
-    ing_cap=(inghog2d/mieperho)/12,
-    ing_cap=labelled_spss(ing_cap,
-                      label = "Ingreso per cápita en el hogar"),
-    
-    #gasto per capita
-    gas_cap=(gashog2d/mieperho)/12,
-    gas_cap=labelled_spss(gas_cap,
-                      label = "Gasto per cápita en el hogar"),
-    
-    #Nivel educativo alcanzado
-    educacion=case_when(
-      p301a %in% 1 ~ 1,
-      p301a %in% c(2,3,4,5,6,12) ~ 2,
-      p301a %in% c(7,8,9,10) ~ 3,
-      p301a %in% 11 ~ 4,
-      TRUE ~ 1
-    ),
-    educacion=labelled_spss(educacion,
-                            label="Nivel educativo", 
-                            labels = c("Sin nivel"=1,"Educación secundaria o menos"=2,
-                                       "Educación superior técnica o universitaria"=3,"Posgrado"=4)),
-    
-    #Lengua materna resumida
-    lengua=case_when(
-      p300a %in% 4 ~ 1,
-      p300a %in% 1 ~ 2,
-      p300a %in% c(2,3,9) ~ 3,
-      p300a %in% c(6,7,8) ~ 4,
-      TRUE ~ 4
-    ),
-    lengua=labelled_spss(lengua,
-                         label="Lengua materna resumida", 
-                         labels = c("Castellano"=1,"Quechua"=2,"Otra lengua nativa"=3,"Otros"=4)) 
-  )
+  read_sav(here("bases_datos/enaho_19_20_21.sav"))
 
 ```
 
@@ -296,17 +191,6 @@ Según la @tbl-leng, los trabajadores con lengua materna castellano han aumentad
 
 base %>% 
   tabla1(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE)
-```
-
-Por otro lado, en la @tbl-estrsocial, podemos observar que a menor estrato social, mayor presencia en la informalidad de los trabajadores. Si bien en todos los casos se ha visto un aumento entre el año 2019 y 2021, no menor de 2%, en el caso del estrato C se puede ver el mayor incremento sumando un 8.19% al 2021.
-
-```{r}
-#| column: screen-inset-shaded
-#| label: tbl-estrsocial
-#| tbl-cap: "Estrato social"
-
-base %>% 
-  tabla1(weight = factor07, strata = ano, by = ocupinf, include = estrsocial, percent = "row", overall=FALSE)
 ```
 
 Adicionalmente, podemos apreciar en la @tbl-pobr, que los trabajadores pobres no extremos y pobres extremos disminuyeron en 2.94 y 4.64 respectivamente hacia el 2021. En cambio, la presencia de trabajadores no pobres en la informalidad aumentó en 4.63%.
