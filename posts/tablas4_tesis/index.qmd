@@ -299,9 +299,9 @@ base1 %>%
          label=paste0(porc, "%")) %>% 
   ggplot(aes(x=gedad, fill = p207, label = label)) +
   geom_bar(data = ~subset(., p207 %in% "Mujer"), aes(y=porc), stat="identity") +
-  geom_text(data = ~subset(., p207 %in% "Mujer"), aes(y=porc, label = label), position = position_stack(vjust = 0.6), size = 2.9, colour = "black") +
+  geom_text(data = ~subset(., p207 %in% "Mujer"), aes(y=porc, label = label), position = position_stack(vjust = 0.5), size = 2.9, colour = "black") +
   geom_bar(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc), stat="identity") +
-  geom_text(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc, label = label), position = position_stack(vjust = 0.4), size = 2.9, colour = "white") +
+  geom_text(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc, label = label), position = position_stack(vjust = 0.5), size = 2.9, colour = "white") +
   scale_y_continuous(
     breaks = seq(-30, 30, 15),
     labels = function(x) {paste(abs(x), '%')}
