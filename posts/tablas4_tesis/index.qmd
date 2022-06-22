@@ -5,6 +5,7 @@ subtitle: |
 date: "2022-06-21"
 categories: [enaho, tablas, graficos]
 image: "image.jpg"
+fig-align: center
 fig-cap-location: top
 execute:
   cache: true
@@ -237,7 +238,6 @@ base2<-read_sav(here("bases_datos/enaho_19_20_21_total.sav"))
 # Parte 1: PEA OCUPADA URBANA
 
 ```{r}
-#| column: screen-inset
 #| label: fig-pea
 #| fig-cap: "Características de la PEA entre 2019 y 2021"
 

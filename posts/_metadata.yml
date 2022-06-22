@@ -12,7 +12,7 @@ license: "CC BY"
 
 # Default for table of contents
 toc: true
-toc-title: Table of contents
+toc-title: Tabla de contenidos
 toc-location: left
 
 # Default knitr options
