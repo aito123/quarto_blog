@@ -8,7 +8,7 @@ image: "image.jpg"
 fig-align: center
 fig-cap-location: top
 execute:
-  cache: false
+  cache: true
 ---
 
 ```{r}
@@ -275,6 +275,8 @@ base2 %>%
 
 ```
 
+- A nivel nacional, 
+
 ```{r}
 #| column: screen-inset
 #| label: tbl-peadomes
@@ -327,11 +329,12 @@ base1 %>%
 #| label: tbl-peasexedaedpo
 #| tbl-cap: "Características de la PEA ocupada urbana según sexo, grupo de edad, nivel educativo y pobreza entre 2019 y 2021"
 
-# base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano),
-#     base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE),
+
 
 tbl_stack(
   list(
+    base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano, sin_nacional = TRUE),
+    base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = FALSE),
     base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano, sin_nacional = FALSE),
     base1 %>% tabla_gen(weight = fac500a, include = pobreza, strata = ano, sin_nacional = TRUE)
   )) %>% as_flex_table() %>% theme_booktabs()
