@@ -7,13 +7,13 @@ categories: [enaho, tablas, graficos]
 image: "image.jpg"
 fig-cap-location: top
 execute:
-  cache: false
+  cache: true
   
 ---
 
 ```{r}
 #importar los necesarios
-pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr)
+pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales)
 
 #Set working directory de manera relativa
 here::i_am("tablas4_tesis/index.qmd")
@@ -238,11 +238,37 @@ base2<-read_sav(here("bases_datos/enaho_19_20_21_total.sav"))
 
 ```{r}
 #| column: screen-inset
-#| label: tbl-pea
-#| tbl-cap: "Características de la PEA entre 2019 y 2021"
+#| label: fig-pea
+#| fig-cap: "Características de la PEA entre 2019 y 2021"
 
-base2 %>% 
-  tabla_gen(weight = fac500a, include = pea, strata = ano, sin_nacional = FALSE)
+# base2 %>% 
+#   tabla_gen(weight = fac500a, include = pea, strata = ano, sin_nacional = FALSE) %>% 
+#   as_tibble() %>% 
+#    clean_names() %>% 
+#    mutate(across(everything(), ~str_remove_all(., ","))) %>% 
+#    mutate(across(c(2:10), as.numeric))
+
+base2 %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, pea) %>% 
+  count(wt=fac500a) %>% 
+  group_by(ano) %>% 
+  mutate(porc=round_half_up(n/sum(n), 2)*100,
+         label=paste0(porc, "%")) %>% 
+  ggplot(aes(fill=pea, y=porc, x=ano, label=label)) + 
+  geom_bar(position = position_stack(), stat = "identity", width = .7, colour = "white") +
+  geom_text(aes(label = label), position = position_stack(vjust = 0.5), colour = rep(c("white", "black", "black"), 3), size = 4) + 
+  scale_y_continuous(labels = label_percent(decimal.mark = ",",suffix = "%", scale = 1)) +
+  scale_fill_grey(start = 0.2,end = 0.8) +
+  theme_pubr() +
+  theme(
+    legend.position="right",
+    legend.title=element_blank(),
+    axis.title=element_blank()
+  )
+  
+      
 
 ```
 
@@ -289,7 +315,7 @@ tbl_stack(
 # Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
 
 ```{r}
-#| column: screen-inset-shaded
+#| column: screen-inset
 #| label: tbl-dominio
 #| tbl-cap: "Dominio de la PEA ocupada urbana entre 2019 y 2021"
 
@@ -477,7 +503,7 @@ tbl_stack(list(
 ```
 
 ```{r}
-#| column: screen-inset-shaded
+#| column: screen-inset
 #| label: tbl-ing_sexo
 #| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según sexo entre 2019 y 2021"
 #| tbl-subcap: 
@@ -506,7 +532,7 @@ tbl_stack(list(
 ```
 
 ```{r}
-#| column: screen-inset-shaded
+#| column: screen-inset
 #| label: tbl-ing_gedad
 #| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según grupo de edad entre 2019 y 2021"
 #| tbl-subcap: 
@@ -535,7 +561,7 @@ tbl_stack(list(
 ```
 
 ```{r}
-#| column: screen-inset-shaded
+#| column: screen-inset
 #| label: tbl-ing_p507
 #| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
 #| tbl-subcap: 
@@ -564,7 +590,7 @@ tbl_stack(list(
 ```
 
 ```{r}
-#| column: screen-inset-shaded
+#| column: screen-inset
 #| label: tbl-ing_pobreza
 #| tbl-cap: "Ingresos y gastos de la PEA ocupada urbana según situación de pobreza entre 2019 y 2021"
 #| tbl-subcap: 
@@ -591,3 +617,101 @@ tbl_stack(list(
   ))
 
 ```
+
+# Gráficos
+
+```{r, eval = FALSE}
+#| fig-cap: "Según grupo de edad barras"
+
+#Prueba de gráfico de edades
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, fill = p207), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=-prop, fill = p207), stat="identity") +
+  #scale_y_continuous(name = abs * 100) +
+  scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  coord_flip() + 
+  theme_bw()
+
+```
+
+```{r, eval = FALSE}
+#| fig-cap: "Según grupo de edad líneas"
+
+#Prueba de gráfico de edades
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_line(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, group = p207), stat="identity",  colour = "red", size = 2) +
+  geom_line(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=prop, group = p207), stat="identity",  colour = "blue", size = 2) +
+  #scale_y_continuous(name = abs * 100) +
+  # scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  # coord_flip() + 
+  theme_bw()
+
+```
+
+```{r, eval = FALSE}
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble()#MEJOR Y LUEGO CAMBIAR EL FORMATO A LONG
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble() %>% clean_names() %>% mutate(across(c(2:10), as.numeric)) %>% View()#clean_names al rescate, pero tengo que borrar la coma
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble() %>% clean_names() %>% mutate(across(everything(), ~str_remove_all(., ","))) %>% mutate(across(c(2:10), as.numeric)) %>% View()#i love R
+
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot(aes(x=gedad, y=prop, fill = p207)) +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(y=..count..*(-1)), stat="identity") +
+  scale_y_continuous(
+    # scale the y-lab
+    breaks = seq(-0.4, 0.4, 0.05),
+  ) +
+  # scale_y_continuous(
+  #   # scale the y-lab
+  #   breaks = seq(-10, 10, 1),
+  #   labels = function(x) {
+  #     paste(abs(x), '%')
+  #   }
+  # ) +
+  # scale_y_continuous(labels = paste0(as.character(c(seq(2, 0, -1), seq(1, 2, 1))), "%")) +
+  coord_flip()
+
+
+  #seq(from, to, by)
+
+
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, fill = p207), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=-prop, fill = p207), stat="identity") +
+  #scale_y_continuous(name = abs * 100) +
+  scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  coord_flip()
+  
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
+```
+
