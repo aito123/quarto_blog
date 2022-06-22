@@ -286,15 +286,50 @@ tbl_stack(
 ```
 
 ```{r}
+#| label: fig-edadsex
+#| fig-cap: "Pirámide demográfica de la PEA ocupada urbana entre 2019 y 2021"
+
+base1 %>% 
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, p207, gedad) %>% 
+  count(wt=fac500a) %>% 
+  group_by(ano, p207) %>% 
+  mutate(porc=round_half_up(n/sum(n), 2)*100,
+         label=paste0(porc, "%")) %>% 
+  ggplot(aes(x=gedad, fill = p207, label = label)) +
+  geom_bar(data = ~subset(., p207 %in% "Mujer"), aes(y=porc), stat="identity") +
+  geom_text(data = ~subset(., p207 %in% "Mujer"), aes(y=porc, label = label), position = position_stack(vjust = 0.6), size = 2.9) +
+  geom_bar(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc), stat="identity") +
+  geom_text(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc, label = label), position = position_stack(vjust = 0.4), size = 2.9) +
+  scale_y_continuous(
+    breaks = seq(-30, 30, 15),
+    labels = function(x) {paste(abs(x), '%')}
+  ) +
+  coord_flip() +
+  scale_fill_grey(start = 0.8,end = 0.9) +
+  theme_pubr() +
+  facet_grid(cols = vars(ano)) +
+  theme(
+    legend.position = "bottom",
+    legend.title=element_blank(),
+    axis.title=element_blank(),
+    axis.text = element_text(size = 9)
+  )
+
+```
+
+```{r}
 #| column: screen-inset
 #| label: tbl-peasexedaedpo
 #| tbl-cap: "Características de la PEA ocupada urbana según sexo, grupo de edad, nivel educativo y pobreza entre 2019 y 2021"
 
+# base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano),
+#     base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE),
+
 tbl_stack(
   list(
-    base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano),
-    base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE),
-    base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano, sin_nacional = TRUE),
+    base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano, sin_nacional = FALSE),
     base1 %>% tabla_gen(weight = fac500a, include = pobreza, strata = ano, sin_nacional = TRUE)
   ))
 
