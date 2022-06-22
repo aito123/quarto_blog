@@ -8,8 +8,7 @@ image: "image.jpg"
 fig-align: center
 fig-cap-location: top
 execute:
-  cache: true
-  
+  cache: false
 ---
 
 ```{r}
@@ -281,7 +280,7 @@ tbl_stack(
   list(
     base1 %>% tabla_gen(weight = fac500a, include = dominio, strata = ano),
     base1 %>% tabla_gen(weight = fac500a, include = estrato, strata = ano, sin_nacional = TRUE)
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -331,7 +330,7 @@ tbl_stack(
   list(
     base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano, sin_nacional = FALSE),
     base1 %>% tabla_gen(weight = fac500a, include = pobreza, strata = ano, sin_nacional = TRUE)
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -344,7 +343,7 @@ tbl_stack(
   list(
     base1 %>% tabla_gen(weight = fac500a, include = p507, strata = ano),
     base1 %>% tabla_gen(weight = fac500a, include = ocupinf, strata = ano, sin_nacional = TRUE)
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 # Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
@@ -355,7 +354,7 @@ tbl_stack(
 #| tbl-cap: "Dominio de la PEA ocupada urbana entre 2019 y 2021"
 
 base1 %>% 
-  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = dominio, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = dominio, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
   
 ```
 
@@ -365,7 +364,7 @@ base1 %>%
 #| tbl-cap: "Estrato geográfico de la PEA ocupada urbana entre 2019 y 2021"
 
 base1 %>% 
-  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 ```{r}
@@ -375,7 +374,7 @@ base1 %>%
 
 base1 %>% 
   filter(p203 %in% 1) %>% #jefe de hogar
-  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 ```{r}
@@ -385,7 +384,7 @@ base1 %>%
 
 base1 %>% 
   filter(p203 %in% 1) %>% #jefe de hogar
-  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 ```{r}
@@ -395,7 +394,7 @@ base1 %>%
 
 base1 %>% 
   filter(p203 %in% 1) %>% #jefe de hogar
-  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 ```{r}
@@ -404,7 +403,7 @@ base1 %>%
 #| tbl-cap: "Lengua materna de la PEA ocupada urbana entre 2019 y 2021"
 
 base1 %>% 
-  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 ```{r}
@@ -413,7 +412,7 @@ base1 %>%
 #| tbl-cap: "Ocupación principal de la PEA ocupada urbana entre 2019 y 2021"
 
 base1 %>% 
-  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 ```{r}
@@ -422,7 +421,7 @@ base1 %>%
 #| tbl-cap: "Condición de pobreza de la PEA ocupada urbana entre 2019 y 2021"
 
 base1 %>% 
-  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row", overall=FALSE)
+  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_booktabs()
 ```
 
 # Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
@@ -495,7 +494,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = dominio, fill = ingtra_n)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 #gasto
 tbl_stack(list(
@@ -504,7 +503,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = factor07, strata = ano, by = ocupinf, include = dominio, fill = gas_cap)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -524,7 +523,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = estrato, fill = ingtra_n)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 #gasto
 tbl_stack(list(
@@ -533,7 +532,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = factor07, strata = ano, by = ocupinf, include = estrato, fill = gas_cap)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -553,7 +552,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = ingtra_n)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 #gasto
 tbl_stack(list(
@@ -562,7 +561,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = gas_cap)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -582,7 +581,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = ingtra_n)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 #gasto
 tbl_stack(list(
@@ -591,7 +590,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = gas_cap)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -611,7 +610,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = ingtra_n)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 #gasto
 tbl_stack(list(
@@ -620,7 +619,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = gas_cap)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
@@ -640,7 +639,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = ingtra_n)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 #gasto
 tbl_stack(list(
@@ -649,7 +648,7 @@ tbl_stack(list(
   base1 %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = gas_cap)
   
-  ))
+  )) %>% as_flex_table() %>% theme_booktabs()
 
 ```
 
