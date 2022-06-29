@@ -6,6 +6,7 @@ date: "2022-05-19"
 categories: [enaho, tablas, graficos]
 image: "image.jpg"
 fig-cap-location: top
+draft: true
 execute:
   cache: false
   eval: false
