@@ -2,18 +2,18 @@
 title: "Descripción del mercado laboral a partir de la ENAHO"
 subtitle: |
   El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).
-date: "2022-06-21"
+date: "2022-06-28"
 categories: [enaho, tablas, graficos]
 image: "image.jpg"
 fig-align: center
 fig-cap-location: top
 execute:
-  cache: false
+  cache: true
 ---
 
 ```{r}
 #importar los necesarios
-pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales,officer, Hmisc, patchwork)
+pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales,officer, Hmisc, patchwork, ggtext)
 
 #Set working directory de manera relativa
 here::i_am("tablas4_tesis/index.qmd")
@@ -247,10 +247,34 @@ theme_tesis <- function(x) {
   fix_border_issues(x)
 }
 
+#compara_graf
 compara_graf<-function(data, var){
+  
+  var_orden<-data.frame(
+    values=c(data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_values(),data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_values() %>% as.data.frame() %>% nrow() + 1),
+    labels=c(data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_labels(), "Nacional")
+  )
 
 graf_total<-
 rbind(
+  #Nacional
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(var1="Nacional") %>%
+  group_by(ano, ocupinf, var1) %>%
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(var1="Nacional") %>%
+  mutate(ocupinf="total") %>%
+  group_by(ano, ocupinf, var1) %>%
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+
+  #Variable
   data %>%
   labelled::drop_unused_value_labels() %>%
   haven::as_factor() %>%
@@ -267,7 +291,7 @@ rbind(
   summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
 
 ) %>%
-  ungroup() %>% 
+  ungroup() %>%
   filter(!(ano %in% "2020")) %>%
   pivot_wider(names_from = ano, values_from = var) %>%
   rowwise() %>%
@@ -277,9 +301,12 @@ rbind(
   ungroup() %>%
   filter(ocupinf %in% "total") %>%
 
-  ggplot(aes(y=sub, x=var1)) +
+  mutate(var1=as.factor(var1)) %>%
+
+  ggplot(aes(y=sub, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
   geom_bar(stat = "identity", colour = "white", fill = "#333333") +
-  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) + 
+  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
   #scale_y_continuous(breaks = seq(-250, 100, 50)) +
   theme_pubr() +
   ggtitle("Total") +
@@ -287,13 +314,31 @@ rbind(
     legend.position="right",
     legend.title=element_blank(),
     axis.title=element_blank(),
-    axis.text.x = element_text(size = 6.5),
-    axis.text.y = element_text(size = 8)
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 10)
   ) +
   coord_flip()
 
 graf_formal<-
 rbind(
+  #Nacional
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(var1="Nacional") %>%
+  group_by(ano, ocupinf, var1) %>%
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(var1="Nacional") %>%
+  mutate(ocupinf="total") %>%
+  group_by(ano, ocupinf, var1) %>%
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+
+  #Variable
   data %>%
   labelled::drop_unused_value_labels() %>%
   haven::as_factor() %>%
@@ -310,7 +355,7 @@ rbind(
   summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
 
 ) %>%
-  ungroup() %>% 
+  ungroup() %>%
   filter(!(ano %in% "2020")) %>%
   pivot_wider(names_from = ano, values_from = var) %>%
   rowwise() %>%
@@ -320,9 +365,11 @@ rbind(
   ungroup() %>%
   filter(ocupinf %in% "empleo formal") %>%
 
-  ggplot(aes(y=sub, x=var1)) +
+  mutate(var1=as.factor(var1)) %>%
+
+  ggplot(aes(y=sub, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
   geom_bar(stat = "identity", colour = "white", fill = "#989898") +
-  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) + 
+  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
   #scale_y_continuous(breaks = seq(-250, 100, 50)) +
   theme_pubr() +
   ggtitle("Empleo formal") +
@@ -330,7 +377,7 @@ rbind(
     legend.position="right",
     legend.title=element_blank(),
     axis.title=element_blank(),
-    axis.text.x = element_text(size = 6.5),
+    axis.text.x = element_text(size = 8),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank()
   ) +
@@ -338,6 +385,24 @@ rbind(
 
 graf_informal<-
 rbind(
+  #Nacional
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(var1="Nacional") %>%
+  group_by(ano, ocupinf, var1) %>%
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(var1="Nacional") %>%
+  mutate(ocupinf="total") %>%
+  group_by(ano, ocupinf, var1) %>%
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+
+  #Variable
   data %>%
   labelled::drop_unused_value_labels() %>%
   haven::as_factor() %>%
@@ -354,7 +419,7 @@ rbind(
   summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
 
 ) %>%
-  ungroup() %>% 
+  ungroup() %>%
   filter(!(ano %in% "2020")) %>%
   pivot_wider(names_from = ano, values_from = var) %>%
   rowwise() %>%
@@ -364,9 +429,11 @@ rbind(
   ungroup() %>%
   filter(ocupinf %in% "empleo informal") %>%
 
-  ggplot(aes(y=sub, x=var1)) +
+  mutate(var1=as.factor(var1)) %>%
+
+  ggplot(aes(y=sub, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
   geom_bar(stat = "identity", colour = "white", fill = "#cccccc") +
-  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) + 
+  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
   #scale_y_continuous(breaks = seq(-250, 100, 50)) +
   #scale_x_discrete(function(x) str_wrap(x, width = 2)) +
   theme_pubr() +
@@ -375,7 +442,7 @@ rbind(
     legend.position="right",
     legend.title=element_blank(),
     axis.title=element_blank(),
-    axis.text.x = element_text(size = 6.5),
+    axis.text.x = element_text(size = 8),
     axis.text.y = element_blank(),
     axis.ticks.y = element_blank()
   ) +
@@ -404,6 +471,7 @@ base2<-read_sav(here("bases_datos/enaho_19_20_21_total.sav"))
 ```{r Características de la PEA entre 2019 y 2021}
 #| label: fig-pea
 #| fig-cap: "Características de la PEA entre 2019 y 2021"
+#| fig-height: 4
 
 base2 %>%
   labelled::drop_unused_value_labels() %>%
@@ -429,8 +497,7 @@ base2 %>%
 
 - A nivel nacional, 
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-peadomes
 #| tbl-cap: "Características de la PEA ocupada urbana según dominio y estrato entre 2019 y 2021 (porcentajes verticales)"
 
@@ -442,10 +509,7 @@ tbl_stack(
 
 ```
 
-
-
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-peasexedaedpo
 #| tbl-cap: "Características de la PEA ocupada urbana según sexo, grupo de edad, nivel educativo y pobreza entre 2019 y 2021 (porcentajes verticales)"
 
@@ -459,8 +523,7 @@ tbl_stack(
 
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-peaocupinf
 #| tbl-cap: "Características de la PEA ocupada urbana según ocupación principal y situación de informalidad entre 2019 y 2021 (porcentajes verticales)"
 
@@ -473,8 +536,34 @@ tbl_stack(
 
 # Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r Características del empleo de la PEA ocupada urbana entre 2019 y 2021}
+#| label: fig-empleo
+#| fig-cap: "Características del empleo de la PEA ocupada urbana entre 2019 y 2021"
+#| fig-height: 4
+
+base1 %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, ocupinf) %>% 
+  count(wt=fac500a) %>% 
+  group_by(ano) %>% 
+  mutate(porc=round_half_up(n/sum(n), 2)*100,
+         label=paste0(porc, "%")) %>% 
+  ggplot(aes(fill=ocupinf, y=porc, x=ano, label=label)) + 
+  geom_bar(position = position_stack(), stat = "identity", width = .7, colour = "white") +
+  geom_text(aes(label = label), position = position_stack(vjust = 0.5), colour = rep(c("white", "black"), 3), size = 4) + 
+  scale_y_continuous(labels = label_percent(decimal.mark = ",",suffix = "%", scale = 1)) +
+  scale_fill_grey(start = 0.2,end = 0.8) +
+  theme_pubr() +
+  theme(
+    legend.position="right",
+    legend.title=element_blank(),
+    axis.title=element_blank()
+  )
+
+```
+
+```{r}
 #| label: tbl-dominio
 #| tbl-cap: "Dominio de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -483,8 +572,7 @@ base1 %>%
   
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-estr
 #| tbl-cap: "Estrato geográfico de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -492,8 +580,7 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-sex
 #| tbl-cap: "Sexo del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -502,8 +589,7 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-gedad
 #| tbl-cap: "Grupo de edad del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -512,8 +598,7 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-edu
 #| tbl-cap: "Nivel educativo del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -522,8 +607,7 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-leng
 #| tbl-cap: "Lengua materna de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -531,8 +615,7 @@ base1 %>%
   tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-ocupi
 #| tbl-cap: "Ocupación principal de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -540,8 +623,7 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-pobr
 #| tbl-cap: "Condición de pobreza de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
@@ -551,9 +633,10 @@ base1 %>%
 
 # Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
 
-```{r Características de la PEA entre 2019 y 2021}
+```{r Ingreso promedio por trabajo mensual de la PEA ocupada urbana entre 2019 y 2021}
 #| label: fig-pea_num
 #| fig-cap: "Ingreso promedio por trabajo mensual de la PEA ocupada urbana entre 2019 y 2021"
+#| fig-height: 3
 
 rbind(
   base1 %>%
@@ -582,8 +665,7 @@ rbind(
 
 ```
 
-
-```{r}
+```{r tablas encabezados}
 #| label: tablas encabezados
 #| include: false
 
@@ -635,14 +717,9 @@ tbl_ing_nacional<-
 
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+```{r}
 #| label: tbl-ing_dominio
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según dominio entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-# | layout-ncol: 2
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según dominio entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
@@ -653,30 +730,23 @@ tbl_stack(list(
   
   )) %>% as_flex_table() %>% theme_tesis()
 
+```
+
+```{r}
+#| label: fig-ing_dominio
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según dominio entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
 base1 %>% 
   compara_graf(dominio)
 
-dominio_total | (dominio_formal / dominio_informal)
-
-#gasto
-# tbl_stack(list(
-#   
-#   tbl_gas_nacional,  
-#   base1 %>% 
-#   tab_esp_num(weight = factor07, strata = ano, by = ocupinf, include = dominio, fill = gas_cap)
-#   
-#   )) %>% as_flex_table() %>% theme_tesis()
-
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+
+```{r}
 #| label: tbl-ing_estrato
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según estrato entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-# | layout-ncol: 2
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según estrato entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
@@ -687,25 +757,23 @@ tbl_stack(list(
   
   )) %>% as_flex_table() %>% theme_tesis()
 
-#gasto
-# tbl_stack(list(
-#   
-#   tbl_gas_nacional,  
-#   base1 %>% 
-#   tab_esp_num(weight = factor07, strata = ano, by = ocupinf, include = estrato, fill = gas_cap)
-#   
-#   )) %>% as_flex_table() %>% theme_tesis()
-
 ```
 
 ```{r}
-#| column: screen-inset
+#| label: fig-ing_estrato
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según estrato entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
+base1 %>% 
+  compara_graf(estrato)
+
+```
+
+
+```{r}
 #| label: tbl-ing_edu
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según educación entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-#| layout-ncol: 1
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según educación entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
@@ -716,38 +784,23 @@ tbl_stack(list(
   
   )) %>% as_flex_table() %>% theme_tesis()
 
-#gasto
-# tbl_stack(list(
-# 
-#   tbl_gas_nacional,
-#   base1 %>%
-#   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = gas_cap)
-# 
-#   )) %>% as_flex_table() %>% theme_tesis()
-
 ```
-
 
 ```{r}
 #| label: fig-ing_edu
-#| column: screen-inset
-#| fig-cap: "Ingreso"
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según educación entre 2019 y 2021"
 #| fig-width: 10
-#| fig-height: 4
+#| fig-height: 5
 
 base1 %>% 
   compara_graf(educacion)
 
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+
+```{r}
 #| label: tbl-ing_sexo
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según sexo entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-# | layout-ncol: 2
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según sexo entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
@@ -758,25 +811,23 @@ tbl_stack(list(
   
   )) %>% as_flex_table() %>% theme_tesis()
 
-#gasto
-# tbl_stack(list(
-# 
-#   tbl_gas_nacional,
-#   base1 %>%
-#   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = gas_cap)
-# 
-#   )) %>% as_flex_table() %>% theme_tesis()
+```
+
+```{r}
+#| label: fig-ing_sexo
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según sexo entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 3
+
+base1 %>% 
+  compara_graf(p207)
 
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+
+```{r}
 #| label: tbl-ing_gedad
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según grupo de edad entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-# | layout-ncol: 2
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según grupo de edad entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
@@ -787,54 +838,82 @@ tbl_stack(list(
   
   )) %>% as_flex_table() %>% theme_tesis()
 
-#gasto
-# tbl_stack(list(
-# 
-#   tbl_gas_nacional,
-#   base1 %>%
-#   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = gas_cap)
-# 
-#   )) %>% as_flex_table() %>% theme_tesis()
+```
+
+```{r}
+#| label: fig-ing_gedad
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según grupos de edad entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
+base1 %>% 
+  compara_graf(gedad)
 
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
-#| label: tbl-ing_p507
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-# | layout-ncol: 2
+
+```{r}
+#| label: tbl-ing_leng
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según lengua materna entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
   
   tbl_ing_nacional, 
   base1 %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = lengua, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_leng
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según lengua materna entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 3
+
+base1 %>% 
+  mutate(lengua=as_labelled(sjmisc::rec(lengua, rec = "3=1;1=3; else=copy"))) %>% 
+  compara_graf(lengua)
+
+```
+
+
+```{r}
+#| label: tbl-ing_p507
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% 
+  filter(!(p507 %in% c(5,7))) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
 
-#gasto
-# tbl_stack(list(
-#   
-#   tbl_gas_nacional, 
-#   base1 %>% 
-#   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = gas_cap)
-#   
-#   )) %>% as_flex_table() %>% theme_tesis()
+```
+
+- Se filtra Trabajador Familiar No Remunerado y otro dado que no cuentan con una remuneración.
+
+```{r}
+#| label: fig-ing_p507
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 4
+
+base1 %>% 
+  filter(!(p507 %in% c(5,7))) %>% 
+  compara_graf(p507)
 
 ```
 
-```{r, eval=FALSE}
-#| column: screen-inset
+
+```{r}
 #| label: tbl-ing_pobreza
-#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según situación de pobreza entre 2019 y 2021 (porcentajes verticales)"
-# | tbl-subcap:
-# |  - Ingreso promedio por trabajo mensual (soles)
-# |  - Gasto promedio per cápita del hogar mensual (soles)
-# | layout-ncol: 2
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según situación de pobreza entre 2019 y 2021"
 
 #ingreso
 tbl_stack(list(
@@ -845,17 +924,18 @@ tbl_stack(list(
   
   )) %>% as_flex_table() %>% theme_tesis()
 
-#gasto
-# tbl_stack(list(
-#   
-#   tbl_gas_nacional, 
-#   base1 %>% 
-#   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = gas_cap)
-#   
-#   )) %>% as_flex_table() %>% theme_tesis()
-
 ```
 
+```{r}
+#| label: fig-ing_pobreza
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según nivel de pobreza entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 4
+
+base1 %>% 
+  compara_graf(pobreza)
+
+```
 
 
 ```{r, eval = FALSE}
