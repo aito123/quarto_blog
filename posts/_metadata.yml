@@ -23,6 +23,7 @@ execute:
 format:
   html:
     code-tools: true
+    code-link: true
 
 # Default author
 author:
