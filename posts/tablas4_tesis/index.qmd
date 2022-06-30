@@ -465,8 +465,10 @@ base2<-read_sav(here("bases_datos/enaho_19_20_21_total.sav"))
 # Parte 1: PEA OCUPADA URBANA
 
 - Se observa una reducción de la PEA ocupada en 2020 en 10 puntos porcentuales en comparación al 2019.
+- En el 2020, aumentó en 6% el número de personas que no buscaban trabajo (NO PEA).
+- Si bien la PEA ocupada tuvo una disminución de 10% en 2020, se observa una recuperación hacia 2021. Sin embargo, no ha regresado al nivel prepandemia.
 - Un aumento de la PEA deoscupada en 2020 y sobre todo de la No Pea, aquellos que no buscan trabajo.
-- La No PEA en el 2021 regresó a los niveles del 2019, es decir, 27%. Se observa una recuperación de la PEA ocupada cercana a los niveles pre-pandemia.
+- La No PEA en el 2021 regresó a los niveles del 2019, es decir, 27%.
 
 ```{r Características de la PEA entre 2019 y 2021}
 #| label: fig-pea
@@ -495,7 +497,9 @@ base2 %>%
 
 ```
 
-- A nivel nacional, 
+- @tbl-peadomes muestra que hubo una disminución importante de la PEA ocupada urbana en 2020 seguido de una recuperación en 2021 cercana a niveles prepandemia.
+- Se observa una disminución importante en Lima Metropolitana que perdió más de un millón de trabajadores hacia el 2020.
+- Las ciudades más afectadas han sido las ciudades intermedias y las grandes ciudades, las cuales han perdido más de un millón de trabajadores entre 2019 y 2020. Las ciudades intermedias han tenido una recuperación más lenta.
 
 ```{r}
 #| label: tbl-peadomes
@@ -508,6 +512,13 @@ tbl_stack(
   )) %>% as_flex_table() %>% theme_tesis()
 
 ```
+
+- @tbl-peasexedaedpo muestra que hubo una reducción mayor de la fuerza laboral femenina entre 2019 y 2020 superando un millón doscientos mil empleos perdidos (alrededor de la población del Callao).
+- La fuerza laboral masculina también experimentó una caída en 2020; sin embargo, se observa una recuperación en términos del tamaño que supera a la dimensión del 2019.
+- Los trabajadores menores 44 años han sido los más afectados, en especial los que tienen entre 35 y 44 años.
+- Además se observa que hacia el 2021, los trabajadores entre 55 y 64 años no habían recuperado su tamaño a niveles prepandemia.
+- Los trabajadores con únicamente educación secundaria o menos fueron los más afectados durante la pandemia; no obstante, se observa una recuperación hacia 2021.
+- La pandemia afectó sobre todo a los trabajadores que se consideraban no pobres llegando a reducirse la fuerza laboral en dos millones hacia el 2020. Este grupo no se ha recuperado a niveles prepandemia hacia 2021.
 
 ```{r}
 #| label: tbl-peasexedaedpo
@@ -523,6 +534,9 @@ tbl_stack(
 
 ```
 
+- @tbl-peaocupinf entre los grupos más numerosos se encuentran trabajadores independientes, empleados y obreros. Entre ellos, los empleados hacia el 2021 no se ha recuperado de su situación prepandemia habiendo perdido 500 mil trabajadores entre 2019 y 2021.
+- Tanto el empleo informal como el formal se redujeron en 2020. El empleo informal ha aumentado en 603 mil trabajadores entre 2019 y 2021. 
+
 ```{r}
 #| label: tbl-peaocupinf
 #| tbl-cap: "Características de la PEA ocupada urbana según ocupación principal y situación de informalidad entre 2019 y 2021 (porcentajes verticales)"
@@ -535,6 +549,8 @@ tbl_stack(
 ```
 
 # Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
+
+- En la @fig-empleo podemos observar que el empleo informal ha aumentado de manera constante entre 2019 y 2021 dentro de la PEA ocupada urbana. 
 
 ```{r Características del empleo de la PEA ocupada urbana entre 2019 y 2021}
 #| label: fig-empleo
@@ -563,6 +579,8 @@ base1 %>%
 
 ```
 
+- @tbl-dominio muestra que hacia el 2021 ha aumentado el empleo informal en todos los dominios geográficos, especialmente en la Selva, Sierra Centro, y Costa Sur. 
+
 ```{r}
 #| label: tbl-dominio
 #| tbl-cap: "Dominio de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
@@ -572,6 +590,8 @@ base1 %>%
   
 ```
 
+- @tbl-estr muestra que hacia el 2021 ha aumentado el empleo informal principalmente en las ciudades intermedias de entre 50 000 y 499 999 habitantes. 
+
 ```{r}
 #| label: tbl-estr
 #| tbl-cap: "Estrato geográfico de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
@@ -579,6 +599,8 @@ base1 %>%
 base1 %>% 
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
+
+- @tbl-sex muestra que hacia el 2021, dentro de los trabajadores jefes de hogar, si bien hay una predominancia de mujeres en el empleo informal, ha habido un mayor aumento de los hombres con 5% aprox. 
 
 ```{r}
 #| label: tbl-sex
@@ -589,6 +611,8 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
+- @tbl-gedad muestra que hacia el 2021, dentro de los trabajadores jefes de hogar, ha aumentado en el empleo informal los trabajadores entre 55 y 64 años principalmente seguido de los trabajadores entre 35 y 44 años. 
+
 ```{r}
 #| label: tbl-gedad
 #| tbl-cap: "Grupo de edad del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
@@ -598,14 +622,18 @@ base1 %>%
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
+- @tbl-edu muestra que hacia el 2021, dentro de los trabajadores jefes de hogar, ha aumentado en el empleo informal principalmente a los trabajadores con educación universitaria incompleta y los que contaban con secundaria completa como máximo nivel alcanzado.
+
 ```{r}
 #| label: tbl-edu
-#| tbl-cap: "Nivel educativo del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+#| tbl-cap: "Nivel educativo alcanzado del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
 
 base1 %>% 
   filter(p203 %in% 1) %>% #jefe de hogar
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
+
+- @tbl-leng muestra que hacia el 2021, los trabajadores de lengua materna castellano han aumentado en el empleo informal en un 5% aprox.
 
 ```{r}
 #| label: tbl-leng
@@ -615,6 +643,8 @@ base1 %>%
   tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
 
+- @tbl-ocupi muestra que hacia el 2021, los trabajadores empleadores y obreros han aumentado en el empleo informal. Cabe destacar que trabajadores familiares no remunerados y otros están presentes únicamente en el empleo informal.
+
 ```{r}
 #| label: tbl-ocupi
 #| tbl-cap: "Ocupación principal de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
@@ -622,6 +652,8 @@ base1 %>%
 base1 %>% 
   tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
 ```
+
+- @tbl-pobr muestra que hacia el 2021, los trabajadores no pobres aumentaron en el empleo informal con cerca de 5%.
 
 ```{r}
 #| label: tbl-pobr
@@ -632,6 +664,8 @@ base1 %>%
 ```
 
 # Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
+
+Durante la pandemia, se observa una caída en los ingresos, especialmente en 2020, la cual no se ha recuperado del todo en 2021. Se observa una mayor caída en el empleo informal con una disminución de s/. 122 hacia el 2021.
 
 ```{r Ingreso promedio por trabajo mensual de la PEA ocupada urbana entre 2019 y 2021}
 #| label: fig-pea_num
@@ -717,6 +751,8 @@ tbl_ing_nacional<-
 
 ```
 
+Asimismo, la @tbl-ing_dominio y @fig-ing_dominio nos muestran que en Lima Metropolitana existe una fuerte caída en los ingresos principalmente dentro de los trabajadores formales. Por otro lado, se ve una disminución en los ingresos en la Sierra Sur de s/.218.
+
 ```{r}
 #| label: tbl-ing_dominio
 #| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según dominio entre 2019 y 2021"
@@ -743,6 +779,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_estrato y @fig-ing_estrato nos muestran que en las ciudades grandes (de 500 000 a más habitantes) han tenido una fuerte disminución en sus ingresos de hasta s/.230. Esto se ha enfatizado más en los trabajadores formales quienes han visto sus ingresos reducidos hasta en s/.313.
 
 ```{r}
 #| label: tbl-ing_estrato
@@ -770,6 +807,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_edu y @fig-ing_edu nos muestran que los ingresos de los trabajadores con educación secundaria completa y educación técnica incompleta se redujeron significativamente principalmente dentro de los trabajadores formales entre s/.167 y s/.184.
 
 ```{r}
 #| label: tbl-ing_edu
@@ -797,6 +835,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_sexo y @fig-ing_sexo nos muestran que en general los trabajadores hombres han tenido una mayor reducción en sus ingresos entre 2019 y 2021 cercana a los s/.180. Más aún, las mujeres en el empleo formal vieron sus ingresos más reducidos (alrededor de s/.160) a diferencia de los hombres que se vieron más afectados en el empleo informal.
 
 ```{r}
 #| label: tbl-ing_sexo
@@ -824,6 +863,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_gedad y @fig-ing_gedad nos muestran que, en líneas generales, los trabajadores de 55 a 64 años vieron sus ingresos más comprometidos en especial aquellos que contaban con un empleo formal. De similar manera, los trabajadores entre 35 y 44 años vieron sus ingresos reducidos principalmente los trabajadores formales. Cabe destacar, una ligera recuperación de los ingresos en los trabajadores de 24 años a menos.
 
 ```{r}
 #| label: tbl-ing_gedad
@@ -851,6 +891,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_leng y @fig-ing_leng nos muestran que, en líneas generales, los trabajadores de habla castellana vieron sus ingresos reducidos aproximadamente en s/.150. El sector de la población de lengua materna "Otros", que tiene sobre todo lenguas extranjeras, ha visto sus ingresos reducidos en s/.421.
 
 ```{r}
 #| label: tbl-ing_leng
@@ -879,6 +920,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_p507 y @fig-ing_p507 nos muestran que, los trabajadores formales independientes fueron los más afectados con una reducción de ingresos de s/.271. Seguido a ellos, los obreros formales vieron una reducción de s/.163. Cabe mencionar que Se filtraron a los trabajadores familiares no remunerados y otros dado que no contaban con ingresos.
 
 ```{r}
 #| label: tbl-ing_p507
@@ -896,8 +938,6 @@ tbl_stack(list(
 
 ```
 
-- Se filtra Trabajador Familiar No Remunerado y otro dado que no cuentan con una remuneración.
-
 ```{r}
 #| label: fig-ing_p507
 #| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
@@ -910,6 +950,7 @@ base1 %>%
 
 ```
 
+La @tbl-ing_pobreza y @fig-ing_pobreza nos muestran que, los trabajadores no pobres vieron sus ingresos reducidos en s/.130 principalmente dentro del empleo formal.
 
 ```{r}
 #| label: tbl-ing_pobreza
