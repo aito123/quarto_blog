@@ -11,26 +11,8 @@ execute:
 ---
 
 ```{r}
-pacman::p_load(
-  #Working directory
-  here,
-  #data tools
-  tidyverse, janitor, glue, lubridate, scales, Hmisc,lazyeval,
-  #Gráficos
-  plotly, ggrepel, cowplot, grid,
-  #importar / exportar
-  haven, rio, officer, officedown,
-  #Etiquetas
-  sjlabelled,
-  #tablas
-  xtable, flextable, knitr, kableExtra, DT, gtsummary, gt,
-  #Visualización
-  ggpubr, paletteer, RColorBrewer, grid, ggthemes, rvg, cowplot,  scales, ggtext, ggrepel,
-  #mapas
-  sf, sfheaders, leaflet, osmdata,
-  #Trabajar con encuestas
-  survey, srvyr
-  )
+#importar los necesarios
+pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales,officer, Hmisc, patchwork, ggtext)
 
 here::i_am("index.qmd")
 
@@ -60,7 +42,7 @@ La muestra de **conglomerados** en el ámbito nacional es de **5 359**, correspo
 
 Se importan las bases de datos de los años 2019, 2020, 2021 de la ENAHO (actualizado anual). En caso no cuente con las bases de datos en su computadora, descárguelas en un directorio temporal.
 
-```{r}
+```{r, eval=FALSE}
 
 descargar<-function(ruta_web,archivo){
   #cortesía de Claudio Pacheco
@@ -244,7 +226,7 @@ ids<-c("ano", "mes", "conglome", "vivienda", "hogar", "ubigeo", "dominio", "estr
 #ENAHO 2019
 enaho2019<-
   #modulo5 = base
-  m05_2019 %>% select(ids,codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
+  m05_2019 %>% select(ids,codperso, p203, p204, p205, p206, p207, p208a, p301a, p500i, p507, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
   left_join(m03_2019 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
@@ -254,7 +236,7 @@ enaho2019<-
 #ENAHO 2020
 enaho2020<-
   #modulo5 = base
-  m05_2020 %>% select(ids,codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
+  m05_2020 %>% select(ids,codperso, p203, p204, p205, p206, p207, p208a, p301a, p500i, p507, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
   left_join(m03_2020 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
@@ -263,7 +245,7 @@ enaho2020<-
 #ENAHO 2021
 enaho2021<-
   #modulo5 = base
-  m05_2021 %>% select(ids,codperso, p203, p301a, p507, p207, p208a, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
+  m05_2021 %>% select(ids,codperso, p203, p204, p205, p206, p207, p208a, p301a, p500i, p507, ocu500, ocupinf, emplpsec, i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t, fac500a) %>% 
   #modulo3
   left_join(m03_2021 %>% select(ids, codperso, p300a, factor07)) %>% 
   #modulo34
@@ -291,43 +273,43 @@ enaho19_20_21<-
 # enaho19_20_21<-
 # copy_labels(enaho19_20_21, enaho2019)
 
-#exportar
-enaho19_20_21 %>% 
-  janitor::clean_names() %>% 
-  write_sav("enaho_19_20_21_total.sav")
-
 ```
 
 ## Creación de variables y exportación
 
 ```{r}
+#| label: base total
 
-enaho19_20_21_1<-
+enaho19_20_21_total<-
   enaho19_20_21 %>% 
+  filter(!(p500i == "00")) %>% #codigo informante del capitulo 500, filtrar quienes no respondieron el bloque
   mutate(
-    #area
-    area = case_when(estrato <= 5 ~ 1,
-                     TRUE ~ 2), 
-    area = labelled_spss(area, label = "Área", labels = c("Urbano"=1, "Rural"=2)),
-  ) %>% 
-  #filtrar población objetivo
-  filter(area %in% 1 & ocu500 %in% 1) %>%
-  filter(!(estrato %in% c(7,8))) %>%
-  mutate(
+    #area urbana/rural
+    area=case_when(
+      estrato <=5 ~ 1,
+      estrato >=6 & estrato <= 8 ~ 2
+    ),
+    area = labelled_spss(area, label="area", labels=c("urbano"=1, "rural"=2)),
+    
     #gedad
-    gedad=cut2(p208a, cuts = c(25,35,45,55,65)),
+    gedad=cut2(p208a, cuts = c(25,45,60,65)),
     gedad=case_when(
       gedad %in% "[14,25)" ~ 1,
-      gedad %in% "[25,35)" ~ 2,
-      gedad %in% "[35,45)" ~ 3,
-      gedad %in% "[45,55)" ~ 4,
-      gedad %in% "[55,65)" ~ 5,
-      gedad %in% "[65,97]" ~ 6
+      gedad %in% "[25,45)" ~ 2,
+      gedad %in% "[45,60)" ~ 3,
+      gedad %in% "[60,65)" ~ 4,
+      gedad %in% "[65,98]" ~ 5
     ),
     gedad=labelled_spss(gedad,
                        label = "Grupos de edad",
-                       labels = c("De 24 años a menos"=1,"De 25 a 34 años"=2,"De 35 a 44 años"=3,
-                                  "De 45 a 54 años"=4,"De 55 a 64 años"=5,"De 65 años a más"=6)),
+                       labels = c("14 a 24 años"=1,"25 a 44 años"=2,"45 a 59 años"=3,
+                                  "De 60 a 64 años"=4, "65 años a más"=5)),
+    
+    #residencia en el hogar
+    resi=case_when(
+      ((p204==1 & p205==2) | (p204==2 & p206==1)) ~ 1,
+      TRUE ~ 0
+    ),
     
     #ingreso por trabajo mensual
     across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), ~replace(., is.na(.), 0)),
@@ -372,8 +354,112 @@ enaho19_20_21_1<-
                          labels = c("Castellano"=1,"Quechua y otras lenguas nativas"=2,"Otros"=3)),
     
   ) %>% 
-  var_labels(pobreza = "Pobreza")
+  
+  var_labels(pobreza = "Pobreza") %>% 
+  
+  filter(resi == 1 ) #reside en el hogar, peao, ingreso mayor a 0 // & ocu500==1 & ingtra_n > 0 quitando estos filtros para incluir a la PEA y no PEA, tampoco se podrá hacer indicador de ingresos partir de esta base.
 
+dim(enaho19_20_21_total)
+
+#exportar
+enaho19_20_21_total %>% 
+  janitor::clean_names() %>% 
+  write_sav("enaho_19_20_21_total.sav")
+
+```
+
+```{r}
+#| label: base peao urbana
+
+enaho19_20_21_1<-
+  enaho19_20_21 %>% 
+  filter(!(p500i == "00")) %>% #codigo informante del capitulo 500, filtrar quienes no respondieron el bloque
+  mutate(
+    #area urbana/rural
+    area=case_when(
+      estrato <=5 ~ 1,
+      estrato >=6 & estrato <= 8 ~ 2
+    ),
+    area = labelled_spss(area, label="area", labels=c("urbano"=1, "rural"=2)),
+    
+    #region natural
+    region=case_when(
+      dominio >=1 & dominio <=3 ~ 1,
+      dominio ==8 ~ 1,
+      dominio >=4 & dominio <=6 ~ 2,
+      dominio ==7 ~ 3,
+    ),
+    region=labelled_spss(region, label="Región natural", labels=c("Costa"=1, "Sierra"=2, "Selva"=3)),
+    
+    #gedad
+    gedad=cut2(p208a, cuts = c(25,45,60,65)),
+    gedad=case_when(
+      gedad %in% "[14,25)" ~ 1,
+      gedad %in% "[25,45)" ~ 2,
+      gedad %in% "[45,60)" ~ 3,
+      gedad %in% "[60,65)" ~ 4,
+      gedad %in% "[65,98]" ~ 5
+    ),
+    gedad=labelled_spss(gedad,
+                       label = "Grupos de edad",
+                       labels = c("14 a 24 años"=1,"25 a 44 años"=2,"45 a 59 años"=3,
+                                  "De 60 a 64 años"=4, "65 años a más"=5)),
+    
+    #residencia en el hogar
+    resi=case_when(
+      ((p204==1 & p205==2) | (p204==2 & p206==1)) ~ 1,
+      TRUE ~ 0
+    ),
+    
+    #ingreso por trabajo mensual
+    across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), ~replace(., is.na(.), 0)),
+    ingtrabw = rowSums(across(c(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),
+    ingtrabw = labelled_spss(ingtrabw, label = "Ingreso por trabajo anual"),
+    ingtra_n = ingtrabw / 12,
+    ingtra_n = labelled_spss(ingtra_n, label = "Ingreso por trabajo mensual"),
+    
+    #gasto per capita
+    gas_cap=(gashog2d/mieperho)/12,
+    gas_cap=labelled_spss(gas_cap,
+                      label = "Gasto per cápita en el hogar"),
+    
+    #Nivel educativo alcanzado
+    educacion=case_when(
+      p301a %in% 1 ~ 1,
+      p301a %in% c(2,3,4,5,12) ~ 2,
+      p301a %in% c(6) ~ 3,
+      p301a %in% c(7) ~ 4,
+      p301a %in% c(8) ~ 5,
+      p301a %in% c(9) ~ 6,
+      p301a %in% c(10) ~ 7,
+      p301a %in% c(11) ~ 8,
+      TRUE ~ 1
+    ),
+    educacion=labelled_spss(educacion,
+                            label="Nivel educativo", 
+                            labels = c("Sin nivel"=1,"Educación secundaria incompleta o menos"=2,
+                                       "Educación secundaria completa"=3,"Educación técnica incompleta"=4,
+                                       "Educación técnica completa"=5,"Educación universitaria incompleta"=6,
+                                       "Educación universitaria completa"=7,"Posgrado"=8)),
+    
+    #Lengua materna resumida
+    lengua=case_when(
+      p300a %in% 4 ~ 1,
+      p300a %in% c(1,2,3,9) ~ 2,
+      p300a %in% c(6,7,8) ~ 3,
+      TRUE ~ 3
+    ),
+    lengua=labelled_spss(lengua,
+                         label="Lengua materna", 
+                         labels = c("Castellano"=1,"Quechua y otras lenguas nativas"=2,"Otros"=3)),
+    
+  ) %>% 
+  
+  var_labels(pobreza = "Pobreza") %>% 
+  
+  filter(resi == 1 & ocu500==1) %>% #reside en el hogar, peao, no pongo  & ingtra_n > 0 / ingreso mayor a 0 porque solo aplica para la parte 3 de los ingresos.
+  filter(area == 1) #urbana
+  
 #exportar
 enaho19_20_21_1 %>% 
   janitor::clean_names() %>% 

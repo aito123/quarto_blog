@@ -8,7 +8,7 @@ image: "image.jpg"
 fig-align: center
 fig-cap-location: top
 execute:
-  cache: true
+  cache: true 
 ---
 
 ```{r}
@@ -254,201 +254,215 @@ compara_graf<-function(data, var){
     values=c(data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_values(),data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_values() %>% as.data.frame() %>% nrow() + 1),
     labels=c(data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_labels(), "Nacional")
   )
+  
+  graf_total<-
+    rbind(
+      #Nacional
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        mutate(var1="Nacional") %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+      
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        mutate(var1="Nacional") %>%
+        mutate(ocupinf="total") %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+      
+      
+      #Variable
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        rename(var1={{var}}) %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+      
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        rename(var1={{var}}) %>%
+        mutate(ocupinf="total") %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+      
+    ) %>%
+    ungroup() %>%
+    filter(!(ano %in% "2020")) %>%
+    pivot_wider(names_from = ano, values_from = var) %>%
+    rowwise() %>%
+    mutate(
+      sub= `2021`-`2019`,
+      porc= round_half_up(sub/`2019`*100),
+      label=paste0(round_half_up(sub/`2019`*100), "%")
+    ) %>%
+    ungroup() %>%
+    filter(ocupinf %in% "total") %>%
+    
+    mutate(var1=as.factor(var1)) %>%
+    
+    ggplot(aes(y=porc, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +#nose porque error ver mañana.
+    geom_bar(stat = "identity", colour = "white", fill = "#333333") +
+    geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.2, size = 3, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.2, size = 3, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
+    scale_y_continuous(labels = function(x) paste0(x, "%"), breaks = seq(-100, 100, 25), limits = c(-50, 50)) +
+    theme_pubr() +
+    ggtitle("Total") +
+    theme(
+      legend.position="right",
+      legend.title=element_blank(),
+      axis.title=element_blank(),
+      axis.text.x = element_text(size = 8),
+      axis.text.y = element_text(size = 10)
+    ) +
+    coord_flip()
+  graf_total
+  
+  graf_formal<-
+  rbind(
+    #Nacional
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
 
-graf_total<-
-rbind(
-  #Nacional
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  mutate(var1="Nacional") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
-
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  mutate(var1="Nacional") %>%
-  mutate(ocupinf="total") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
 
 
-  #Variable
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  rename(var1={{var}}) %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+    #Variable
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
 
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  rename(var1={{var}}) %>%
-  mutate(ocupinf="total") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
 
-) %>%
-  ungroup() %>%
-  filter(!(ano %in% "2020")) %>%
-  pivot_wider(names_from = ano, values_from = var) %>%
-  rowwise() %>%
-  mutate(
-    sub= `2021`-`2019`
   ) %>%
-  ungroup() %>%
-  filter(ocupinf %in% "total") %>%
+    ungroup() %>%
+    filter(!(ano %in% "2020")) %>%
+    pivot_wider(names_from = ano, values_from = var) %>%
+    rowwise() %>%
+    mutate(
+      sub= `2021`-`2019`,
+      porc= round_half_up(sub/`2019`*100),
+      label=paste0(round_half_up(sub/`2019`*100), "%")
+    ) %>%
+    ungroup() %>%
+    filter(ocupinf %in% "empleo formal") %>%
 
-  mutate(var1=as.factor(var1)) %>%
+    mutate(var1=as.factor(var1)) %>%
 
-  ggplot(aes(y=sub, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
-  geom_bar(stat = "identity", colour = "white", fill = "#333333") +
-  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
-  #scale_y_continuous(breaks = seq(-250, 100, 50)) +
-  theme_pubr() +
-  ggtitle("Total") +
-  theme(
-    legend.position="right",
-    legend.title=element_blank(),
-    axis.title=element_blank(),
-    axis.text.x = element_text(size = 8),
-    axis.text.y = element_text(size = 10)
-  ) +
-  coord_flip()
+    ggplot(aes(y=porc, label=label, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
+    geom_bar(stat = "identity", colour = "white", fill = "#989898") +
+    geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
+    scale_y_continuous(labels = function(x) paste0(x, "%"), breaks = seq(-100, 100, 25), limits = c(-50, 50)) +
+    theme_pubr() +
+    ggtitle("Empleo formal") +
+    theme(
+      legend.position="right",
+      legend.title=element_blank(),
+      axis.title=element_blank(),
+      axis.text.x = element_text(size = 8),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank()
+    ) +
+    coord_flip()
 
-graf_formal<-
-rbind(
-  #Nacional
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  mutate(var1="Nacional") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+  graf_informal<-
+  rbind(
+    #Nacional
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
 
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  mutate(var1="Nacional") %>%
-  mutate(ocupinf="total") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
 
 
-  #Variable
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  rename(var1={{var}}) %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+    #Variable
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
 
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  rename(var1={{var}}) %>%
-  mutate(ocupinf="total") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
 
-) %>%
-  ungroup() %>%
-  filter(!(ano %in% "2020")) %>%
-  pivot_wider(names_from = ano, values_from = var) %>%
-  rowwise() %>%
-  mutate(
-    sub= `2021`-`2019`
   ) %>%
-  ungroup() %>%
-  filter(ocupinf %in% "empleo formal") %>%
+    ungroup() %>%
+    filter(!(ano %in% "2020")) %>%
+    pivot_wider(names_from = ano, values_from = var) %>%
+    rowwise() %>%
+    mutate(
+      sub= `2021`-`2019`,
+      porc= round_half_up(sub/`2019`*100),
+      label=paste0(round_half_up(sub/`2019`*100), "%")
+    ) %>%
+    ungroup() %>%
+    filter(ocupinf %in% "empleo informal") %>%
 
-  mutate(var1=as.factor(var1)) %>%
+    mutate(var1=as.factor(var1)) %>%
 
-  ggplot(aes(y=sub, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
-  geom_bar(stat = "identity", colour = "white", fill = "#989898") +
-  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
-  #scale_y_continuous(breaks = seq(-250, 100, 50)) +
-  theme_pubr() +
-  ggtitle("Empleo formal") +
-  theme(
-    legend.position="right",
-    legend.title=element_blank(),
-    axis.title=element_blank(),
-    axis.text.x = element_text(size = 8),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
-  ) +
-  coord_flip()
+    ggplot(aes(y=porc, label=label, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
+    geom_bar(stat = "identity", colour = "white", fill = "#cccccc") +
+    geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
+    scale_y_continuous(labels = function(x) paste0(x, "%"), breaks = seq(-100, 100, 25), limits = c(-50, 50)) +
+    theme_pubr() +
+    ggtitle("Empleo informal") +
+    theme(
+      legend.position="right",
+      legend.title=element_blank(),
+      axis.title=element_blank(),
+      axis.text.x = element_text(size = 8),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank()
+    ) +
+    coord_flip()
 
-graf_informal<-
-rbind(
-  #Nacional
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  mutate(var1="Nacional") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
-
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  mutate(var1="Nacional") %>%
-  mutate(ocupinf="total") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
-
-
-  #Variable
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  rename(var1={{var}}) %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
-
-  data %>%
-  labelled::drop_unused_value_labels() %>%
-  haven::as_factor() %>%
-  rename(var1={{var}}) %>%
-  mutate(ocupinf="total") %>%
-  group_by(ano, ocupinf, var1) %>%
-  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
-
-) %>%
-  ungroup() %>%
-  filter(!(ano %in% "2020")) %>%
-  pivot_wider(names_from = ano, values_from = var) %>%
-  rowwise() %>%
-  mutate(
-    sub= `2021`-`2019`
-  ) %>%
-  ungroup() %>%
-  filter(ocupinf %in% "empleo informal") %>%
-
-  mutate(var1=as.factor(var1)) %>%
-
-  ggplot(aes(y=sub, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
-  geom_bar(stat = "identity", colour = "white", fill = "#cccccc") +
-  geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
-  #scale_y_continuous(breaks = seq(-250, 100, 50)) +
-  #scale_x_discrete(function(x) str_wrap(x, width = 2)) +
-  theme_pubr() +
-  ggtitle("Empleo informal") +
-  theme(
-    legend.position="right",
-    legend.title=element_blank(),
-    axis.title=element_blank(),
-    axis.text.x = element_text(size = 8),
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank()
-  ) +
-  coord_flip()
-
-graf_total + graf_formal + graf_informal
+  graf_total + graf_formal + graf_informal
 
 }
 
@@ -665,6 +679,8 @@ base1 %>%
 
 # Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
 
+Acá recién aplicar ingtra_n > 0
+
 Durante la pandemia, se observa una caída en los ingresos, especialmente en 2020, la cual no se ha recuperado del todo en 2021. Se observa una mayor caída en el empleo informal con una disminución de s/. 122 hacia el 2021.
 
 ```{r Ingreso promedio por trabajo mensual de la PEA ocupada urbana entre 2019 y 2021}
@@ -674,12 +690,14 @@ Durante la pandemia, se observa una caída en los ingresos, especialmente en 202
 
 rbind(
   base1 %>%
+  filter(ingtra_n > 0) %>% 
   labelled::drop_unused_value_labels() %>%
   haven::as_factor() %>%
   group_by(ano, ocupinf) %>% 
   summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
   
   base1 %>%
+  filter(ingtra_n > 0) %>% 
   labelled::drop_unused_value_labels() %>%
   haven::as_factor() %>%
   mutate(ocupinf="total") %>% 
@@ -705,6 +723,7 @@ rbind(
 
 tbl_ing_nacional<-
   base1 %>% 
+  filter(ingtra_n > 0) %>% 
   labelled::drop_unused_value_labels() %>%
   as_label() %>%
   as_survey_design(weight = fac500a) %>%
@@ -761,7 +780,7 @@ Asimismo, la @tbl-ing_dominio y @fig-ing_dominio nos muestran que en Lima Metrop
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>%
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = dominio, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -774,7 +793,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 5
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>%#cambios en el salario
   compara_graf(dominio)
 
 ```
@@ -789,7 +808,7 @@ La @tbl-ing_estrato y @fig-ing_estrato nos muestran que en las ciudades grandes 
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = estrato, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -802,7 +821,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 5
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   compara_graf(estrato)
 
 ```
@@ -817,7 +836,7 @@ La @tbl-ing_edu y @fig-ing_edu nos muestran que los ingresos de los trabajadores
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = educacion, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -830,7 +849,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 5
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   compara_graf(educacion)
 
 ```
@@ -845,7 +864,7 @@ La @tbl-ing_sexo y @fig-ing_sexo nos muestran que en general los trabajadores ho
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -858,7 +877,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 3
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   compara_graf(p207)
 
 ```
@@ -873,7 +892,7 @@ La @tbl-ing_gedad y @fig-ing_gedad nos muestran que, en líneas generales, los t
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -886,7 +905,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 5
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   compara_graf(gedad)
 
 ```
@@ -901,7 +920,7 @@ La @tbl-ing_leng y @fig-ing_leng nos muestran que, en líneas generales, los tra
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = lengua, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -914,7 +933,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 3
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   mutate(lengua=as_labelled(sjmisc::rec(lengua, rec = "3=1;1=3; else=copy"))) %>% 
   compara_graf(lengua)
 
@@ -930,7 +949,7 @@ La @tbl-ing_p507 y @fig-ing_p507 nos muestran que, los trabajadores formales ind
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   filter(!(p507 %in% c(5,7))) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = ingtra_n)
   
@@ -944,7 +963,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 4
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   filter(!(p507 %in% c(5,7))) %>% 
   compara_graf(p507)
 
@@ -960,7 +979,7 @@ La @tbl-ing_pobreza y @fig-ing_pobreza nos muestran que, los trabajadores no pob
 tbl_stack(list(
   
   tbl_ing_nacional, 
-  base1 %>% 
+  base1 %>% filter(ingtra_n > 0) %>% 
   tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = ingtra_n)
   
   )) %>% as_flex_table() %>% theme_tesis()
@@ -973,7 +992,7 @@ tbl_stack(list(
 #| fig-width: 10
 #| fig-height: 4
 
-base1 %>% 
+base1 %>% filter(ingtra_n > 0) %>% 
   compara_graf(pobreza)
 
 ```
