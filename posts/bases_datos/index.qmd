@@ -261,7 +261,9 @@ enaho19_20_21<-
   sjmisc::add_rows(enaho2019, enaho2020, enaho2021) %>% 
   mutate(
     pea = as_labelled(sjmisc::rec(ocu500,
-                      rec = "0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]"))
+                      rec = "0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]")),
+    ocupinf = as_labelled(sjmisc::rec(ocupinf,
+                      rec = "1=1 [Empleo informal]; 2=2 [Empleo formal]"))
   ) %>% 
   var_labels(
     p507 = "Posición en ocupación principal o negocio",

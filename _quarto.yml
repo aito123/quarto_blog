@@ -5,6 +5,7 @@ lang: es
 
 website:
   title: "Santiago Sotelo"
+  google-analytics: "G-34G2Z2VLGJ"
   favicon: peru.png
   page-footer: "Copyright 2022, Santiago Sotelo"
   navbar:

@@ -8,12 +8,12 @@ image: "image.jpg"
 fig-align: center
 fig-cap-location: top
 execute:
-  cache: true 
+  cache: false 
 ---
 
 ```{r}
 #importar los necesarios
-pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales,officer, Hmisc, patchwork, ggtext)
+pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales,officer, Hmisc, patchwork, ggtext, gdtools)
 
 #Set working directory de manera relativa
 here::i_am("tablas4_tesis/index.qmd")
@@ -236,7 +236,6 @@ theme_tesis <- function(x) {
   x <- bold(x = x, bold = TRUE, part = "header")
   x <- italic(x = x, italic = TRUE, part = "footer")
   x <- align(x, align = "right", part = "body")
-  x <- align(x, j=1, align = "left", part = "body")
   x <- align(x, align = "center", part = "header")
   x <- bg(x, bg = "#676768", part = "header")
   x <- color(x, color = "white", part = "header")
@@ -244,6 +243,9 @@ theme_tesis <- function(x) {
   x <- merge_h(x, part = "body")
   x <- compose(x, value = as_paragraph("Variable"), i=1, j=1, part = "header")
   x <- merge_at(x, i=1:2, j=1, part = "header")
+  x <- flextable::font(x, fontname="Arial Narrow", part="all")
+  x <- flextable::fontsize(x, size= 10, part="all")
+  x <- align(x, j=1, align = "left", part = "body")
   fix_border_issues(x)
 }
 
@@ -305,7 +307,7 @@ compara_graf<-function(data, var){
     
     mutate(var1=as.factor(var1)) %>%
     
-    ggplot(aes(y=porc, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +#nose porque error ver mañana.
+    ggplot(aes(y=porc, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
     geom_bar(stat = "identity", colour = "white", fill = "#333333") +
     geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.2, size = 3, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
     geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.2, size = 3, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
@@ -322,7 +324,6 @@ compara_graf<-function(data, var){
       axis.text.y = element_text(size = 10)
     ) +
     coord_flip()
-  graf_total
   
   graf_formal<-
   rbind(
@@ -370,7 +371,7 @@ compara_graf<-function(data, var){
       label=paste0(round_half_up(sub/`2019`*100), "%")
     ) %>%
     ungroup() %>%
-    filter(ocupinf %in% "empleo formal") %>%
+    filter(ocupinf %in% "Empleo formal") %>%
 
     mutate(var1=as.factor(var1)) %>%
 
@@ -439,7 +440,7 @@ compara_graf<-function(data, var){
       label=paste0(round_half_up(sub/`2019`*100), "%")
     ) %>%
     ungroup() %>%
-    filter(ocupinf %in% "empleo informal") %>%
+    filter(ocupinf %in% "Empleo informal") %>%
 
     mutate(var1=as.factor(var1)) %>%
 
@@ -535,14 +536,24 @@ tbl_stack(
 - La pandemia afectó sobre todo a los trabajadores que se consideraban no pobres llegando a reducirse la fuerza laboral en dos millones hacia el 2020. Este grupo no se ha recuperado a niveles prepandemia hacia 2021.
 
 ```{r}
-#| label: tbl-peasexedaedpo
-#| tbl-cap: "Características de la PEA ocupada urbana según sexo, grupo de edad, nivel educativo y pobreza entre 2019 y 2021 (porcentajes verticales)"
+#| label: tbl-peasexeda
+#| tbl-cap: "Características de la PEA ocupada urbana según sexo y grupo de edad entre 2019 y 2021 (porcentajes verticales)"
 
 tbl_stack(
   list(
     base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano),
-    base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE),
-    base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano, sin_nacional = TRUE),
+    base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE)
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: tbl-edpobre
+#| tbl-cap: "Características de la PEA ocupada urbana según nivel educativo y pobreza entre 2019 y 2021 (porcentajes verticales)"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano),
     base1 %>% tabla_gen(weight = fac500a, include = pobreza, strata = ano, sin_nacional = TRUE)
   )) %>% as_flex_table() %>% theme_tesis()
 
@@ -707,6 +718,7 @@ rbind(
 ) %>% 
   ggplot(aes(fill=ano, y=var, x=fct_rev(ocupinf))) + 
   geom_bar(position = position_dodge(), stat = "identity", width = .7, colour = "white") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
   scale_fill_grey(start = 0.2,end = 0.8) +
   theme_pubr() +
   theme(

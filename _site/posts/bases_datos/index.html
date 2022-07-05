@@ -118,6 +118,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Eviar"
   }
 }</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-34G2Z2VLGJ"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-34G2Z2VLGJ', { 'anonymize_ip': true});
+</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -986,374 +995,376 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>  sjmisc<span class="sc">::</span><span class="fu">add_rows</span>(enaho2019, enaho2020, enaho2021) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a>    <span class="at">pea =</span> <span class="fu">as_labelled</span>(sjmisc<span class="sc">::</span><span class="fu">rec</span>(ocu500,</span>
-<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>                      <span class="at">rec =</span> <span class="st">"0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]"</span>))</span>
-<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(</span>
-<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">p507 =</span> <span class="st">"Posición en ocupación principal o negocio"</span>,</span>
-<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>    <span class="at">mieperho =</span> <span class="st">"Total de miembros del hogar"</span>,</span>
-<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>    <span class="at">gashog2d =</span> <span class="st">"Gasto total bruto"</span></span>
-<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a><span class="co">#restaura en caso se pierda alguna metadata</span></span>
-<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a><span class="co"># enaho19_20_21&lt;-</span></span>
-<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a><span class="co"># copy_labels(enaho19_20_21, enaho2019)</span></span>
-<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>                      <span class="at">rec =</span> <span class="st">"0,4=3 [No PEA]; 1=1 [PEA ocupada]; 2,3=2 [PEA desocupada]"</span>)),</span>
+<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>    <span class="at">ocupinf =</span> <span class="fu">as_labelled</span>(sjmisc<span class="sc">::</span><span class="fu">rec</span>(ocupinf,</span>
+<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a>                      <span class="at">rec =</span> <span class="st">"1=1 [Empleo informal]; 2=2 [Empleo formal]"</span>))</span>
+<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(</span>
+<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>    <span class="at">p507 =</span> <span class="st">"Posición en ocupación principal o negocio"</span>,</span>
+<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a>    <span class="at">mieperho =</span> <span class="st">"Total de miembros del hogar"</span>,</span>
+<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a>    <span class="at">gashog2d =</span> <span class="st">"Gasto total bruto"</span></span>
+<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a><span class="co">#restaura en caso se pierda alguna metadata</span></span>
+<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a><span class="co"># enaho19_20_21&lt;-</span></span>
+<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a><span class="co"># copy_labels(enaho19_20_21, enaho2019)</span></span>
 <span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a><span class="fu">## Creación de variables y exportación</span></span>
+<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: base total</span></span>
-<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_total<span class="ot">&lt;-</span></span>
-<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>  enaho19_20_21 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(p500i <span class="sc">==</span> <span class="st">"00"</span>)) <span class="sc">%&gt;%</span> <span class="co">#codigo informante del capitulo 500, filtrar quienes no respondieron el bloque</span></span>
-<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>    <span class="co">#area urbana/rural</span></span>
-<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a>    <span class="at">area=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&lt;=</span><span class="dv">5</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&gt;=</span><span class="dv">6</span> <span class="sc">&amp;</span> estrato <span class="sc">&lt;=</span> <span class="dv">8</span> <span class="sc">~</span> <span class="dv">2</span></span>
-<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">labelled_spss</span>(area, <span class="at">label=</span><span class="st">"area"</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"urbano"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"rural"</span><span class="ot">=</span><span class="dv">2</span>)),</span>
-<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gedad</span></span>
-<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">cut2</span>(p208a, <span class="at">cuts =</span> <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">65</span>)),</span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[14,25)"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[25,45)"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[45,60)"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[60,65)"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
-<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[65,98]"</span> <span class="sc">~</span> <span class="dv">5</span></span>
-<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">labelled_spss</span>(gedad,</span>
-<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>                       <span class="at">label =</span> <span class="st">"Grupos de edad"</span>,</span>
-<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"14 a 24 años"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"25 a 44 años"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"45 a 59 años"</span><span class="ot">=</span><span class="dv">3</span>,</span>
-<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"De 60 a 64 años"</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">"65 años a más"</span><span class="ot">=</span><span class="dv">5</span>)),</span>
-<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>    <span class="co">#residencia en el hogar</span></span>
-<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>    <span class="at">resi=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>      ((p204<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> p205<span class="sc">==</span><span class="dv">2</span>) <span class="sc">|</span> (p204<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p206<span class="sc">==</span><span class="dv">1</span>)) <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>    <span class="co">#ingreso por trabajo mensual</span></span>
-<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), <span class="sc">~</span><span class="fu">replace</span>(., <span class="fu">is.na</span>(.), <span class="dv">0</span>)),</span>
-<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),</span>
-<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">labelled_spss</span>(ingtrabw, <span class="at">label =</span> <span class="st">"Ingreso por trabajo anual"</span>),</span>
-<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> ingtrabw <span class="sc">/</span> <span class="dv">12</span>,</span>
-<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> <span class="fu">labelled_spss</span>(ingtra_n, <span class="at">label =</span> <span class="st">"Ingreso por trabajo mensual"</span>),</span>
-<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gasto per capita</span></span>
-<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span>(gashog2d<span class="sc">/</span>mieperho)<span class="sc">/</span><span class="dv">12</span>,</span>
-<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span><span class="fu">labelled_spss</span>(gas_cap,</span>
-<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a>                      <span class="at">label =</span> <span class="st">"Gasto per cápita en el hogar"</span>),</span>
-<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Nivel educativo alcanzado</span></span>
-<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">12</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7</span>) <span class="sc">~</span> <span class="dv">4</span>,</span>
-<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">5</span>,</span>
-<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>) <span class="sc">~</span> <span class="dv">7</span>,</span>
-<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>) <span class="sc">~</span> <span class="dv">8</span>,</span>
-<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">1</span></span>
-<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">labelled_spss</span>(educacion,</span>
-<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a>                            <span class="at">label=</span><span class="st">"Nivel educativo"</span>, </span>
-<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Sin nivel"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Educación secundaria incompleta o menos"</span><span class="ot">=</span><span class="dv">2</span>,</span>
-<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación secundaria completa"</span><span class="ot">=</span><span class="dv">3</span>,<span class="st">"Educación técnica incompleta"</span><span class="ot">=</span><span class="dv">4</span>,</span>
-<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación técnica completa"</span><span class="ot">=</span><span class="dv">5</span>,<span class="st">"Educación universitaria incompleta"</span><span class="ot">=</span><span class="dv">6</span>,</span>
-<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación universitaria completa"</span><span class="ot">=</span><span class="dv">7</span>,<span class="st">"Posgrado"</span><span class="ot">=</span><span class="dv">8</span>)),</span>
-<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Lengua materna resumida</span></span>
-<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">3</span></span>
-<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">labelled_spss</span>(lengua,</span>
-<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a>                         <span class="at">label=</span><span class="st">"Lengua materna"</span>, </span>
-<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Castellano"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Quechua y otras lenguas nativas"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"Otros"</span><span class="ot">=</span><span class="dv">3</span>)),</span>
-<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-378"><a href="#cb4-378" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(<span class="at">pobreza =</span> <span class="st">"Pobreza"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a><span class="fu">## Creación de variables y exportación</span></span>
+<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: base total</span></span>
+<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_total<span class="ot">&lt;-</span></span>
+<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a>  enaho19_20_21 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(p500i <span class="sc">==</span> <span class="st">"00"</span>)) <span class="sc">%&gt;%</span> <span class="co">#codigo informante del capitulo 500, filtrar quienes no respondieron el bloque</span></span>
+<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a>    <span class="co">#area urbana/rural</span></span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a>    <span class="at">area=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&lt;=</span><span class="dv">5</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&gt;=</span><span class="dv">6</span> <span class="sc">&amp;</span> estrato <span class="sc">&lt;=</span> <span class="dv">8</span> <span class="sc">~</span> <span class="dv">2</span></span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">labelled_spss</span>(area, <span class="at">label=</span><span class="st">"area"</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"urbano"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"rural"</span><span class="ot">=</span><span class="dv">2</span>)),</span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gedad</span></span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">cut2</span>(p208a, <span class="at">cuts =</span> <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">65</span>)),</span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[14,25)"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[25,45)"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[45,60)"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[60,65)"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[65,98]"</span> <span class="sc">~</span> <span class="dv">5</span></span>
+<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">labelled_spss</span>(gedad,</span>
+<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>                       <span class="at">label =</span> <span class="st">"Grupos de edad"</span>,</span>
+<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"14 a 24 años"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"25 a 44 años"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"45 a 59 años"</span><span class="ot">=</span><span class="dv">3</span>,</span>
+<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"De 60 a 64 años"</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">"65 años a más"</span><span class="ot">=</span><span class="dv">5</span>)),</span>
+<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>    <span class="co">#residencia en el hogar</span></span>
+<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>    <span class="at">resi=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a>      ((p204<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> p205<span class="sc">==</span><span class="dv">2</span>) <span class="sc">|</span> (p204<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p206<span class="sc">==</span><span class="dv">1</span>)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a>    <span class="co">#ingreso por trabajo mensual</span></span>
+<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), <span class="sc">~</span><span class="fu">replace</span>(., <span class="fu">is.na</span>(.), <span class="dv">0</span>)),</span>
+<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),</span>
+<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">labelled_spss</span>(ingtrabw, <span class="at">label =</span> <span class="st">"Ingreso por trabajo anual"</span>),</span>
+<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> ingtrabw <span class="sc">/</span> <span class="dv">12</span>,</span>
+<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> <span class="fu">labelled_spss</span>(ingtra_n, <span class="at">label =</span> <span class="st">"Ingreso por trabajo mensual"</span>),</span>
+<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gasto per capita</span></span>
+<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span>(gashog2d<span class="sc">/</span>mieperho)<span class="sc">/</span><span class="dv">12</span>,</span>
+<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span><span class="fu">labelled_spss</span>(gas_cap,</span>
+<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a>                      <span class="at">label =</span> <span class="st">"Gasto per cápita en el hogar"</span>),</span>
+<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Nivel educativo alcanzado</span></span>
+<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">12</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7</span>) <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">5</span>,</span>
+<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>) <span class="sc">~</span> <span class="dv">7</span>,</span>
+<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>) <span class="sc">~</span> <span class="dv">8</span>,</span>
+<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">1</span></span>
+<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">labelled_spss</span>(educacion,</span>
+<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a>                            <span class="at">label=</span><span class="st">"Nivel educativo"</span>, </span>
+<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Sin nivel"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Educación secundaria incompleta o menos"</span><span class="ot">=</span><span class="dv">2</span>,</span>
+<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación secundaria completa"</span><span class="ot">=</span><span class="dv">3</span>,<span class="st">"Educación técnica incompleta"</span><span class="ot">=</span><span class="dv">4</span>,</span>
+<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación técnica completa"</span><span class="ot">=</span><span class="dv">5</span>,<span class="st">"Educación universitaria incompleta"</span><span class="ot">=</span><span class="dv">6</span>,</span>
+<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación universitaria completa"</span><span class="ot">=</span><span class="dv">7</span>,<span class="st">"Posgrado"</span><span class="ot">=</span><span class="dv">8</span>)),</span>
+<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Lengua materna resumida</span></span>
+<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">labelled_spss</span>(lengua,</span>
+<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a>                         <span class="at">label=</span><span class="st">"Lengua materna"</span>, </span>
+<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Castellano"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Quechua y otras lenguas nativas"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"Otros"</span><span class="ot">=</span><span class="dv">3</span>)),</span>
+<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-378"><a href="#cb4-378" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-379"><a href="#cb4-379" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-380"><a href="#cb4-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span> ) <span class="co">#reside en el hogar, peao, ingreso mayor a 0 // &amp; ocu500==1 &amp; ingtra_n &gt; 0 quitando estos filtros para incluir a la PEA y no PEA, tampoco se podrá hacer indicador de ingresos partir de esta base.</span></span>
-<span id="cb4-381"><a href="#cb4-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-382"><a href="#cb4-382" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(enaho19_20_21_total)</span>
+<span id="cb4-380"><a href="#cb4-380" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(<span class="at">pobreza =</span> <span class="st">"Pobreza"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-381"><a href="#cb4-381" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-382"><a href="#cb4-382" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span> ) <span class="co">#reside en el hogar, peao, ingreso mayor a 0 // &amp; ocu500==1 &amp; ingtra_n &gt; 0 quitando estos filtros para incluir a la PEA y no PEA, tampoco se podrá hacer indicador de ingresos partir de esta base.</span></span>
 <span id="cb4-383"><a href="#cb4-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-384"><a href="#cb4-384" aria-hidden="true" tabindex="-1"></a><span class="co">#exportar</span></span>
-<span id="cb4-385"><a href="#cb4-385" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_total <span class="sc">%&gt;%</span> </span>
-<span id="cb4-386"><a href="#cb4-386" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-387"><a href="#cb4-387" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">"enaho_19_20_21_total.sav"</span>)</span>
-<span id="cb4-388"><a href="#cb4-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-389"><a href="#cb4-389" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-384"><a href="#cb4-384" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(enaho19_20_21_total)</span>
+<span id="cb4-385"><a href="#cb4-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-386"><a href="#cb4-386" aria-hidden="true" tabindex="-1"></a><span class="co">#exportar</span></span>
+<span id="cb4-387"><a href="#cb4-387" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_total <span class="sc">%&gt;%</span> </span>
+<span id="cb4-388"><a href="#cb4-388" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-389"><a href="#cb4-389" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">"enaho_19_20_21_total.sav"</span>)</span>
 <span id="cb4-390"><a href="#cb4-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-393"><a href="#cb4-393" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-394"><a href="#cb4-394" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: base peao urbana</span></span>
-<span id="cb4-395"><a href="#cb4-395" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-396"><a href="#cb4-396" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_1<span class="ot">&lt;-</span></span>
-<span id="cb4-397"><a href="#cb4-397" aria-hidden="true" tabindex="-1"></a>  enaho19_20_21 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-398"><a href="#cb4-398" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(p500i <span class="sc">==</span> <span class="st">"00"</span>)) <span class="sc">%&gt;%</span> <span class="co">#codigo informante del capitulo 500, filtrar quienes no respondieron el bloque</span></span>
-<span id="cb4-399"><a href="#cb4-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-400"><a href="#cb4-400" aria-hidden="true" tabindex="-1"></a>    <span class="co">#area urbana/rural</span></span>
-<span id="cb4-401"><a href="#cb4-401" aria-hidden="true" tabindex="-1"></a>    <span class="at">area=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-402"><a href="#cb4-402" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&lt;=</span><span class="dv">5</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-403"><a href="#cb4-403" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&gt;=</span><span class="dv">6</span> <span class="sc">&amp;</span> estrato <span class="sc">&lt;=</span> <span class="dv">8</span> <span class="sc">~</span> <span class="dv">2</span></span>
-<span id="cb4-404"><a href="#cb4-404" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-405"><a href="#cb4-405" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">labelled_spss</span>(area, <span class="at">label=</span><span class="st">"area"</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"urbano"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"rural"</span><span class="ot">=</span><span class="dv">2</span>)),</span>
-<span id="cb4-406"><a href="#cb4-406" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-407"><a href="#cb4-407" aria-hidden="true" tabindex="-1"></a>    <span class="co">#region natural</span></span>
-<span id="cb4-408"><a href="#cb4-408" aria-hidden="true" tabindex="-1"></a>    <span class="at">region=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-409"><a href="#cb4-409" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">&gt;=</span><span class="dv">1</span> <span class="sc">&amp;</span> dominio <span class="sc">&lt;=</span><span class="dv">3</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-410"><a href="#cb4-410" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-411"><a href="#cb4-411" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">&gt;=</span><span class="dv">4</span> <span class="sc">&amp;</span> dominio <span class="sc">&lt;=</span><span class="dv">6</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-412"><a href="#cb4-412" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">==</span><span class="dv">7</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-413"><a href="#cb4-413" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-414"><a href="#cb4-414" aria-hidden="true" tabindex="-1"></a>    <span class="at">region=</span><span class="fu">labelled_spss</span>(region, <span class="at">label=</span><span class="st">"Región natural"</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Costa"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"Sierra"</span><span class="ot">=</span><span class="dv">2</span>, <span class="st">"Selva"</span><span class="ot">=</span><span class="dv">3</span>)),</span>
-<span id="cb4-415"><a href="#cb4-415" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-416"><a href="#cb4-416" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gedad</span></span>
-<span id="cb4-417"><a href="#cb4-417" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">cut2</span>(p208a, <span class="at">cuts =</span> <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">65</span>)),</span>
-<span id="cb4-418"><a href="#cb4-418" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-419"><a href="#cb4-419" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[14,25)"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-420"><a href="#cb4-420" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[25,45)"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-421"><a href="#cb4-421" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[45,60)"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-422"><a href="#cb4-422" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[60,65)"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
-<span id="cb4-423"><a href="#cb4-423" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[65,98]"</span> <span class="sc">~</span> <span class="dv">5</span></span>
-<span id="cb4-424"><a href="#cb4-424" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-425"><a href="#cb4-425" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">labelled_spss</span>(gedad,</span>
-<span id="cb4-426"><a href="#cb4-426" aria-hidden="true" tabindex="-1"></a>                       <span class="at">label =</span> <span class="st">"Grupos de edad"</span>,</span>
-<span id="cb4-427"><a href="#cb4-427" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"14 a 24 años"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"25 a 44 años"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"45 a 59 años"</span><span class="ot">=</span><span class="dv">3</span>,</span>
-<span id="cb4-428"><a href="#cb4-428" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"De 60 a 64 años"</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">"65 años a más"</span><span class="ot">=</span><span class="dv">5</span>)),</span>
-<span id="cb4-429"><a href="#cb4-429" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-430"><a href="#cb4-430" aria-hidden="true" tabindex="-1"></a>    <span class="co">#residencia en el hogar</span></span>
-<span id="cb4-431"><a href="#cb4-431" aria-hidden="true" tabindex="-1"></a>    <span class="at">resi=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-432"><a href="#cb4-432" aria-hidden="true" tabindex="-1"></a>      ((p204<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> p205<span class="sc">==</span><span class="dv">2</span>) <span class="sc">|</span> (p204<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p206<span class="sc">==</span><span class="dv">1</span>)) <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-433"><a href="#cb4-433" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb4-434"><a href="#cb4-434" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-435"><a href="#cb4-435" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-436"><a href="#cb4-436" aria-hidden="true" tabindex="-1"></a>    <span class="co">#ingreso por trabajo mensual</span></span>
-<span id="cb4-437"><a href="#cb4-437" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), <span class="sc">~</span><span class="fu">replace</span>(., <span class="fu">is.na</span>(.), <span class="dv">0</span>)),</span>
-<span id="cb4-438"><a href="#cb4-438" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),</span>
-<span id="cb4-439"><a href="#cb4-439" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">labelled_spss</span>(ingtrabw, <span class="at">label =</span> <span class="st">"Ingreso por trabajo anual"</span>),</span>
-<span id="cb4-440"><a href="#cb4-440" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> ingtrabw <span class="sc">/</span> <span class="dv">12</span>,</span>
-<span id="cb4-441"><a href="#cb4-441" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> <span class="fu">labelled_spss</span>(ingtra_n, <span class="at">label =</span> <span class="st">"Ingreso por trabajo mensual"</span>),</span>
-<span id="cb4-442"><a href="#cb4-442" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-443"><a href="#cb4-443" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gasto per capita</span></span>
-<span id="cb4-444"><a href="#cb4-444" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span>(gashog2d<span class="sc">/</span>mieperho)<span class="sc">/</span><span class="dv">12</span>,</span>
-<span id="cb4-445"><a href="#cb4-445" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span><span class="fu">labelled_spss</span>(gas_cap,</span>
-<span id="cb4-446"><a href="#cb4-446" aria-hidden="true" tabindex="-1"></a>                      <span class="at">label =</span> <span class="st">"Gasto per cápita en el hogar"</span>),</span>
-<span id="cb4-447"><a href="#cb4-447" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-448"><a href="#cb4-448" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Nivel educativo alcanzado</span></span>
-<span id="cb4-449"><a href="#cb4-449" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-450"><a href="#cb4-450" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-451"><a href="#cb4-451" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">12</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-452"><a href="#cb4-452" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-453"><a href="#cb4-453" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7</span>) <span class="sc">~</span> <span class="dv">4</span>,</span>
-<span id="cb4-454"><a href="#cb4-454" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">5</span>,</span>
-<span id="cb4-455"><a href="#cb4-455" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">6</span>,</span>
-<span id="cb4-456"><a href="#cb4-456" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>) <span class="sc">~</span> <span class="dv">7</span>,</span>
-<span id="cb4-457"><a href="#cb4-457" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>) <span class="sc">~</span> <span class="dv">8</span>,</span>
-<span id="cb4-458"><a href="#cb4-458" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">1</span></span>
-<span id="cb4-459"><a href="#cb4-459" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-460"><a href="#cb4-460" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">labelled_spss</span>(educacion,</span>
-<span id="cb4-461"><a href="#cb4-461" aria-hidden="true" tabindex="-1"></a>                            <span class="at">label=</span><span class="st">"Nivel educativo"</span>, </span>
-<span id="cb4-462"><a href="#cb4-462" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Sin nivel"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Educación secundaria incompleta o menos"</span><span class="ot">=</span><span class="dv">2</span>,</span>
-<span id="cb4-463"><a href="#cb4-463" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación secundaria completa"</span><span class="ot">=</span><span class="dv">3</span>,<span class="st">"Educación técnica incompleta"</span><span class="ot">=</span><span class="dv">4</span>,</span>
-<span id="cb4-464"><a href="#cb4-464" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación técnica completa"</span><span class="ot">=</span><span class="dv">5</span>,<span class="st">"Educación universitaria incompleta"</span><span class="ot">=</span><span class="dv">6</span>,</span>
-<span id="cb4-465"><a href="#cb4-465" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación universitaria completa"</span><span class="ot">=</span><span class="dv">7</span>,<span class="st">"Posgrado"</span><span class="ot">=</span><span class="dv">8</span>)),</span>
-<span id="cb4-466"><a href="#cb4-466" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-467"><a href="#cb4-467" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Lengua materna resumida</span></span>
-<span id="cb4-468"><a href="#cb4-468" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">case_when</span>(</span>
-<span id="cb4-469"><a href="#cb4-469" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-470"><a href="#cb4-470" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
-<span id="cb4-471"><a href="#cb4-471" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
-<span id="cb4-472"><a href="#cb4-472" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">3</span></span>
-<span id="cb4-473"><a href="#cb4-473" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb4-474"><a href="#cb4-474" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">labelled_spss</span>(lengua,</span>
-<span id="cb4-475"><a href="#cb4-475" aria-hidden="true" tabindex="-1"></a>                         <span class="at">label=</span><span class="st">"Lengua materna"</span>, </span>
-<span id="cb4-476"><a href="#cb4-476" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Castellano"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Quechua y otras lenguas nativas"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"Otros"</span><span class="ot">=</span><span class="dv">3</span>)),</span>
-<span id="cb4-477"><a href="#cb4-477" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-478"><a href="#cb4-478" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-479"><a href="#cb4-479" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-480"><a href="#cb4-480" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(<span class="at">pobreza =</span> <span class="st">"Pobreza"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-391"><a href="#cb4-391" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-392"><a href="#cb4-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-395"><a href="#cb4-395" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-396"><a href="#cb4-396" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: base peao urbana</span></span>
+<span id="cb4-397"><a href="#cb4-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-398"><a href="#cb4-398" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_1<span class="ot">&lt;-</span></span>
+<span id="cb4-399"><a href="#cb4-399" aria-hidden="true" tabindex="-1"></a>  enaho19_20_21 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-400"><a href="#cb4-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(p500i <span class="sc">==</span> <span class="st">"00"</span>)) <span class="sc">%&gt;%</span> <span class="co">#codigo informante del capitulo 500, filtrar quienes no respondieron el bloque</span></span>
+<span id="cb4-401"><a href="#cb4-401" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-402"><a href="#cb4-402" aria-hidden="true" tabindex="-1"></a>    <span class="co">#area urbana/rural</span></span>
+<span id="cb4-403"><a href="#cb4-403" aria-hidden="true" tabindex="-1"></a>    <span class="at">area=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-404"><a href="#cb4-404" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&lt;=</span><span class="dv">5</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-405"><a href="#cb4-405" aria-hidden="true" tabindex="-1"></a>      estrato <span class="sc">&gt;=</span><span class="dv">6</span> <span class="sc">&amp;</span> estrato <span class="sc">&lt;=</span> <span class="dv">8</span> <span class="sc">~</span> <span class="dv">2</span></span>
+<span id="cb4-406"><a href="#cb4-406" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-407"><a href="#cb4-407" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">labelled_spss</span>(area, <span class="at">label=</span><span class="st">"area"</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"urbano"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"rural"</span><span class="ot">=</span><span class="dv">2</span>)),</span>
+<span id="cb4-408"><a href="#cb4-408" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-409"><a href="#cb4-409" aria-hidden="true" tabindex="-1"></a>    <span class="co">#region natural</span></span>
+<span id="cb4-410"><a href="#cb4-410" aria-hidden="true" tabindex="-1"></a>    <span class="at">region=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-411"><a href="#cb4-411" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">&gt;=</span><span class="dv">1</span> <span class="sc">&amp;</span> dominio <span class="sc">&lt;=</span><span class="dv">3</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-412"><a href="#cb4-412" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">==</span><span class="dv">8</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-413"><a href="#cb4-413" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">&gt;=</span><span class="dv">4</span> <span class="sc">&amp;</span> dominio <span class="sc">&lt;=</span><span class="dv">6</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-414"><a href="#cb4-414" aria-hidden="true" tabindex="-1"></a>      dominio <span class="sc">==</span><span class="dv">7</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-415"><a href="#cb4-415" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-416"><a href="#cb4-416" aria-hidden="true" tabindex="-1"></a>    <span class="at">region=</span><span class="fu">labelled_spss</span>(region, <span class="at">label=</span><span class="st">"Región natural"</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Costa"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"Sierra"</span><span class="ot">=</span><span class="dv">2</span>, <span class="st">"Selva"</span><span class="ot">=</span><span class="dv">3</span>)),</span>
+<span id="cb4-417"><a href="#cb4-417" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-418"><a href="#cb4-418" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gedad</span></span>
+<span id="cb4-419"><a href="#cb4-419" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">cut2</span>(p208a, <span class="at">cuts =</span> <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">65</span>)),</span>
+<span id="cb4-420"><a href="#cb4-420" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-421"><a href="#cb4-421" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[14,25)"</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-422"><a href="#cb4-422" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[25,45)"</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-423"><a href="#cb4-423" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[45,60)"</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-424"><a href="#cb4-424" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[60,65)"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb4-425"><a href="#cb4-425" aria-hidden="true" tabindex="-1"></a>      gedad <span class="sc">%in%</span> <span class="st">"[65,98]"</span> <span class="sc">~</span> <span class="dv">5</span></span>
+<span id="cb4-426"><a href="#cb4-426" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-427"><a href="#cb4-427" aria-hidden="true" tabindex="-1"></a>    <span class="at">gedad=</span><span class="fu">labelled_spss</span>(gedad,</span>
+<span id="cb4-428"><a href="#cb4-428" aria-hidden="true" tabindex="-1"></a>                       <span class="at">label =</span> <span class="st">"Grupos de edad"</span>,</span>
+<span id="cb4-429"><a href="#cb4-429" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"14 a 24 años"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"25 a 44 años"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"45 a 59 años"</span><span class="ot">=</span><span class="dv">3</span>,</span>
+<span id="cb4-430"><a href="#cb4-430" aria-hidden="true" tabindex="-1"></a>                                  <span class="st">"De 60 a 64 años"</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">"65 años a más"</span><span class="ot">=</span><span class="dv">5</span>)),</span>
+<span id="cb4-431"><a href="#cb4-431" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-432"><a href="#cb4-432" aria-hidden="true" tabindex="-1"></a>    <span class="co">#residencia en el hogar</span></span>
+<span id="cb4-433"><a href="#cb4-433" aria-hidden="true" tabindex="-1"></a>    <span class="at">resi=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-434"><a href="#cb4-434" aria-hidden="true" tabindex="-1"></a>      ((p204<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> p205<span class="sc">==</span><span class="dv">2</span>) <span class="sc">|</span> (p204<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p206<span class="sc">==</span><span class="dv">1</span>)) <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-435"><a href="#cb4-435" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
+<span id="cb4-436"><a href="#cb4-436" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-437"><a href="#cb4-437" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-438"><a href="#cb4-438" aria-hidden="true" tabindex="-1"></a>    <span class="co">#ingreso por trabajo mensual</span></span>
+<span id="cb4-439"><a href="#cb4-439" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), <span class="sc">~</span><span class="fu">replace</span>(., <span class="fu">is.na</span>(.), <span class="dv">0</span>)),</span>
+<span id="cb4-440"><a href="#cb4-440" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),</span>
+<span id="cb4-441"><a href="#cb4-441" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">labelled_spss</span>(ingtrabw, <span class="at">label =</span> <span class="st">"Ingreso por trabajo anual"</span>),</span>
+<span id="cb4-442"><a href="#cb4-442" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> ingtrabw <span class="sc">/</span> <span class="dv">12</span>,</span>
+<span id="cb4-443"><a href="#cb4-443" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> <span class="fu">labelled_spss</span>(ingtra_n, <span class="at">label =</span> <span class="st">"Ingreso por trabajo mensual"</span>),</span>
+<span id="cb4-444"><a href="#cb4-444" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-445"><a href="#cb4-445" aria-hidden="true" tabindex="-1"></a>    <span class="co">#gasto per capita</span></span>
+<span id="cb4-446"><a href="#cb4-446" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span>(gashog2d<span class="sc">/</span>mieperho)<span class="sc">/</span><span class="dv">12</span>,</span>
+<span id="cb4-447"><a href="#cb4-447" aria-hidden="true" tabindex="-1"></a>    <span class="at">gas_cap=</span><span class="fu">labelled_spss</span>(gas_cap,</span>
+<span id="cb4-448"><a href="#cb4-448" aria-hidden="true" tabindex="-1"></a>                      <span class="at">label =</span> <span class="st">"Gasto per cápita en el hogar"</span>),</span>
+<span id="cb4-449"><a href="#cb4-449" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-450"><a href="#cb4-450" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Nivel educativo alcanzado</span></span>
+<span id="cb4-451"><a href="#cb4-451" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-452"><a href="#cb4-452" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="dv">1</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-453"><a href="#cb4-453" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">12</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-454"><a href="#cb4-454" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-455"><a href="#cb4-455" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">7</span>) <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb4-456"><a href="#cb4-456" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">5</span>,</span>
+<span id="cb4-457"><a href="#cb4-457" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">6</span>,</span>
+<span id="cb4-458"><a href="#cb4-458" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>) <span class="sc">~</span> <span class="dv">7</span>,</span>
+<span id="cb4-459"><a href="#cb4-459" aria-hidden="true" tabindex="-1"></a>      p301a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>) <span class="sc">~</span> <span class="dv">8</span>,</span>
+<span id="cb4-460"><a href="#cb4-460" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">1</span></span>
+<span id="cb4-461"><a href="#cb4-461" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-462"><a href="#cb4-462" aria-hidden="true" tabindex="-1"></a>    <span class="at">educacion=</span><span class="fu">labelled_spss</span>(educacion,</span>
+<span id="cb4-463"><a href="#cb4-463" aria-hidden="true" tabindex="-1"></a>                            <span class="at">label=</span><span class="st">"Nivel educativo"</span>, </span>
+<span id="cb4-464"><a href="#cb4-464" aria-hidden="true" tabindex="-1"></a>                            <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Sin nivel"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Educación secundaria incompleta o menos"</span><span class="ot">=</span><span class="dv">2</span>,</span>
+<span id="cb4-465"><a href="#cb4-465" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación secundaria completa"</span><span class="ot">=</span><span class="dv">3</span>,<span class="st">"Educación técnica incompleta"</span><span class="ot">=</span><span class="dv">4</span>,</span>
+<span id="cb4-466"><a href="#cb4-466" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación técnica completa"</span><span class="ot">=</span><span class="dv">5</span>,<span class="st">"Educación universitaria incompleta"</span><span class="ot">=</span><span class="dv">6</span>,</span>
+<span id="cb4-467"><a href="#cb4-467" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">"Educación universitaria completa"</span><span class="ot">=</span><span class="dv">7</span>,<span class="st">"Posgrado"</span><span class="ot">=</span><span class="dv">8</span>)),</span>
+<span id="cb4-468"><a href="#cb4-468" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-469"><a href="#cb4-469" aria-hidden="true" tabindex="-1"></a>    <span class="co">#Lengua materna resumida</span></span>
+<span id="cb4-470"><a href="#cb4-470" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">case_when</span>(</span>
+<span id="cb4-471"><a href="#cb4-471" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="dv">4</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-472"><a href="#cb4-472" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">9</span>) <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb4-473"><a href="#cb4-473" aria-hidden="true" tabindex="-1"></a>      p300a <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>) <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb4-474"><a href="#cb4-474" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">3</span></span>
+<span id="cb4-475"><a href="#cb4-475" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb4-476"><a href="#cb4-476" aria-hidden="true" tabindex="-1"></a>    <span class="at">lengua=</span><span class="fu">labelled_spss</span>(lengua,</span>
+<span id="cb4-477"><a href="#cb4-477" aria-hidden="true" tabindex="-1"></a>                         <span class="at">label=</span><span class="st">"Lengua materna"</span>, </span>
+<span id="cb4-478"><a href="#cb4-478" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Castellano"</span><span class="ot">=</span><span class="dv">1</span>,<span class="st">"Quechua y otras lenguas nativas"</span><span class="ot">=</span><span class="dv">2</span>,<span class="st">"Otros"</span><span class="ot">=</span><span class="dv">3</span>)),</span>
+<span id="cb4-479"><a href="#cb4-479" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-480"><a href="#cb4-480" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-481"><a href="#cb4-481" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-482"><a href="#cb4-482" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> ocu500<span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="co">#reside en el hogar, peao, no pongo  &amp; ingtra_n &gt; 0 / ingreso mayor a 0 porque solo aplica para la parte 3 de los ingresos.</span></span>
-<span id="cb4-483"><a href="#cb4-483" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(area <span class="sc">==</span> <span class="dv">1</span>) <span class="co">#urbana</span></span>
-<span id="cb4-484"><a href="#cb4-484" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-485"><a href="#cb4-485" aria-hidden="true" tabindex="-1"></a><span class="co">#exportar</span></span>
-<span id="cb4-486"><a href="#cb4-486" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_1 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-487"><a href="#cb4-487" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-488"><a href="#cb4-488" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">"enaho_19_20_21.sav"</span>)</span>
-<span id="cb4-489"><a href="#cb4-489" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-490"><a href="#cb4-490" aria-hidden="true" tabindex="-1"></a><span class="co"># save(enaho19_20_21_1, file="enaho_19_20_21.RData")</span></span>
+<span id="cb4-482"><a href="#cb4-482" aria-hidden="true" tabindex="-1"></a>  <span class="fu">var_labels</span>(<span class="at">pobreza =</span> <span class="st">"Pobreza"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-483"><a href="#cb4-483" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-484"><a href="#cb4-484" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> ocu500<span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="co">#reside en el hogar, peao, no pongo  &amp; ingtra_n &gt; 0 / ingreso mayor a 0 porque solo aplica para la parte 3 de los ingresos.</span></span>
+<span id="cb4-485"><a href="#cb4-485" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(area <span class="sc">==</span> <span class="dv">1</span>) <span class="co">#urbana</span></span>
+<span id="cb4-486"><a href="#cb4-486" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-487"><a href="#cb4-487" aria-hidden="true" tabindex="-1"></a><span class="co">#exportar</span></span>
+<span id="cb4-488"><a href="#cb4-488" aria-hidden="true" tabindex="-1"></a>enaho19_20_21_1 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-489"><a href="#cb4-489" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-490"><a href="#cb4-490" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">"enaho_19_20_21.sav"</span>)</span>
 <span id="cb4-491"><a href="#cb4-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-492"><a href="#cb4-492" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(enaho19_20_21_1)</span>
+<span id="cb4-492"><a href="#cb4-492" aria-hidden="true" tabindex="-1"></a><span class="co"># save(enaho19_20_21_1, file="enaho_19_20_21.RData")</span></span>
 <span id="cb4-493"><a href="#cb4-493" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-494"><a href="#cb4-494" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-494"><a href="#cb4-494" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(enaho19_20_21_1)</span>
 <span id="cb4-495"><a href="#cb4-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-498"><a href="#cb4-498" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-499"><a href="#cb4-499" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb4-500"><a href="#cb4-500" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
-<span id="cb4-501"><a href="#cb4-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-502"><a href="#cb4-502" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2 ----------------------------------</span></span>
-<span id="cb4-503"><a href="#cb4-503" aria-hidden="true" tabindex="-1"></a><span class="co"># updating headers, remove all footnotes, add spanning header</span></span>
-<span id="cb4-504"><a href="#cb4-504" aria-hidden="true" tabindex="-1"></a>modify_ex2 <span class="ot">&lt;-</span> tbl <span class="sc">%&gt;%</span></span>
-<span id="cb4-505"><a href="#cb4-505" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_header</span>(<span class="fu">all_stat_cols</span>() <span class="sc">~</span> <span class="st">"**{level}**, N = {n} ({style_percent(p)}%)"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-506"><a href="#cb4-506" aria-hidden="true" tabindex="-1"></a>  <span class="co"># use `modify_footnote(everything() ~ NA, abbreviation = TRUE)` to delete abbrev. footnotes</span></span>
-<span id="cb4-507"><a href="#cb4-507" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_footnote</span>(<span class="at">update =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="cn">NA</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-508"><a href="#cb4-508" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_spanning_header</span>(<span class="fu">all_stat_cols</span>() <span class="sc">~</span> <span class="st">"**Treatment Received**"</span>)</span>
-<span id="cb4-509"><a href="#cb4-509" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-510"><a href="#cb4-510" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 5 2017</span></span>
-<span id="cb4-511"><a href="#cb4-511" aria-hidden="true" tabindex="-1"></a>m05_2017_spss<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/603-Modulo05.zip"</span>,</span>
-<span id="cb4-512"><a href="#cb4-512" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"603-Modulo05/Enaho01a-2017-500.sav"</span>))</span>
-<span id="cb4-513"><a href="#cb4-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-514"><a href="#cb4-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-496"><a href="#cb4-496" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-497"><a href="#cb4-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-500"><a href="#cb4-500" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-501"><a href="#cb4-501" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb4-502"><a href="#cb4-502" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb4-503"><a href="#cb4-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-504"><a href="#cb4-504" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2 ----------------------------------</span></span>
+<span id="cb4-505"><a href="#cb4-505" aria-hidden="true" tabindex="-1"></a><span class="co"># updating headers, remove all footnotes, add spanning header</span></span>
+<span id="cb4-506"><a href="#cb4-506" aria-hidden="true" tabindex="-1"></a>modify_ex2 <span class="ot">&lt;-</span> tbl <span class="sc">%&gt;%</span></span>
+<span id="cb4-507"><a href="#cb4-507" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_header</span>(<span class="fu">all_stat_cols</span>() <span class="sc">~</span> <span class="st">"**{level}**, N = {n} ({style_percent(p)}%)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-508"><a href="#cb4-508" aria-hidden="true" tabindex="-1"></a>  <span class="co"># use `modify_footnote(everything() ~ NA, abbreviation = TRUE)` to delete abbrev. footnotes</span></span>
+<span id="cb4-509"><a href="#cb4-509" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_footnote</span>(<span class="at">update =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="cn">NA</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-510"><a href="#cb4-510" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_spanning_header</span>(<span class="fu">all_stat_cols</span>() <span class="sc">~</span> <span class="st">"**Treatment Received**"</span>)</span>
+<span id="cb4-511"><a href="#cb4-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-512"><a href="#cb4-512" aria-hidden="true" tabindex="-1"></a><span class="co">#modulo 5 2017</span></span>
+<span id="cb4-513"><a href="#cb4-513" aria-hidden="true" tabindex="-1"></a>m05_2017_spss<span class="ot">&lt;-</span><span class="fu">read_sav</span>(<span class="fu">descargar</span>(<span class="st">"http://iinei.inei.gob.pe/iinei/srienaho/descarga/SPSS/603-Modulo05.zip"</span>,</span>
+<span id="cb4-514"><a href="#cb4-514" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"603-Modulo05/Enaho01a-2017-500.sav"</span>))</span>
 <span id="cb4-515"><a href="#cb4-515" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-516"><a href="#cb4-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-517"><a href="#cb4-517" aria-hidden="true" tabindex="-1"></a>m05_2017_stata<span class="ot">&lt;-</span><span class="fu">read_dta</span>(<span class="st">"C:/Users/Lenovo/Downloads/603-Modulo05 (1)/603-Modulo05/enaho01a-2017-500_new.dta"</span>) <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>()</span>
+<span id="cb4-517"><a href="#cb4-517" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-518"><a href="#cb4-518" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-519"><a href="#cb4-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-520"><a href="#cb4-520" aria-hidden="true" tabindex="-1"></a>m05_2017_spss_2<span class="ot">&lt;-</span></span>
-<span id="cb4-521"><a href="#cb4-521" aria-hidden="true" tabindex="-1"></a>  m05_2017_spss <span class="sc">%&gt;%</span> </span>
-<span id="cb4-522"><a href="#cb4-522" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-523"><a href="#cb4-523" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-524"><a href="#cb4-524" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">case_when</span>(estrato <span class="sc">&lt;=</span> <span class="dv">5</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb4-525"><a href="#cb4-525" aria-hidden="true" tabindex="-1"></a>                     <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">2</span>), </span>
-<span id="cb4-526"><a href="#cb4-526" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">labelled_spss</span>(area, <span class="at">label =</span> <span class="st">"area"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"urbano"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"rural"</span><span class="ot">=</span><span class="dv">2</span>)),</span>
-<span id="cb4-527"><a href="#cb4-527" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), <span class="sc">~</span><span class="fu">replace</span>(., <span class="fu">is.na</span>(.), <span class="dv">0</span>)),</span>
-<span id="cb4-528"><a href="#cb4-528" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),<span class="co">#estaba sumando variables que no eran...</span></span>
-<span id="cb4-529"><a href="#cb4-529" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">labelled_spss</span>(ingtrabw, <span class="at">label =</span> <span class="st">"ingreso por trabajo anual"</span>),</span>
-<span id="cb4-530"><a href="#cb4-530" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> ingtrabw <span class="sc">/</span> <span class="dv">12</span>,</span>
-<span id="cb4-531"><a href="#cb4-531" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> <span class="fu">labelled_spss</span>(ingtra_n, <span class="at">label =</span> <span class="st">"ingreso por trabajo mensual"</span>),</span>
-<span id="cb4-532"><a href="#cb4-532" aria-hidden="true" tabindex="-1"></a>    <span class="at">resi =</span> <span class="fu">case_when</span>(((p204 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> p205 <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">|</span> (p204<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p206<span class="sc">==</span><span class="dv">1</span>)) <span class="sc">~</span> <span class="dv">1</span>)</span>
-<span id="cb4-533"><a href="#cb4-533" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-534"><a href="#cb4-534" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ocu500 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> ingtra_n <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb4-535"><a href="#cb4-535" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-536"><a href="#cb4-536" aria-hidden="true" tabindex="-1"></a>m05_2017_stata_2<span class="ot">&lt;-</span></span>
-<span id="cb4-537"><a href="#cb4-537" aria-hidden="true" tabindex="-1"></a>  m05_2017_stata <span class="sc">%&gt;%</span> </span>
-<span id="cb4-538"><a href="#cb4-538" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>dpto)</span>
-<span id="cb4-539"><a href="#cb4-539" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-540"><a href="#cb4-540" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(m05_2017_stata_2)<span class="ot">&lt;-</span><span class="fu">names</span>(m05_2017_spss_2)</span>
+<span id="cb4-519"><a href="#cb4-519" aria-hidden="true" tabindex="-1"></a>m05_2017_stata<span class="ot">&lt;-</span><span class="fu">read_dta</span>(<span class="st">"C:/Users/Lenovo/Downloads/603-Modulo05 (1)/603-Modulo05/enaho01a-2017-500_new.dta"</span>) <span class="sc">%&gt;%</span> <span class="fu">clean_names</span>()</span>
+<span id="cb4-520"><a href="#cb4-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-521"><a href="#cb4-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-522"><a href="#cb4-522" aria-hidden="true" tabindex="-1"></a>m05_2017_spss_2<span class="ot">&lt;-</span></span>
+<span id="cb4-523"><a href="#cb4-523" aria-hidden="true" tabindex="-1"></a>  m05_2017_spss <span class="sc">%&gt;%</span> </span>
+<span id="cb4-524"><a href="#cb4-524" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-525"><a href="#cb4-525" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-526"><a href="#cb4-526" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">case_when</span>(estrato <span class="sc">&lt;=</span> <span class="dv">5</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb4-527"><a href="#cb4-527" aria-hidden="true" tabindex="-1"></a>                     <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">2</span>), </span>
+<span id="cb4-528"><a href="#cb4-528" aria-hidden="true" tabindex="-1"></a>    <span class="at">area =</span> <span class="fu">labelled_spss</span>(area, <span class="at">label =</span> <span class="st">"area"</span>, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"urbano"</span><span class="ot">=</span><span class="dv">1</span>, <span class="st">"rural"</span><span class="ot">=</span><span class="dv">2</span>)),</span>
+<span id="cb4-529"><a href="#cb4-529" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t), <span class="sc">~</span><span class="fu">replace</span>(., <span class="fu">is.na</span>(.), <span class="dv">0</span>)),</span>
+<span id="cb4-530"><a href="#cb4-530" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(i524a1, d529t, i530a, d536, i538a1, d540t, i541a, d543, d544t))),<span class="co">#estaba sumando variables que no eran...</span></span>
+<span id="cb4-531"><a href="#cb4-531" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtrabw =</span> <span class="fu">labelled_spss</span>(ingtrabw, <span class="at">label =</span> <span class="st">"ingreso por trabajo anual"</span>),</span>
+<span id="cb4-532"><a href="#cb4-532" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> ingtrabw <span class="sc">/</span> <span class="dv">12</span>,</span>
+<span id="cb4-533"><a href="#cb4-533" aria-hidden="true" tabindex="-1"></a>    <span class="at">ingtra_n =</span> <span class="fu">labelled_spss</span>(ingtra_n, <span class="at">label =</span> <span class="st">"ingreso por trabajo mensual"</span>),</span>
+<span id="cb4-534"><a href="#cb4-534" aria-hidden="true" tabindex="-1"></a>    <span class="at">resi =</span> <span class="fu">case_when</span>(((p204 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> p205 <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">|</span> (p204<span class="sc">==</span><span class="dv">2</span> <span class="sc">&amp;</span> p206<span class="sc">==</span><span class="dv">1</span>)) <span class="sc">~</span> <span class="dv">1</span>)</span>
+<span id="cb4-535"><a href="#cb4-535" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-536"><a href="#cb4-536" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ocu500 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> ingtra_n <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb4-537"><a href="#cb4-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-538"><a href="#cb4-538" aria-hidden="true" tabindex="-1"></a>m05_2017_stata_2<span class="ot">&lt;-</span></span>
+<span id="cb4-539"><a href="#cb4-539" aria-hidden="true" tabindex="-1"></a>  m05_2017_stata <span class="sc">%&gt;%</span> </span>
+<span id="cb4-540"><a href="#cb4-540" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>dpto)</span>
 <span id="cb4-541"><a href="#cb4-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-542"><a href="#cb4-542" aria-hidden="true" tabindex="-1"></a>m05_2017<span class="ot">&lt;-</span></span>
-<span id="cb4-543"><a href="#cb4-543" aria-hidden="true" tabindex="-1"></a>  m05_2017_stata_2 <span class="sc">%&gt;%</span> </span>
-<span id="cb4-544"><a href="#cb4-544" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select(1:11, i524a1, d529t, i530a, d536, i538a1, d541a, d543, d544t, ingtrabw, ingtra_n) %&gt;%</span></span>
-<span id="cb4-545"><a href="#cb4-545" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m05_2017_spss_2) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-546"><a href="#cb4-546" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">sort</span>(<span class="fu">current_vars</span>()))</span>
-<span id="cb4-547"><a href="#cb4-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-548"><a href="#cb4-548" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-542"><a href="#cb4-542" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(m05_2017_stata_2)<span class="ot">&lt;-</span><span class="fu">names</span>(m05_2017_spss_2)</span>
+<span id="cb4-543"><a href="#cb4-543" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-544"><a href="#cb4-544" aria-hidden="true" tabindex="-1"></a>m05_2017<span class="ot">&lt;-</span></span>
+<span id="cb4-545"><a href="#cb4-545" aria-hidden="true" tabindex="-1"></a>  m05_2017_stata_2 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-546"><a href="#cb4-546" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select(1:11, i524a1, d529t, i530a, d536, i538a1, d541a, d543, d544t, ingtrabw, ingtra_n) %&gt;%</span></span>
+<span id="cb4-547"><a href="#cb4-547" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(m05_2017_spss_2) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-548"><a href="#cb4-548" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">sort</span>(<span class="fu">current_vars</span>()))</span>
 <span id="cb4-549"><a href="#cb4-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-550"><a href="#cb4-550" aria-hidden="true" tabindex="-1"></a>m05_2017_2 <span class="sc">%&gt;%</span></span>
-<span id="cb4-551"><a href="#cb4-551" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-552"><a href="#cb4-552" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">drop_unused_value_labels</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-553"><a href="#cb4-553" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-554"><a href="#cb4-554" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> fac500a) <span class="sc">%&gt;%</span></span>
-<span id="cb4-555"><a href="#cb4-555" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_strata2</span>(</span>
-<span id="cb4-556"><a href="#cb4-556" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> area,</span>
-<span id="cb4-557"><a href="#cb4-557" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
-<span id="cb4-558"><a href="#cb4-558" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb4-559"><a href="#cb4-559" aria-hidden="true" tabindex="-1"></a>        <span class="at">include =</span> ingtra_n,</span>
-<span id="cb4-560"><a href="#cb4-560" aria-hidden="true" tabindex="-1"></a>        <span class="at">missing =</span> <span class="st">"no"</span>,</span>
-<span id="cb4-561"><a href="#cb4-561" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"continuous"</span>,</span>
-<span id="cb4-562"><a href="#cb4-562" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> .y),</span>
-<span id="cb4-563"><a href="#cb4-563" aria-hidden="true" tabindex="-1"></a>        <span class="at">statistic =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> <span class="st">"{mean}"</span>)</span>
-<span id="cb4-564"><a href="#cb4-564" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb4-565"><a href="#cb4-565" aria-hidden="true" tabindex="-1"></a>    <span class="at">.combine_with =</span> <span class="st">"tbl_stack"</span>,</span>
-<span id="cb4-566"><a href="#cb4-566" aria-hidden="true" tabindex="-1"></a>    <span class="at">.combine_args =</span> <span class="fu">list</span>(<span class="at">group_header =</span> <span class="cn">NULL</span>)</span>
-<span id="cb4-567"><a href="#cb4-567" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-568"><a href="#cb4-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-569"><a href="#cb4-569" aria-hidden="true" tabindex="-1"></a>m05_2017_spss_2 <span class="sc">%&gt;%</span> <span class="co">#ya salió por lo menos, queda como función para las tablas.</span></span>
-<span id="cb4-570"><a href="#cb4-570" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-571"><a href="#cb4-571" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">unlabelled</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-572"><a href="#cb4-572" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-573"><a href="#cb4-573" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-574"><a href="#cb4-574" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> fac500a) <span class="sc">%&gt;%</span></span>
-<span id="cb4-575"><a href="#cb4-575" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_strata2</span>(</span>
-<span id="cb4-576"><a href="#cb4-576" aria-hidden="true" tabindex="-1"></a>      <span class="at">strata =</span> area,</span>
-<span id="cb4-577"><a href="#cb4-577" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
-<span id="cb4-578"><a href="#cb4-578" aria-hidden="true" tabindex="-1"></a>          <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb4-579"><a href="#cb4-579" aria-hidden="true" tabindex="-1"></a>              <span class="at">include =</span> ingtra_n,</span>
-<span id="cb4-580"><a href="#cb4-580" aria-hidden="true" tabindex="-1"></a>              <span class="at">missing =</span> <span class="st">"no"</span>,</span>
-<span id="cb4-581"><a href="#cb4-581" aria-hidden="true" tabindex="-1"></a>              <span class="at">type =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"continuous"</span>,<span class="at">digits =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="fu">c</span>(<span class="dv">3</span>)),</span>
-<span id="cb4-582"><a href="#cb4-582" aria-hidden="true" tabindex="-1"></a>              <span class="at">label =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> .y),</span>
-<span id="cb4-583"><a href="#cb4-583" aria-hidden="true" tabindex="-1"></a>              <span class="at">statistic =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> <span class="st">"{mean}"</span>)</span>
-<span id="cb4-584"><a href="#cb4-584" aria-hidden="true" tabindex="-1"></a>          ),</span>
-<span id="cb4-585"><a href="#cb4-585" aria-hidden="true" tabindex="-1"></a>      <span class="at">.combine_with =</span> <span class="st">"tbl_stack"</span>,</span>
-<span id="cb4-586"><a href="#cb4-586" aria-hidden="true" tabindex="-1"></a>      <span class="at">.combine_args =</span> <span class="fu">list</span>(<span class="at">group_header =</span> <span class="cn">NULL</span>)</span>
-<span id="cb4-587"><a href="#cb4-587" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-588"><a href="#cb4-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-589"><a href="#cb4-589" aria-hidden="true" tabindex="-1"></a><span class="co">#con la base stata, el problema no esta en gtsummary sino en la manipulacion previa</span></span>
-<span id="cb4-590"><a href="#cb4-590" aria-hidden="true" tabindex="-1"></a>m05_2017 <span class="sc">%&gt;%</span> <span class="fu">remove_label</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-591"><a href="#cb4-591" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-592"><a href="#cb4-592" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_label</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-593"><a href="#cb4-593" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_survey_design</span>(<span class="at">weight =</span> fac500a) <span class="sc">%&gt;%</span></span>
-<span id="cb4-594"><a href="#cb4-594" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_strata2</span>(</span>
-<span id="cb4-595"><a href="#cb4-595" aria-hidden="true" tabindex="-1"></a>        <span class="at">strata =</span> area,</span>
-<span id="cb4-596"><a href="#cb4-596" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
-<span id="cb4-597"><a href="#cb4-597" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb4-598"><a href="#cb4-598" aria-hidden="true" tabindex="-1"></a>                <span class="at">include =</span> ingtra_n,</span>
-<span id="cb4-599"><a href="#cb4-599" aria-hidden="true" tabindex="-1"></a>                <span class="at">missing =</span> <span class="st">"no"</span>, <span class="at">digits =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="fu">c</span>(<span class="dv">3</span>)),</span>
-<span id="cb4-600"><a href="#cb4-600" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"continuous"</span>,</span>
-<span id="cb4-601"><a href="#cb4-601" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> .y),</span>
-<span id="cb4-602"><a href="#cb4-602" aria-hidden="true" tabindex="-1"></a>                <span class="at">statistic =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> <span class="st">"{mean}"</span>)</span>
-<span id="cb4-603"><a href="#cb4-603" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb4-604"><a href="#cb4-604" aria-hidden="true" tabindex="-1"></a>        <span class="at">.combine_with =</span> <span class="st">"tbl_stack"</span>,</span>
-<span id="cb4-605"><a href="#cb4-605" aria-hidden="true" tabindex="-1"></a>        <span class="at">.combine_args =</span> <span class="fu">list</span>(<span class="at">group_header =</span> <span class="cn">NULL</span>)</span>
-<span id="cb4-606"><a href="#cb4-606" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-607"><a href="#cb4-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-608"><a href="#cb4-608" aria-hidden="true" tabindex="-1"></a>  <span class="co">#añade el encabezado Grade en la fila</span></span>
-<span id="cb4-609"><a href="#cb4-609" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_table_body</span>(</span>
-<span id="cb4-610"><a href="#cb4-610" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
-<span id="cb4-611"><a href="#cb4-611" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">"area"</span>, <span class="at">row_type =</span> <span class="st">"level"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-612"><a href="#cb4-612" aria-hidden="true" tabindex="-1"></a>      tibble<span class="sc">::</span><span class="fu">add_row</span>(</span>
-<span id="cb4-613"><a href="#cb4-613" aria-hidden="true" tabindex="-1"></a>        <span class="at">row_type =</span> <span class="st">"label"</span>,</span>
-<span id="cb4-614"><a href="#cb4-614" aria-hidden="true" tabindex="-1"></a>        <span class="at">variable =</span> <span class="st">"area"</span>,<span class="co">#label1</span></span>
-<span id="cb4-615"><a href="#cb4-615" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> <span class="st">"Area"</span>,</span>
-<span id="cb4-616"><a href="#cb4-616" aria-hidden="true" tabindex="-1"></a>        <span class="at">.before =</span> 1L</span>
-<span id="cb4-617"><a href="#cb4-617" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb4-618"><a href="#cb4-618" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-619"><a href="#cb4-619" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-620"><a href="#cb4-620" aria-hidden="true" tabindex="-1"></a>      <span class="co">#esto no me queda muy claro que hace pero bueno creo que explicita</span></span>
-<span id="cb4-621"><a href="#cb4-621" aria-hidden="true" tabindex="-1"></a>      <span class="fu">modify_column_indent</span>(<span class="at">columns =</span> label, <span class="at">rows =</span> row_type <span class="sc">==</span> <span class="st">"level"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-622"><a href="#cb4-622" aria-hidden="true" tabindex="-1"></a>      <span class="co">#poner en negrita el Grade</span></span>
-<span id="cb4-623"><a href="#cb4-623" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bold_labels</span>()</span>
-<span id="cb4-624"><a href="#cb4-624" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-625"><a href="#cb4-625" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-626"><a href="#cb4-626" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb4-627"><a href="#cb4-627" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> {{by}},</span>
-<span id="cb4-628"><a href="#cb4-628" aria-hidden="true" tabindex="-1"></a>          <span class="at">include =</span> {{include}},</span>
-<span id="cb4-629"><a href="#cb4-629" aria-hidden="true" tabindex="-1"></a>          <span class="at">statistic =</span> <span class="fu">everything</span>()<span class="sc">~</span><span class="st">"{p}%"</span>,</span>
-<span id="cb4-630"><a href="#cb4-630" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="fu">all_categorical</span>()<span class="sc">~</span><span class="fu">c</span>(<span class="dv">2</span>),</span>
-<span id="cb4-631"><a href="#cb4-631" aria-hidden="true" tabindex="-1"></a>          <span class="at">percent =</span> percent,</span>
-<span id="cb4-632"><a href="#cb4-632" aria-hidden="true" tabindex="-1"></a>          <span class="at">missing =</span> <span class="st">"no"</span>)</span>
-<span id="cb4-633"><a href="#cb4-633" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_strata</span>(</span>
-<span id="cb4-634"><a href="#cb4-634" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> {{strata}},</span>
-<span id="cb4-635"><a href="#cb4-635" aria-hidden="true" tabindex="-1"></a>    <span class="at">.tbl_fun =</span></span>
-<span id="cb4-636"><a href="#cb4-636" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
-<span id="cb4-637"><a href="#cb4-637" aria-hidden="true" tabindex="-1"></a>        <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb4-638"><a href="#cb4-638" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> {{by}},</span>
-<span id="cb4-639"><a href="#cb4-639" aria-hidden="true" tabindex="-1"></a>          <span class="at">include =</span> {{include}},</span>
-<span id="cb4-640"><a href="#cb4-640" aria-hidden="true" tabindex="-1"></a>          <span class="at">statistic =</span> <span class="fu">everything</span>()<span class="sc">~</span><span class="st">"{p}%"</span>,</span>
-<span id="cb4-641"><a href="#cb4-641" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="fu">all_categorical</span>()<span class="sc">~</span><span class="fu">c</span>(<span class="dv">2</span>),</span>
-<span id="cb4-642"><a href="#cb4-642" aria-hidden="true" tabindex="-1"></a>          <span class="at">percent =</span> percent,</span>
-<span id="cb4-643"><a href="#cb4-643" aria-hidden="true" tabindex="-1"></a>          <span class="at">missing =</span> <span class="st">"no"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-644"><a href="#cb4-644" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-645"><a href="#cb4-645" aria-hidden="true" tabindex="-1"></a>        {<span class="cf">if</span>(overall<span class="sc">==</span><span class="cn">TRUE</span>) <span class="fu">add_overall</span>(., <span class="at">col_label =</span> <span class="st">"Total"</span>) <span class="cf">else</span> .} <span class="sc">%&gt;%</span></span>
+<span id="cb4-550"><a href="#cb4-550" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-551"><a href="#cb4-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-552"><a href="#cb4-552" aria-hidden="true" tabindex="-1"></a>m05_2017_2 <span class="sc">%&gt;%</span></span>
+<span id="cb4-553"><a href="#cb4-553" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-554"><a href="#cb4-554" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">drop_unused_value_labels</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-555"><a href="#cb4-555" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-556"><a href="#cb4-556" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> fac500a) <span class="sc">%&gt;%</span></span>
+<span id="cb4-557"><a href="#cb4-557" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_strata2</span>(</span>
+<span id="cb4-558"><a href="#cb4-558" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> area,</span>
+<span id="cb4-559"><a href="#cb4-559" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
+<span id="cb4-560"><a href="#cb4-560" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb4-561"><a href="#cb4-561" aria-hidden="true" tabindex="-1"></a>        <span class="at">include =</span> ingtra_n,</span>
+<span id="cb4-562"><a href="#cb4-562" aria-hidden="true" tabindex="-1"></a>        <span class="at">missing =</span> <span class="st">"no"</span>,</span>
+<span id="cb4-563"><a href="#cb4-563" aria-hidden="true" tabindex="-1"></a>        <span class="at">type =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"continuous"</span>,</span>
+<span id="cb4-564"><a href="#cb4-564" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> .y),</span>
+<span id="cb4-565"><a href="#cb4-565" aria-hidden="true" tabindex="-1"></a>        <span class="at">statistic =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> <span class="st">"{mean}"</span>)</span>
+<span id="cb4-566"><a href="#cb4-566" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb4-567"><a href="#cb4-567" aria-hidden="true" tabindex="-1"></a>    <span class="at">.combine_with =</span> <span class="st">"tbl_stack"</span>,</span>
+<span id="cb4-568"><a href="#cb4-568" aria-hidden="true" tabindex="-1"></a>    <span class="at">.combine_args =</span> <span class="fu">list</span>(<span class="at">group_header =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-569"><a href="#cb4-569" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-570"><a href="#cb4-570" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-571"><a href="#cb4-571" aria-hidden="true" tabindex="-1"></a>m05_2017_spss_2 <span class="sc">%&gt;%</span> <span class="co">#ya salió por lo menos, queda como función para las tablas.</span></span>
+<span id="cb4-572"><a href="#cb4-572" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-573"><a href="#cb4-573" aria-hidden="true" tabindex="-1"></a>  labelled<span class="sc">::</span><span class="fu">unlabelled</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-574"><a href="#cb4-574" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-575"><a href="#cb4-575" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_label</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-576"><a href="#cb4-576" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_survey_design</span>(<span class="at">weight =</span> fac500a) <span class="sc">%&gt;%</span></span>
+<span id="cb4-577"><a href="#cb4-577" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_strata2</span>(</span>
+<span id="cb4-578"><a href="#cb4-578" aria-hidden="true" tabindex="-1"></a>      <span class="at">strata =</span> area,</span>
+<span id="cb4-579"><a href="#cb4-579" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
+<span id="cb4-580"><a href="#cb4-580" aria-hidden="true" tabindex="-1"></a>          <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb4-581"><a href="#cb4-581" aria-hidden="true" tabindex="-1"></a>              <span class="at">include =</span> ingtra_n,</span>
+<span id="cb4-582"><a href="#cb4-582" aria-hidden="true" tabindex="-1"></a>              <span class="at">missing =</span> <span class="st">"no"</span>,</span>
+<span id="cb4-583"><a href="#cb4-583" aria-hidden="true" tabindex="-1"></a>              <span class="at">type =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"continuous"</span>,<span class="at">digits =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="fu">c</span>(<span class="dv">3</span>)),</span>
+<span id="cb4-584"><a href="#cb4-584" aria-hidden="true" tabindex="-1"></a>              <span class="at">label =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> .y),</span>
+<span id="cb4-585"><a href="#cb4-585" aria-hidden="true" tabindex="-1"></a>              <span class="at">statistic =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> <span class="st">"{mean}"</span>)</span>
+<span id="cb4-586"><a href="#cb4-586" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb4-587"><a href="#cb4-587" aria-hidden="true" tabindex="-1"></a>      <span class="at">.combine_with =</span> <span class="st">"tbl_stack"</span>,</span>
+<span id="cb4-588"><a href="#cb4-588" aria-hidden="true" tabindex="-1"></a>      <span class="at">.combine_args =</span> <span class="fu">list</span>(<span class="at">group_header =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-589"><a href="#cb4-589" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-590"><a href="#cb4-590" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-591"><a href="#cb4-591" aria-hidden="true" tabindex="-1"></a><span class="co">#con la base stata, el problema no esta en gtsummary sino en la manipulacion previa</span></span>
+<span id="cb4-592"><a href="#cb4-592" aria-hidden="true" tabindex="-1"></a>m05_2017 <span class="sc">%&gt;%</span> <span class="fu">remove_label</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-593"><a href="#cb4-593" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(resi <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-594"><a href="#cb4-594" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_label</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-595"><a href="#cb4-595" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_survey_design</span>(<span class="at">weight =</span> fac500a) <span class="sc">%&gt;%</span></span>
+<span id="cb4-596"><a href="#cb4-596" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_strata2</span>(</span>
+<span id="cb4-597"><a href="#cb4-597" aria-hidden="true" tabindex="-1"></a>        <span class="at">strata =</span> area,</span>
+<span id="cb4-598"><a href="#cb4-598" aria-hidden="true" tabindex="-1"></a>        <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
+<span id="cb4-599"><a href="#cb4-599" aria-hidden="true" tabindex="-1"></a>            <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb4-600"><a href="#cb4-600" aria-hidden="true" tabindex="-1"></a>                <span class="at">include =</span> ingtra_n,</span>
+<span id="cb4-601"><a href="#cb4-601" aria-hidden="true" tabindex="-1"></a>                <span class="at">missing =</span> <span class="st">"no"</span>, <span class="at">digits =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="fu">c</span>(<span class="dv">3</span>)),</span>
+<span id="cb4-602"><a href="#cb4-602" aria-hidden="true" tabindex="-1"></a>                <span class="at">type =</span> <span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"continuous"</span>,</span>
+<span id="cb4-603"><a href="#cb4-603" aria-hidden="true" tabindex="-1"></a>                <span class="at">label =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> .y),</span>
+<span id="cb4-604"><a href="#cb4-604" aria-hidden="true" tabindex="-1"></a>                <span class="at">statistic =</span> <span class="fu">list</span>(ingtra_n <span class="sc">~</span> <span class="st">"{mean}"</span>)</span>
+<span id="cb4-605"><a href="#cb4-605" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb4-606"><a href="#cb4-606" aria-hidden="true" tabindex="-1"></a>        <span class="at">.combine_with =</span> <span class="st">"tbl_stack"</span>,</span>
+<span id="cb4-607"><a href="#cb4-607" aria-hidden="true" tabindex="-1"></a>        <span class="at">.combine_args =</span> <span class="fu">list</span>(<span class="at">group_header =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-608"><a href="#cb4-608" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-609"><a href="#cb4-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-610"><a href="#cb4-610" aria-hidden="true" tabindex="-1"></a>  <span class="co">#añade el encabezado Grade en la fila</span></span>
+<span id="cb4-611"><a href="#cb4-611" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_table_body</span>(</span>
+<span id="cb4-612"><a href="#cb4-612" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
+<span id="cb4-613"><a href="#cb4-613" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">"area"</span>, <span class="at">row_type =</span> <span class="st">"level"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-614"><a href="#cb4-614" aria-hidden="true" tabindex="-1"></a>      tibble<span class="sc">::</span><span class="fu">add_row</span>(</span>
+<span id="cb4-615"><a href="#cb4-615" aria-hidden="true" tabindex="-1"></a>        <span class="at">row_type =</span> <span class="st">"label"</span>,</span>
+<span id="cb4-616"><a href="#cb4-616" aria-hidden="true" tabindex="-1"></a>        <span class="at">variable =</span> <span class="st">"area"</span>,<span class="co">#label1</span></span>
+<span id="cb4-617"><a href="#cb4-617" aria-hidden="true" tabindex="-1"></a>        <span class="at">label =</span> <span class="st">"Area"</span>,</span>
+<span id="cb4-618"><a href="#cb4-618" aria-hidden="true" tabindex="-1"></a>        <span class="at">.before =</span> 1L</span>
+<span id="cb4-619"><a href="#cb4-619" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-620"><a href="#cb4-620" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-621"><a href="#cb4-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-622"><a href="#cb4-622" aria-hidden="true" tabindex="-1"></a>      <span class="co">#esto no me queda muy claro que hace pero bueno creo que explicita</span></span>
+<span id="cb4-623"><a href="#cb4-623" aria-hidden="true" tabindex="-1"></a>      <span class="fu">modify_column_indent</span>(<span class="at">columns =</span> label, <span class="at">rows =</span> row_type <span class="sc">==</span> <span class="st">"level"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-624"><a href="#cb4-624" aria-hidden="true" tabindex="-1"></a>      <span class="co">#poner en negrita el Grade</span></span>
+<span id="cb4-625"><a href="#cb4-625" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bold_labels</span>()</span>
+<span id="cb4-626"><a href="#cb4-626" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-627"><a href="#cb4-627" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-628"><a href="#cb4-628" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb4-629"><a href="#cb4-629" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> {{by}},</span>
+<span id="cb4-630"><a href="#cb4-630" aria-hidden="true" tabindex="-1"></a>          <span class="at">include =</span> {{include}},</span>
+<span id="cb4-631"><a href="#cb4-631" aria-hidden="true" tabindex="-1"></a>          <span class="at">statistic =</span> <span class="fu">everything</span>()<span class="sc">~</span><span class="st">"{p}%"</span>,</span>
+<span id="cb4-632"><a href="#cb4-632" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="fu">all_categorical</span>()<span class="sc">~</span><span class="fu">c</span>(<span class="dv">2</span>),</span>
+<span id="cb4-633"><a href="#cb4-633" aria-hidden="true" tabindex="-1"></a>          <span class="at">percent =</span> percent,</span>
+<span id="cb4-634"><a href="#cb4-634" aria-hidden="true" tabindex="-1"></a>          <span class="at">missing =</span> <span class="st">"no"</span>)</span>
+<span id="cb4-635"><a href="#cb4-635" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_strata</span>(</span>
+<span id="cb4-636"><a href="#cb4-636" aria-hidden="true" tabindex="-1"></a>    <span class="at">strata =</span> {{strata}},</span>
+<span id="cb4-637"><a href="#cb4-637" aria-hidden="true" tabindex="-1"></a>    <span class="at">.tbl_fun =</span></span>
+<span id="cb4-638"><a href="#cb4-638" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> .x <span class="sc">%&gt;%</span></span>
+<span id="cb4-639"><a href="#cb4-639" aria-hidden="true" tabindex="-1"></a>        <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb4-640"><a href="#cb4-640" aria-hidden="true" tabindex="-1"></a>          <span class="at">by =</span> {{by}},</span>
+<span id="cb4-641"><a href="#cb4-641" aria-hidden="true" tabindex="-1"></a>          <span class="at">include =</span> {{include}},</span>
+<span id="cb4-642"><a href="#cb4-642" aria-hidden="true" tabindex="-1"></a>          <span class="at">statistic =</span> <span class="fu">everything</span>()<span class="sc">~</span><span class="st">"{p}%"</span>,</span>
+<span id="cb4-643"><a href="#cb4-643" aria-hidden="true" tabindex="-1"></a>          <span class="at">digits =</span> <span class="fu">all_categorical</span>()<span class="sc">~</span><span class="fu">c</span>(<span class="dv">2</span>),</span>
+<span id="cb4-644"><a href="#cb4-644" aria-hidden="true" tabindex="-1"></a>          <span class="at">percent =</span> percent,</span>
+<span id="cb4-645"><a href="#cb4-645" aria-hidden="true" tabindex="-1"></a>          <span class="at">missing =</span> <span class="st">"no"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-646"><a href="#cb4-646" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-647"><a href="#cb4-647" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bold_labels</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-647"><a href="#cb4-647" aria-hidden="true" tabindex="-1"></a>        {<span class="cf">if</span>(overall<span class="sc">==</span><span class="cn">TRUE</span>) <span class="fu">add_overall</span>(., <span class="at">col_label =</span> <span class="st">"Total"</span>) <span class="cf">else</span> .} <span class="sc">%&gt;%</span></span>
 <span id="cb4-648"><a href="#cb4-648" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb4-649"><a href="#cb4-649" aria-hidden="true" tabindex="-1"></a>        <span class="fu">modify_header</span>(<span class="at">label =</span> <span class="fu">md</span>(<span class="st">"**Variable**"</span>),</span>
-<span id="cb4-650"><a href="#cb4-650" aria-hidden="true" tabindex="-1"></a>                      stat_1 <span class="sc">~</span> <span class="st">"**{level}**"</span>,</span>
-<span id="cb4-651"><a href="#cb4-651" aria-hidden="true" tabindex="-1"></a>                      stat_2 <span class="sc">~</span> <span class="st">"**{level}**"</span>),</span>
-<span id="cb4-652"><a href="#cb4-652" aria-hidden="true" tabindex="-1"></a>    <span class="at">.header =</span> <span class="st">"**{strata}**"</span></span>
-<span id="cb4-653"><a href="#cb4-653" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-654"><a href="#cb4-654" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-655"><a href="#cb4-655" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-649"><a href="#cb4-649" aria-hidden="true" tabindex="-1"></a>      <span class="fu">bold_labels</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-650"><a href="#cb4-650" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-651"><a href="#cb4-651" aria-hidden="true" tabindex="-1"></a>        <span class="fu">modify_header</span>(<span class="at">label =</span> <span class="fu">md</span>(<span class="st">"**Variable**"</span>),</span>
+<span id="cb4-652"><a href="#cb4-652" aria-hidden="true" tabindex="-1"></a>                      stat_1 <span class="sc">~</span> <span class="st">"**{level}**"</span>,</span>
+<span id="cb4-653"><a href="#cb4-653" aria-hidden="true" tabindex="-1"></a>                      stat_2 <span class="sc">~</span> <span class="st">"**{level}**"</span>),</span>
+<span id="cb4-654"><a href="#cb4-654" aria-hidden="true" tabindex="-1"></a>    <span class="at">.header =</span> <span class="st">"**{strata}**"</span></span>
+<span id="cb4-655"><a href="#cb4-655" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-656"><a href="#cb4-656" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-657"><a href="#cb4-657" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
