@@ -1,0 +1,17 @@
+---
+title: "Diseño de muestra"
+subtitle: |
+   El objetivo de este post es desarrollar las implicancias metodológicas en el diseño de una muestra.
+date: "2022-08-31"
+categories: [muestreo]
+image: "image.jpg"
+fig-cap-location: top
+execute:
+  echo: true
+  cache: true
+format:
+  html:
+    code-fold: true
+---
+
+Artículo en progreso.

@@ -11,7 +11,14 @@
     "href": "index.html",
     "title": "Posts",
     "section": "",
-    "text": "El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).\n\n\n\n\nenaho\n\n\ntablas\n\n\ngraficos\n\n\n \n\n\n\n\n28 jun 2022\n\n\n\n\n\n\n  \n\n\n\n\n\nEl objetivo de este post es explorar distintas herramientas en R para elaborar mapas.\n\n\n\n\nmapas\n\n\n \n\n\n\n\n22 may 2022\n\n\n\n\n\n\n  \n\n\n\n\n\nEl objetivo de este post es unificar distintos módulos de la Encuesta Nacional de Hogares (ENAHO).\n\n\n\n\nenaho\n\n\n \n\n\n\n\n13 may 2022\n\n\n\n\n\n\nNo hay resultados"
+    "text": "El objetivo de este post es desarrollar las implicancias metodológicas en el diseño de una muestra.\n\n\n\n\nmuestreo\n\n\n \n\n\n\n\n31 ago 2022\n\n\n\n\n\n\n  \n\n\n\n\n\nEl objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).\n\n\n\n\nenaho\n\n\ntablas\n\n\ngraficos\n\n\n \n\n\n\n\n28 jun 2022\n\n\n\n\n\n\n  \n\n\n\n\n\nEl objetivo de este post es explorar distintas herramientas en R para elaborar mapas.\n\n\n\n\nmapas\n\n\n \n\n\n\n\n22 may 2022\n\n\n\n\n\n\n  \n\n\n\n\n\nEl objetivo de este post es unificar distintos módulos de la Encuesta Nacional de Hogares (ENAHO).\n\n\n\n\nenaho\n\n\n \n\n\n\n\n13 may 2022\n\n\n\n\n\n\nNo hay resultados"
+  },
+  {
+    "objectID": "posts/03_muestra/index.html",
+    "href": "posts/03_muestra/index.html",
+    "title": "Diseño de muestra",
+    "section": "",
+    "text": "Reutilizarhttps://creativecommons.org/licenses/by/4.0/deed.esCitaciónBibTeX@online{sotelo2022,\n  author = {Santiago Sotelo},\n  title = {Diseño de muestra},\n  date = {2022-08-31},\n  langid = {es}\n}\nPor favor cite este trabajo como:\nSantiago Sotelo. 2022. “Diseño de muestra.” August 31,\n2022."
   },
   {
     "objectID": "posts/bases_datos/index.html#bases-de-datos",
