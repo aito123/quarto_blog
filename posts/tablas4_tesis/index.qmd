@@ -8,7 +8,8 @@ image: "image.jpg"
 fig-align: center
 fig-cap-location: top
 execute:
-  cache: false 
+  cache: refresh
+  #no era auto? 
 ---
 
 ```{r}

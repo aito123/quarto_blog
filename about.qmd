@@ -7,7 +7,7 @@ about:
   links:
     - icon: twitter
       text: Twitter
-      href: https://twitter.com/Santiag87589621/
+      href: https://twitter.com/ssotelo001/
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/santiago-sotelo-989574171/
@@ -17,4 +17,4 @@ about:
 
 ---
 
-Hola mi nombre es Santiago Sotelo y actualmente estudio sociología en la Pontificia Universidad Católica del Perú - PUCP. Me interesan los temas de programación y análisis de data, los cuales complemento con teoría sociológica. Trabajo en el [Laboratorio de Inteligencia Artifical y Métodos Computacionales en Ciencias Sociales (QLAB)](https://qlab.pucp.edu.pe/presentacion) como practicante de investigación. Para mayor información sobre mi trayectoria puedes revisar mi CV.
+Hola mi nombre es Santiago Sotelo y soy egresado de la especialidad de sociología en la Pontificia Universidad Católica del Perú - PUCP. Me interesan los temas de programación y análisis de data, los cuales complemento con teoría sociológica. Trabajo en el [Laboratorio de Inteligencia Artifical y Métodos Computacionales en Ciencias Sociales (QLAB)](https://qlab.pucp.edu.pe/presentacion) como practicante de investigación. Para mayor información sobre mi trayectoria puedes revisar mi CV.
