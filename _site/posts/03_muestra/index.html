@@ -79,6 +79,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -127,6 +146,9 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-34G2Z2VLGJ', { 'anonymize_ip': true});
 </script>
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -181,7 +203,7 @@ gtag('config', 'G-34G2Z2VLGJ', { 'anonymize_ip': true});
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <div class="quarto-title-block"><div><h1 class="title">Diseño de muestra</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
-            <p class="subtitle lead"></p><p>El objetivo de este post es desarrollar las implicancias metodológicas en el diseño de una muestra.</p><p></p>
+            <p class="subtitle lead"></p><p>En este post desarrollaremos las implicancias metodológicas en el diseño de una muestra.</p><p></p>
                                 <div class="quarto-categories">
                 <div class="quarto-category">muestreo</div>
               </div>
@@ -220,22 +242,135 @@ gtag('config', 'G-34G2Z2VLGJ', { 'anonymize_ip': true});
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#qué-es-una-muestra" id="toc-qué-es-una-muestra" class="nav-link active" data-scroll-target="#qué-es-una-muestra">¿Qué es una muestra?</a>
+  <ul class="collapse">
+  <li><a href="#paso-1-definir-la-unidad-de-muestreo-y-de-análisis" id="toc-paso-1-definir-la-unidad-de-muestreo-y-de-análisis" class="nav-link" data-scroll-target="#paso-1-definir-la-unidad-de-muestreo-y-de-análisis">Paso 1: Definir la unidad de muestreo y de análisis</a></li>
+  <li><a href="#paso-2-delimitar-la-población" id="toc-paso-2-delimitar-la-población" class="nav-link" data-scroll-target="#paso-2-delimitar-la-población">Paso 2: Delimitar la población</a></li>
+  <li><a href="#paso-3-elegir-el-método-de-selección-de-la-muestra" id="toc-paso-3-elegir-el-método-de-selección-de-la-muestra" class="nav-link" data-scroll-target="#paso-3-elegir-el-método-de-selección-de-la-muestra">Paso 3: Elegir el método de selección de la muestra</a></li>
+  <li><a href="#paso-4-precisar-el-tamaño-de-la-muestra-requerido" id="toc-paso-4-precisar-el-tamaño-de-la-muestra-requerido" class="nav-link" data-scroll-target="#paso-4-precisar-el-tamaño-de-la-muestra-requerido">Paso 4: Precisar el tamaño de la muestra requerido</a></li>
+  <li><a href="#paso-5-aplicar-el-procedimiento-de-selección" id="toc-paso-5-aplicar-el-procedimiento-de-selección" class="nav-link" data-scroll-target="#paso-5-aplicar-el-procedimiento-de-selección">Paso 5: Aplicar el procedimiento de selección</a></li>
+  <li><a href="#paso-6-obtener-la-muestra" id="toc-paso-6-obtener-la-muestra" class="nav-link" data-scroll-target="#paso-6-obtener-la-muestra">Paso 6: Obtener la muestra</a></li>
+  </ul></li>
+  <li><a href="#referencias" id="toc-referencias" class="nav-link" data-scroll-target="#referencias">Referencias</a></li>
+  </ul>
+</nav>
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
 
 
 
 
-<p>Artículo en progreso.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-1_da71506373ae45d0d7c819c0bf6e18f4">
+
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Objetivo del artículo
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<ul>
+<li>Exponer la definición de una muestra</li>
+<li>Exponer los diferentes tipos de muestra</li>
+<li>Ejemplificar la manera de calcular y seleccionar una muestra</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Para la elaboración de este artículo utilicé como referencia el libro <em>Metodología de la investigación</em> <span class="citation" data-cites="sampieri2014">(<a href="#ref-sampieri2014" role="doc-biblioref">Sampieri, Collado, y Lucio 2014</a>)</span>.</p>
+<section id="qué-es-una-muestra" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="qué-es-una-muestra">¿Qué es una muestra?</h2>
+<p>Una muestra es un subgrupo de la población o universo del cual se recolectan datos y que debe ser representativo de esta. Se utiliza para economizar el tiempo de levantamiento de la información y los recursos para realizar el levantamiento. Para elaborar una muestra es preciso definir la unidad de muestreo y de análisis. Además requiere delimitar la población para generalizar los resultados y establecer parámetros.</p>
+<p>Se realiza una muestra cuando la inclusión de todos los individuos de una población no es determinante. Por ejemplo, no utilizaríamos una muestra en caso estemos realizando un censo en el que se precisa la participación de todos los ciudadanos.</p>
+<p>Con una muestra, el investigador pretende que los resultados encontrados puedan generalizarse a una población mayor. En la esencia del muestreo cuantitativo, el interés es que la muestra sea estadísticamente representativa.</p>
+<div class="cell page-columns page-full" data-fig-width="4">
+<div class="cell-output-display column-body-outset-right">
+<div id="fig-muestra" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p>
+</p><pre class="mermaid" data-tooltip-selector="#mermaid-tooltip-1">flowchart LR
+  A(Muestra) --&gt; B(Clases)
+  B --&gt; C(Probabilística)
+  B --&gt; D(No probabilística\n o dirigida)
+  C --&gt; E(Muestra aleatoria simple)
+  C --&gt; F(Muestra estratificada)
+  C --&gt; G(Muestra por racimos o clústers)
+</pre>
+<div id="mermaid-tooltip-1" class="mermaidTooltip">
+
+</div>
+<p></p>
+<p></p><figcaption class="figure-caption">Figura 1: Tipos de muestra. Extraído de <span class="citation" data-cites="sampieri2014">Sampieri, Collado, y Lucio (<a href="#ref-sampieri2014" role="doc-biblioref">2014</a>)</span>. Adaptación propia.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>A continuación, veremos los pasos para definir una muestra.</p>
+<section id="paso-1-definir-la-unidad-de-muestreo-y-de-análisis" class="level3">
+<h3 class="anchored" data-anchor-id="paso-1-definir-la-unidad-de-muestreo-y-de-análisis">Paso 1: Definir la unidad de muestreo y de análisis</h3>
+<p>En este paso es crucial definir qué o quiénes son los participantes del estudio. La <strong>unidad de muestreo</strong> es el tipo de caso que se escoge para estudiar.</p>
+<p>Por ejemplo, si la pregunta de investigación es ¿discriminan a las mujeres en los anuncios de televisión? Nuestra unidad de análisis correcta serían las mujeres y hombres que aparecen en los anuncios de televisión, para comparar si ambos son presentados con la misma frecuencia e igualdad de papeles desempeñados y atributos.</p>
+<p>La unidad de análisis suele ser lo mismo que la unidad de muestreo; sin embargo, no en todos los casos sucede. La <strong>unidad de análisis</strong> refiere a los elementos que se utilizaran como casos dentro de una investigación. Por ejemplo, si se pretende estudiar <em>las razones por las que asesinos seriales jóvenes cometieron sus delitos</em>, la unidad de muestreo (el caso) sería el asesino (lo que es seleccionado), mientras que la unidad de análisis podría ser cada asesinato particular (cada crimen se analizaría de manera particular).</p>
+<p>En la mayoría de casos, unidad de muestreo/análisis se utiliza de manera intercambiable. Una vez definida la unidad de muestreo/análisis se procede a delimitar la población que va a ser estudiada.</p>
+</section>
+<section id="paso-2-delimitar-la-población" class="level3">
+<h3 class="anchored" data-anchor-id="paso-2-delimitar-la-población">Paso 2: Delimitar la población</h3>
+<div class="cell" data-layout-align="center" data-hash="index_cache/html/fig-poblacion_11fc2e09f70708eb80ea828114c20dbf">
+<div class="cell-output-display">
+<div id="fig-poblacion" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-poblacion-1.png" class="img-fluid figure-img" width="520"></p>
+<p></p><figcaption class="figure-caption">Figura 2: Representación de una muestra como subgrupo. Extraído de <span class="citation" data-cites="sampieri2014">Sampieri, Collado, y Lucio (<a href="#ref-sampieri2014" role="doc-biblioref">2014</a>)</span>.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En progreso…</p>
+</section>
+<section id="paso-3-elegir-el-método-de-selección-de-la-muestra" class="level3">
+<h3 class="anchored" data-anchor-id="paso-3-elegir-el-método-de-selección-de-la-muestra">Paso 3: Elegir el método de selección de la muestra</h3>
+<p>.</p>
+</section>
+<section id="paso-4-precisar-el-tamaño-de-la-muestra-requerido" class="level3">
+<h3 class="anchored" data-anchor-id="paso-4-precisar-el-tamaño-de-la-muestra-requerido">Paso 4: Precisar el tamaño de la muestra requerido</h3>
+<p>.</p>
+</section>
+<section id="paso-5-aplicar-el-procedimiento-de-selección" class="level3">
+<h3 class="anchored" data-anchor-id="paso-5-aplicar-el-procedimiento-de-selección">Paso 5: Aplicar el procedimiento de selección</h3>
+<p>.</p>
+</section>
+<section id="paso-6-obtener-la-muestra" class="level3">
+<h3 class="anchored" data-anchor-id="paso-6-obtener-la-muestra">Paso 6: Obtener la muestra</h3>
+<p>.</p>
+</section>
+</section>
+<section id="referencias" class="level2">
+<h2 class="anchored" data-anchor-id="referencias">Referencias</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-sampieri2014" class="csl-entry" role="doc-biblioentry">
+Sampieri, Roberto Hernández, Carlos Fernández Collado, y Pilar Baptista Lucio. 2014. <em>Metodología de la investigación</em>. MacGraw-Hill/Interamericana.
+</div>
+</div>
+<!-- NOTE By default TODOr looks for the following notes: FIXME, TODO, CHANGED, IDEA, HACK, NOTE, REVIEW, BUG, QUESTION, COMBAK, TEMP. -->
 
 
 <!-- -->
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reutilizar</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.es">https://creativecommons.org/licenses/by/4.0/deed.es</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citación</h2><div><div class="quarto-appendix-secondary-label">BibTeX</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{sotelo2022,
   author = {Santiago Sotelo},
@@ -400,20 +535,110 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Diseño de muestra"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> |</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">   El objetivo de este post es desarrollar las implicancias metodológicas en el diseño de una muestra.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">   En este post desarrollaremos las implicancias metodológicas en el diseño de una muestra.</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2022-08-31"</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [muestreo]</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> "image.jpg"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="an">fig-cap-location:</span><span class="co"> top</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">  cache: true</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>Artículo en progreso.</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: false</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">  cache: refresh</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    gfm:</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">      mermaid-format: png</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> references.bib</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: false</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>here<span class="sc">::</span><span class="fu">i_am</span>(<span class="st">"index.qmd"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="false" appearance="default" icon="true"}</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Objetivo del artículo</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Exponer la definición de una muestra</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Exponer los diferentes tipos de muestra</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Ejemplificar la manera de calcular y seleccionar una muestra</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Para la elaboración de este artículo utilicé como referencia el libro _Metodología de la investigación_ <span class="co">[</span><span class="ot">@sampieri2014</span><span class="co">]</span>.</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">## ¿Qué es una muestra?</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>Una muestra es un subgrupo de la población o universo del cual se recolectan datos y que debe ser representativo de esta. Se utiliza para economizar el tiempo de levantamiento de la información y los recursos para realizar el levantamiento. Para elaborar una muestra es preciso definir la unidad de muestreo y de análisis. Además requiere delimitar la población para generalizar los resultados y establecer parámetros.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Se realiza una muestra cuando la inclusión de todos los individuos de una población no es determinante. Por ejemplo, no utilizaríamos una muestra en caso estemos realizando un censo en el que se precisa la participación de todos los ciudadanos.</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>Con una muestra, el investigador pretende que los resultados encontrados puedan generalizarse a una población mayor. En la esencia del muestreo cuantitativo, el interés es que la muestra sea estadísticamente representativa.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>%%| label: fig-muestra</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>%%| fig<span class="ot">-w</span>idth: <span class="dv">4</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>%%| fig<span class="ot">-c</span>ap: Tipos de muestra. Extraído de <span class="dt">@sampieri2014</span>. Adaptación propia.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>%%| column: body<span class="ot">-o</span>utset<span class="ot">-r</span>ight</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  A(Muestra) --&gt; B(Clases)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  B --&gt; C(Probabilística)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  B --&gt; D(No probabilística\n o dirigida)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  C --&gt; E(Muestra aleatoria simple)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  C --&gt; F(Muestra estratificada)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  C --&gt; G(Muestra por racimos o clústers)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>A continuación, veremos los pasos para definir una muestra.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paso 1: Definir la unidad de muestreo y de análisis</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>En este paso es crucial definir qué o quiénes son los participantes del estudio. La **unidad de muestreo** es el tipo de caso que se escoge para estudiar.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>Por ejemplo, si la pregunta de investigación es ¿discriminan a las mujeres en los anuncios de televisión? Nuestra unidad de análisis correcta serían las mujeres y hombres que aparecen en los anuncios de televisión, para comparar si ambos son presentados con la misma frecuencia e igualdad de papeles desempeñados y atributos.</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>La unidad de análisis suele ser lo mismo que la unidad de muestreo; sin embargo, no en todos los casos sucede. La **unidad de análisis** refiere a los elementos que se utilizaran como casos dentro de una investigación. Por ejemplo, si se pretende estudiar _las razones por las que asesinos seriales jóvenes cometieron sus delitos_, la unidad de muestreo (el caso) sería el asesino (lo que es seleccionado), mientras que la unidad de análisis podría ser cada asesinato particular (cada crimen se analizaría de manera particular).</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>En la mayoría de casos, unidad de muestreo/análisis se utiliza de manera intercambiable. Una vez definida la unidad de muestreo/análisis se procede a delimitar la población que va a ser estudiada.</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paso 2: Delimitar la población</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-align: center</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-poblacion</span></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: Representación de una muestra como subgrupo. Extraído de @sampieri2014.</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>magick<span class="sc">::</span><span class="fu">image_read</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"muestreo.jpg"</span>))</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>En progreso...</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paso 3: Elegir el método de selección de la muestra</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paso 4: Precisar el tamaño de la muestra requerido</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paso 5: Aplicar el procedimiento de selección</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="fu">### Paso 6: Obtener la muestra</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referencias</span></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- </span><span class="al">NOTE</span><span class="co"> By default TODOr looks for the following notes: </span><span class="al">FIXME</span><span class="co">, </span><span class="al">TODO</span><span class="co">, CHANGED, IDEA, </span><span class="al">HACK</span><span class="co">, </span><span class="al">NOTE</span><span class="co">, REVIEW, </span><span class="al">BUG</span><span class="co">, QUESTION, COMBAK, TEMP. --&gt;</span></span>
+</code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
