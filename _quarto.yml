@@ -13,7 +13,11 @@ website:
       - index.qmd
       - about.qmd
       - text: CV
-        href: cv.html
+        menu:
+          - text: Español
+            href: cv.html
+          - text: English
+            href: cv_english.html
       - icon: github
         href: https://github.com/aito123/
       - icon: linkedin
