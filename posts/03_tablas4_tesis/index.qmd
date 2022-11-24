@@ -1,0 +1,1139 @@
+---
+title: "Descripción del mercado laboral a partir de la ENAHO"
+subtitle: |
+  El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).
+date: "2022-06-28"
+categories: [enaho, tablas, graficos]
+image: "image.jpg"
+fig-align: center
+fig-cap-location: top
+---
+
+```{r}
+#importar los necesarios
+pacman::p_load(here,tidyverse,janitor,glue,haven,rio,sjlabelled,gt,gtsummary,flextable,survey,srvyr,ggpubr,scales,officer, Hmisc, patchwork, ggtext, gdtools)
+
+#Set working directory de manera relativa
+here::i_am("03_tablas4_tesis/index.qmd")
+
+```
+
+```{r funciones para parte 1,2,3}
+#| label: funciones para parte 1,2,3
+
+#tabla_gen
+tabla_gen<-function(data, weight, strata, include, sin_nacional=FALSE){
+  
+  #style_number_10K <- function(x) paste0(style_number(x, scale = 0.001), "M")
+  style_number_10K <- function(x) style_number(x, scale = 0.001)
+
+  tbl1<-
+  data %>%
+    mutate(nacional="Nacional") %>% 
+    labelled::drop_unused_value_labels() %>% 
+    haven::as_factor() %>% 
+    as_survey_design(weight = fac500a) %>% 
+    tbl_strata(
+      strata = {{strata}},
+      .tbl_fun =
+        ~ .x %>%
+          tbl_svysummary(
+            include = nacional,
+            statistic = everything()~"{n} ({p}%)",
+            digits = all_categorical()~c(style_number_10K, 2),
+            percent = "column",
+            missing = "no") %>%
+        bold_labels() %>% 
+        remove_row_type(nacional, type = "header") %>% 
+        modify_header(label = md("**Variable**"),
+                      update = stat_0 ~ "Total en miles (%)") %>% 
+        modify_footnote(update = everything() ~ NA) %>% 
+        bold_levels() %>%
+        modify_column_indent(columns = label, undo = TRUE)
+)
+
+
+  etiqueta<-data %>% select({{include}}) %>%  get_label()
+
+  tbl2<-
+    data %>%
+      labelled::drop_unused_value_labels() %>% 
+      haven::as_factor() %>% 
+      as_survey_design(weight = {{weight}}) %>% 
+      tbl_strata(
+        strata = {{strata}},
+        .tbl_fun =
+          ~ .x %>%
+            tbl_svysummary(
+              include = {{include}},
+              label = everything() ~ etiqueta,
+              statistic = everything()~"{n} ({p}%)",
+              digits = all_categorical()~c(style_number_10K, 2),
+              percent = "column",
+              missing = "no") %>%
+          bold_labels() %>% 
+          modify_header(label = md("**Variable**"),
+                        update = stat_0 ~ "Total en miles (%)") %>% 
+          modify_footnote(update = everything() ~ NA),
+        .header = "**{strata}**"
+      )
+     
+      if(sin_nacional==FALSE) {
+        tbl_stack(list(tbl1, tbl2))
+  } else {
+    tbl2
+  }
+}
+ 
+#tab_esp_cat
+tab_esp_cat<-function(data, weight, strata, by, include, percent, overall=TRUE){
+
+ tbl1<-data %>% 
+  mutate(nacional="Nacional") %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = fac500a) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = nacional,
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+        remove_row_type(nacional, type = "header") %>% 
+        modify_footnote(update = everything() ~ NA) %>%
+        bold_levels() %>%
+        modify_column_indent(columns = label, undo = TRUE) %>% 
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+   
+ etiqueta<-data %>% select({{include}}) %>%  get_label() 
+ 
+ tbl2<-data %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = {{weight}}) %>% 
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = {{by}},
+          include = {{include}},
+          label = everything() ~ etiqueta,
+          statistic = everything()~"{p}%",
+          digits = all_categorical()~c(2),
+          percent = percent,
+          missing = "no") %>% 
+      
+        {if(overall==TRUE) add_overall(., col_label = "Total") else .} %>%
+      
+      modify_footnote(update = everything() ~ NA) %>%
+      bold_labels() %>% 
+      
+        modify_header(label = md("**Variable**"),
+                      stat_1 ~ "**{level}**",
+                      stat_2 ~ "**{level}**"),
+    .header = "**{strata}**"
+  )
+ 
+ tbl_stack(list(tbl1, tbl2))
+}
+
+#tab_esp_num
+tab_esp_num<-function(data, weight, strata, by, include, fill){
+  
+  variable1 <- data %>% select({{include}}) %>% names()
+  label1 <- data %>% select({{include}}) %>% sjlabelled::label_to_colnames() %>% names()
+  
+  data %>%
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = {{weight}}) %>%
+  tbl_strata(
+    strata = {{strata}},
+    .tbl_fun =
+      ~ .x %>%
+      tbl_strata2(
+        #grade irá en la fila, solo puede ser una.
+        strata = {{include}},
+        ~ .x %>%
+          tbl_svysummary(
+            #by irá en las columnas, solo puede ser una
+            by = {{by}},
+            #include irá en los valores, de preferencia que sea una, antes era age
+            include = {{fill}},
+            #filtrar missing
+            missing = "no",
+            #type
+            type= everything() ~ "continuous",
+            #le pone la etiqueta a cada valor de las filas de grade
+            label = list(all_continuous() ~ .y),
+            statistic = list(all_continuous() ~ "{mean}")
+          ) %>%
+          #negrita trt
+          modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+          #añadir columna de totales y en negrita
+          add_overall(., col_label = "Total"),
+        #una tabla debajo de la otra en vez de una al costado
+        .combine_with = "tbl_stack",
+        #borra las filas en blanco
+        .combine_args = list(group_header = NULL)
+      ) %>%
+
+      #añade el encabezado Grade en la fila
+      modify_table_body(
+        ~ .x %>%
+          mutate(variable = variable1, row_type = "level") %>%
+          tibble::add_row(
+            row_type = "label",
+            variable = variable1,#label1
+            label = label1,
+            .before = 1L
+          )
+      ) %>%
+
+      #esto no me queda muy claro que hace pero bueno creo que explicita
+      modify_column_indent(columns = label, rows = row_type == "level") %>%
+      #poner en negrita el Grade
+      bold_labels() %>%
+      #encabezado de la variable de las columnas
+      #modify_spanning_header(all_stat_cols() ~ "**Treatment**") %>%
+      #override el footnote para explicitar que estamos hablando de Age
+      modify_footnote(update = everything() ~ NA)
+
+  )
+  
+
+}
+
+#theme tablas
+theme_tesis <- function(x) {
+  if (!inherits(x, "flextable")) {
+    stop("theme_tesis supports only flextable objects.")
+  }
+  
+  x <- border_remove(x)
+  fp_bdr <- fp_border(
+    width = 2,
+    color = "white"
+  )
+  x <- border_outer(x, part = "all", border = fp_bdr)
+  x <- border_inner_h(x, border = fp_bdr, part = "all")
+  x <- border_inner_v(x, border = fp_bdr, part = "all")
+  x <- bold(x = x, bold = TRUE, part = "header")
+  x <- italic(x = x, italic = TRUE, part = "footer")
+  x <- align(x, align = "right", part = "body")
+  x <- align(x, align = "center", part = "header")
+  x <- bg(x, bg = "#676768", part = "header")
+  x <- color(x, color = "white", part = "header")
+  x <- bg(x, bg = "#e3e3e3", part = "body")
+  x <- merge_h(x, part = "body")
+  x <- compose(x, value = as_paragraph("Variable"), i=1, j=1, part = "header")
+  x <- merge_at(x, i=1:2, j=1, part = "header")
+  x <- flextable::font(x, fontname="Arial Narrow", part="all")
+  x <- flextable::fontsize(x, size= 10, part="all")
+  x <- align(x, j=1, align = "left", part = "body")
+  fix_border_issues(x)
+}
+
+#compara_graf
+compara_graf<-function(data, var){
+  
+  var_orden<-data.frame(
+    values=c(data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_values(),data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_values() %>% as.data.frame() %>% nrow() + 1),
+    labels=c(data %>% labelled::drop_unused_value_labels() %>% pull({{var}}) %>% get_labels(), "Nacional")
+  )
+  
+  graf_total<-
+    rbind(
+      #Nacional
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        mutate(var1="Nacional") %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+      
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        mutate(var1="Nacional") %>%
+        mutate(ocupinf="total") %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+      
+      
+      #Variable
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        rename(var1={{var}}) %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+      
+      data %>%
+        labelled::drop_unused_value_labels() %>%
+        haven::as_factor() %>%
+        rename(var1={{var}}) %>%
+        mutate(ocupinf="total") %>%
+        group_by(ano, ocupinf, var1) %>%
+        summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+      
+    ) %>%
+    ungroup() %>%
+    filter(!(ano %in% "2020")) %>%
+    pivot_wider(names_from = ano, values_from = var) %>%
+    rowwise() %>%
+    mutate(
+      sub= `2021`-`2019`,
+      porc= round_half_up(sub/`2019`*100),
+      label=paste0(round_half_up(sub/`2019`*100), "%")
+    ) %>%
+    ungroup() %>%
+    filter(ocupinf %in% "total") %>%
+    
+    mutate(var1=as.factor(var1)) %>%
+    
+    ggplot(aes(y=porc, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
+    geom_bar(stat = "identity", colour = "white", fill = "#333333") +
+    geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.2, size = 3, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.2, size = 3, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
+    scale_y_continuous(labels = function(x) paste0(x, "%"), breaks = seq(-100, 100, 25), limits = c(-50, 50)) +
+    theme_pubr() +
+    ggtitle("Total") +
+    theme(
+      legend.position="right",
+      legend.title=element_blank(),
+      axis.title=element_blank(),
+      axis.text.x = element_text(size = 8),
+      axis.text.y = element_text(size = 10)
+    ) +
+    coord_flip()
+  
+  graf_formal<-
+  rbind(
+    #Nacional
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+
+    #Variable
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+
+  ) %>%
+    ungroup() %>%
+    filter(!(ano %in% "2020")) %>%
+    pivot_wider(names_from = ano, values_from = var) %>%
+    rowwise() %>%
+    mutate(
+      sub= `2021`-`2019`,
+      porc= round_half_up(sub/`2019`*100),
+      label=paste0(round_half_up(sub/`2019`*100), "%")
+    ) %>%
+    ungroup() %>%
+    filter(ocupinf %in% "Empleo formal") %>%
+
+    mutate(var1=as.factor(var1)) %>%
+
+    ggplot(aes(y=porc, label=label, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
+    geom_bar(stat = "identity", colour = "white", fill = "#989898") +
+    geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
+    scale_y_continuous(labels = function(x) paste0(x, "%"), breaks = seq(-100, 100, 25), limits = c(-50, 50)) +
+    theme_pubr() +
+    ggtitle("Empleo formal") +
+    theme(
+      legend.position="right",
+      legend.title=element_blank(),
+      axis.title=element_blank(),
+      axis.text.x = element_text(size = 8),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank()
+    ) +
+    coord_flip()
+
+  graf_informal<-
+  rbind(
+    #Nacional
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    mutate(var1="Nacional") %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+
+    #Variable
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+
+    data %>%
+    labelled::drop_unused_value_labels() %>%
+    haven::as_factor() %>%
+    rename(var1={{var}}) %>%
+    mutate(ocupinf="total") %>%
+    group_by(ano, ocupinf, var1) %>%
+    summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+
+  ) %>%
+    ungroup() %>%
+    filter(!(ano %in% "2020")) %>%
+    pivot_wider(names_from = ano, values_from = var) %>%
+    rowwise() %>%
+    mutate(
+      sub= `2021`-`2019`,
+      porc= round_half_up(sub/`2019`*100),
+      label=paste0(round_half_up(sub/`2019`*100), "%")
+    ) %>%
+    ungroup() %>%
+    filter(ocupinf %in% "Empleo informal") %>%
+
+    mutate(var1=as.factor(var1)) %>%
+
+    ggplot(aes(y=porc, label=label, x=fct_relevel(fct_reorder(var1, var_orden$values, min), "Nacional", after = Inf))) +
+    geom_bar(stat = "identity", colour = "white", fill = "#cccccc") +
+    geom_text(aes(label=ifelse(porc>=0, label, "")), hjust = -0.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_text(aes(label=ifelse(porc<0, label, "")), hjust = 1.5, size = 3.5, colour="#333333", position = position_dodge(width = 1), inherit.aes = TRUE) +
+    geom_hline(yintercept = 0, color = "#e6e6e6", size = 1) +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 30)) +
+    scale_y_continuous(labels = function(x) paste0(x, "%"), breaks = seq(-100, 100, 25), limits = c(-50, 50)) +
+    theme_pubr() +
+    ggtitle("Empleo informal") +
+    theme(
+      legend.position="right",
+      legend.title=element_blank(),
+      axis.title=element_blank(),
+      axis.text.x = element_text(size = 8),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank()
+    ) +
+    coord_flip()
+
+  graf_total + graf_formal + graf_informal
+
+}
+
+```
+
+```{r data}
+#| label: data
+
+base1<-read_sav(here("01_bases_datos/enaho_19_20_21.sav"))
+base2<-read_sav(here("01_bases_datos/enaho_19_20_21_total.sav"))
+
+```
+
+# Parte 1: PEA OCUPADA URBANA
+
+- Se observa una reducción de la PEA ocupada en 2020 en 10 puntos porcentuales en comparación al 2019.
+- En el 2020, aumentó en 6% el número de personas que no buscaban trabajo (NO PEA).
+- Si bien la PEA ocupada tuvo una disminución de 10% en 2020, se observa una recuperación hacia 2021. Sin embargo, no ha regresado al nivel prepandemia.
+- Un aumento de la PEA deoscupada en 2020 y sobre todo de la No Pea, aquellos que no buscan trabajo.
+- La No PEA en el 2021 regresó a los niveles del 2019, es decir, 27%.
+
+```{r Características de la PEA entre 2019 y 2021}
+#| label: fig-pea
+#| fig-cap: "Características de la PEA entre 2019 y 2021"
+#| fig-height: 4
+
+base2 %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, pea) %>% 
+  count(wt=fac500a) %>% 
+  group_by(ano) %>% 
+  mutate(porc=round_half_up(n/sum(n), 2)*100,
+         label=paste0(porc, "%")) %>% 
+  ggplot(aes(fill=pea, y=porc, x=ano, label=label)) + 
+  geom_bar(position = position_stack(), stat = "identity", width = .7, colour = "white") +
+  geom_text(aes(label = label), position = position_stack(vjust = 0.5), colour = rep(c("white", "black", "black"), 3), size = 4) + 
+  scale_y_continuous(labels = label_percent(decimal.mark = ",",suffix = "%", scale = 1)) +
+  scale_fill_grey(start = 0.2,end = 0.8) +
+  theme_pubr() +
+  theme(
+    legend.position="right",
+    legend.title=element_blank(),
+    axis.title=element_blank()
+  )
+
+```
+
+- @tbl-peadomes muestra que hubo una disminución importante de la PEA ocupada urbana en 2020 seguido de una recuperación en 2021 cercana a niveles prepandemia.
+- Se observa una disminución importante en Lima Metropolitana que perdió más de un millón de trabajadores hacia el 2020.
+- Las ciudades más afectadas han sido las ciudades intermedias y las grandes ciudades, las cuales han perdido más de un millón de trabajadores entre 2019 y 2020. Las ciudades intermedias han tenido una recuperación más lenta.
+
+```{r}
+#| label: tbl-peadomes
+#| tbl-cap: "Características de la PEA ocupada urbana según dominio y estrato entre 2019 y 2021 (porcentajes verticales)"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = dominio, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = estrato, strata = ano, sin_nacional = TRUE)
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+- @tbl-peasexeda muestra que hubo una reducción mayor de la fuerza laboral femenina entre 2019 y 2020 superando un millón doscientos mil empleos perdidos (alrededor de la población del Callao).
+- La fuerza laboral masculina también experimentó una caída en 2020; sin embargo, se observa una recuperación en términos del tamaño que supera a la dimensión del 2019.
+- Los trabajadores menores 44 años han sido los más afectados, en especial los que tienen entre 35 y 44 años.
+- Además se observa que hacia el 2021, los trabajadores entre 55 y 64 años no habían recuperado su tamaño a niveles prepandemia.
+- Los trabajadores con únicamente educación secundaria o menos fueron los más afectados durante la pandemia; no obstante, se observa una recuperación hacia 2021.
+- La pandemia afectó sobre todo a los trabajadores que se consideraban no pobres llegando a reducirse la fuerza laboral en dos millones hacia el 2020. Este grupo no se ha recuperado a niveles prepandemia hacia 2021.
+
+```{r}
+#| label: tbl-peasexeda
+#| tbl-cap: "Características de la PEA ocupada urbana según sexo y grupo de edad entre 2019 y 2021 (porcentajes verticales)"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = p207, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = gedad, strata = ano, sin_nacional = TRUE)
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: tbl-edpobre
+#| tbl-cap: "Características de la PEA ocupada urbana según nivel educativo y pobreza entre 2019 y 2021 (porcentajes verticales)"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = educacion, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = pobreza, strata = ano, sin_nacional = TRUE)
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+- @tbl-peaocupinf entre los grupos más numerosos se encuentran trabajadores independientes, empleados y obreros. Entre ellos, los empleados hacia el 2021 no se ha recuperado de su situación prepandemia habiendo perdido 500 mil trabajadores entre 2019 y 2021.
+- Tanto el empleo informal como el formal se redujeron en 2020. El empleo informal ha aumentado en 603 mil trabajadores entre 2019 y 2021. 
+
+```{r}
+#| label: tbl-peaocupinf
+#| tbl-cap: "Características de la PEA ocupada urbana según ocupación principal y situación de informalidad entre 2019 y 2021 (porcentajes verticales)"
+
+tbl_stack(
+  list(
+    base1 %>% tabla_gen(weight = fac500a, include = p507, strata = ano),
+    base1 %>% tabla_gen(weight = fac500a, include = ocupinf, strata = ano, sin_nacional = TRUE)
+  )) %>% as_flex_table() %>% theme_tesis()
+```
+
+# Parte 2: CAMBIOS EN LOS NIVELES DE INFORMALIDAD
+
+- En la @fig-empleo podemos observar que el empleo informal ha aumentado de manera constante entre 2019 y 2021 dentro de la PEA ocupada urbana. 
+
+```{r Características del empleo de la PEA ocupada urbana entre 2019 y 2021}
+#| label: fig-empleo
+#| fig-cap: "Características del empleo de la PEA ocupada urbana entre 2019 y 2021"
+#| fig-height: 4
+
+base1 %>%
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, ocupinf) %>% 
+  count(wt=fac500a) %>% 
+  group_by(ano) %>% 
+  mutate(porc=round_half_up(n/sum(n), 2)*100,
+         label=paste0(porc, "%")) %>% 
+  ggplot(aes(fill=ocupinf, y=porc, x=ano, label=label)) + 
+  geom_bar(position = position_stack(), stat = "identity", width = .7, colour = "white") +
+  geom_text(aes(label = label), position = position_stack(vjust = 0.5), colour = rep(c("white", "black"), 3), size = 4) + 
+  scale_y_continuous(labels = label_percent(decimal.mark = ",",suffix = "%", scale = 1)) +
+  scale_fill_grey(start = 0.2,end = 0.8) +
+  theme_pubr() +
+  theme(
+    legend.position="right",
+    legend.title=element_blank(),
+    axis.title=element_blank()
+  )
+
+```
+
+- @tbl-dominio muestra que hacia el 2021 ha aumentado el empleo informal en todos los dominios geográficos, especialmente en la Selva, Sierra Centro, y Costa Sur. 
+
+```{r}
+#| label: tbl-dominio
+#| tbl-cap: "Dominio de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = dominio, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+  
+```
+
+- @tbl-estr muestra que hacia el 2021 ha aumentado el empleo informal principalmente en las ciudades intermedias de entre 50 000 y 499 999 habitantes. 
+
+```{r}
+#| label: tbl-estr
+#| tbl-cap: "Estrato geográfico de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = estrato, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+- @tbl-sex muestra que hacia el 2021, dentro de los trabajadores jefes de hogar, si bien hay una predominancia de mujeres en el empleo informal, ha habido un mayor aumento de los hombres con 5% aprox. 
+
+```{r}
+#| label: tbl-sex
+#| tbl-cap: "Sexo del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p207, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+- @tbl-gedad muestra que hacia el 2021, dentro de los trabajadores jefes de hogar, ha aumentado en el empleo informal los trabajadores entre 55 y 64 años principalmente seguido de los trabajadores entre 35 y 44 años. 
+
+```{r}
+#| label: tbl-gedad
+#| tbl-cap: "Grupo de edad del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+- @tbl-edu muestra que hacia el 2021, dentro de los trabajadores jefes de hogar, ha aumentado en el empleo informal principalmente a los trabajadores con educación universitaria incompleta y los que contaban con secundaria completa como máximo nivel alcanzado.
+
+```{r}
+#| label: tbl-edu
+#| tbl-cap: "Nivel educativo alcanzado del jefe de hogar en la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  filter(p203 %in% 1) %>% #jefe de hogar
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = educacion, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+- @tbl-leng muestra que hacia el 2021, los trabajadores de lengua materna castellano han aumentado en el empleo informal en un 5% aprox.
+
+```{r}
+#| label: tbl-leng
+#| tbl-cap: "Lengua materna de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = lengua, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+- @tbl-ocupi muestra que hacia el 2021, los trabajadores empleadores y obreros han aumentado en el empleo informal. Cabe destacar que trabajadores familiares no remunerados y otros están presentes únicamente en el empleo informal.
+
+```{r}
+#| label: tbl-ocupi
+#| tbl-cap: "Ocupación principal de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  tab_esp_cat(weight = fac500a, strata = ano, by = ocupinf, include = p507, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+- @tbl-pobr muestra que hacia el 2021, los trabajadores no pobres aumentaron en el empleo informal con cerca de 5%.
+
+```{r}
+#| label: tbl-pobr
+#| tbl-cap: "Condición de pobreza de la PEA ocupada urbana entre 2019 y 2021 (porcentajes horizontales)"
+
+base1 %>% 
+  tab_esp_cat(weight = factor07, strata = ano, by = ocupinf, include = pobreza, percent = "row", overall=FALSE) %>% as_flex_table() %>% theme_tesis()
+```
+
+# Parte 3: INFORMALIDAD Y CONDICIONES DE VIDA: INGRESO
+
+Acá recién aplicar ingtra_n > 0
+
+Durante la pandemia, se observa una caída en los ingresos, especialmente en 2020, la cual no se ha recuperado del todo en 2021. Se observa una mayor caída en el empleo informal con una disminución de s/. 122 hacia el 2021.
+
+```{r Ingreso promedio por trabajo mensual de la PEA ocupada urbana entre 2019 y 2021}
+#| label: fig-pea_num
+#| fig-cap: "Ingreso promedio por trabajo mensual de la PEA ocupada urbana entre 2019 y 2021"
+#| fig-height: 3
+
+rbind(
+  base1 %>%
+  filter(ingtra_n > 0) %>% 
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, ocupinf) %>% 
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0)),
+  
+  base1 %>%
+  filter(ingtra_n > 0) %>% 
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  mutate(ocupinf="total") %>% 
+  group_by(ano, ocupinf) %>% 
+  summarise(var = round_half_up(wtd.mean(ingtra_n, weights =fac500a) ,0))
+
+) %>% 
+  ggplot(aes(fill=ano, y=var, x=fct_rev(ocupinf))) + 
+  geom_bar(position = position_dodge(), stat = "identity", width = .7, colour = "white") +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  scale_fill_grey(start = 0.2,end = 0.8) +
+  theme_pubr() +
+  theme(
+    legend.position="right",
+    legend.title=element_blank(),
+    axis.title=element_blank()
+  )
+
+```
+
+```{r tablas encabezados}
+#| label: tablas encabezados
+#| include: false
+
+tbl_ing_nacional<-
+  base1 %>% 
+  filter(ingtra_n > 0) %>% 
+  labelled::drop_unused_value_labels() %>%
+  as_label() %>%
+  as_survey_design(weight = fac500a) %>%
+  tbl_strata(
+    strata = ano,
+    .tbl_fun =
+      ~ .x %>%
+        tbl_svysummary(
+          by = ocupinf,
+          include = ingtra_n,
+          missing = "no",
+          type= everything() ~ "continuous",
+          statistic = list(all_continuous() ~ "{mean}"),
+          label = list(all_continuous() ~ "Nacional")
+        ) %>%
+        modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+        add_overall(., col_label = "Total") %>% 
+      bold_labels() %>%
+      modify_footnote(update = everything() ~ NA)
+      )
+
+# tbl_gas_nacional<-
+#   base1 %>% 
+#   labelled::drop_unused_value_labels() %>%
+#   as_label() %>%
+#   as_survey_design(weight = factor07) %>%
+#   tbl_strata(
+#     strata = ano,
+#     .tbl_fun =
+#       ~ .x %>%
+#         tbl_svysummary(
+#           by = ocupinf,
+#           include = gas_cap,
+#           missing = "no",
+#           type= everything() ~ "continuous",
+#           statistic = list(all_continuous() ~ "{mean}"),
+#           label = list(all_continuous() ~ "Nacional")
+#         ) %>%
+#         modify_header(label = md("**Variable**"), all_stat_cols() ~ "**{level}**") %>%
+#         add_overall(., col_label = "Total") %>% 
+#       bold_labels() %>%
+#       modify_footnote(update = everything() ~ NA)
+#       )
+
+```
+
+Asimismo, la @tbl-ing_dominio y @fig-ing_dominio nos muestran que en Lima Metropolitana existe una fuerte caída en los ingresos principalmente dentro de los trabajadores formales. Por otro lado, se ve una disminución en los ingresos en la Sierra Sur de s/.218.
+
+```{r}
+#| label: tbl-ing_dominio
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según dominio entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>%
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = dominio, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_dominio
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según dominio entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
+base1 %>% filter(ingtra_n > 0) %>%#cambios en el salario
+  compara_graf(dominio)
+
+```
+
+La @tbl-ing_estrato y @fig-ing_estrato nos muestran que en las ciudades grandes (de 500 000 a más habitantes) han tenido una fuerte disminución en sus ingresos de hasta s/.230. Esto se ha enfatizado más en los trabajadores formales quienes han visto sus ingresos reducidos hasta en s/.313.
+
+```{r}
+#| label: tbl-ing_estrato
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según estrato entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = estrato, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_estrato
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según estrato entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  compara_graf(estrato)
+
+```
+
+La @tbl-ing_edu y @fig-ing_edu nos muestran que los ingresos de los trabajadores con educación secundaria completa y educación técnica incompleta se redujeron significativamente principalmente dentro de los trabajadores formales entre s/.167 y s/.184.
+
+```{r}
+#| label: tbl-ing_edu
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según educación entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = educacion, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_edu
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según educación entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  compara_graf(educacion)
+
+```
+
+La @tbl-ing_sexo y @fig-ing_sexo nos muestran que en general los trabajadores hombres han tenido una mayor reducción en sus ingresos entre 2019 y 2021 cercana a los s/.180. Más aún, las mujeres en el empleo formal vieron sus ingresos más reducidos (alrededor de s/.160) a diferencia de los hombres que se vieron más afectados en el empleo informal.
+
+```{r}
+#| label: tbl-ing_sexo
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según sexo entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p207, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_sexo
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según sexo entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 3
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  compara_graf(p207)
+
+```
+
+La @tbl-ing_gedad y @fig-ing_gedad nos muestran que, en líneas generales, los trabajadores de 55 a 64 años vieron sus ingresos más comprometidos en especial aquellos que contaban con un empleo formal. De similar manera, los trabajadores entre 35 y 44 años vieron sus ingresos reducidos principalmente los trabajadores formales. Cabe destacar, una ligera recuperación de los ingresos en los trabajadores de 24 años a menos.
+
+```{r}
+#| label: tbl-ing_gedad
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según grupo de edad entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = gedad, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_gedad
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según grupos de edad entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 5
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  compara_graf(gedad)
+
+```
+
+La @tbl-ing_leng y @fig-ing_leng nos muestran que, en líneas generales, los trabajadores de habla castellana vieron sus ingresos reducidos aproximadamente en s/.150. El sector de la población de lengua materna "Otros", que tiene sobre todo lenguas extranjeras, ha visto sus ingresos reducidos en s/.421.
+
+```{r}
+#| label: tbl-ing_leng
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según lengua materna entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = lengua, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_leng
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según lengua materna entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 3
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  mutate(lengua=as_labelled(sjmisc::rec(lengua, rec = "3=1;1=3; else=copy"))) %>% 
+  compara_graf(lengua)
+
+```
+
+La @tbl-ing_p507 y @fig-ing_p507 nos muestran que, los trabajadores formales independientes fueron los más afectados con una reducción de ingresos de s/.271. Seguido a ellos, los obreros formales vieron una reducción de s/.163. Cabe mencionar que Se filtraron a los trabajadores familiares no remunerados y otros dado que no contaban con ingresos.
+
+```{r}
+#| label: tbl-ing_p507
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  filter(!(p507 %in% c(5,7))) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = p507, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_p507
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según posición ocupacional entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 4
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  filter(!(p507 %in% c(5,7))) %>% 
+  compara_graf(p507)
+
+```
+
+La @tbl-ing_pobreza y @fig-ing_pobreza nos muestran que, los trabajadores no pobres vieron sus ingresos reducidos en s/.130 principalmente dentro del empleo formal.
+
+```{r}
+#| label: tbl-ing_pobreza
+#| tbl-cap: "Ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según situación de pobreza entre 2019 y 2021"
+
+#ingreso
+tbl_stack(list(
+  
+  tbl_ing_nacional, 
+  base1 %>% filter(ingtra_n > 0) %>% 
+  tab_esp_num(weight = fac500a, strata = ano, by = ocupinf, include = pobreza, fill = ingtra_n)
+  
+  )) %>% as_flex_table() %>% theme_tesis()
+
+```
+
+```{r}
+#| label: fig-ing_pobreza
+#| fig-cap: "Diferencia del ingreso promedio por trabajo mensual (soles) de la PEA ocupada urbana según nivel de pobreza entre 2019 y 2021"
+#| fig-width: 10
+#| fig-height: 4
+
+base1 %>% filter(ingtra_n > 0) %>% 
+  compara_graf(pobreza)
+
+```
+
+
+```{r, eval = FALSE}
+#| fig-cap: "Según grupo de edad barras"
+
+#Prueba de gráfico de edades
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, fill = p207), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=-prop, fill = p207), stat="identity") +
+  #scale_y_continuous(name = abs * 100) +
+  scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  coord_flip() + 
+  theme_bw()
+
+```
+
+```{r, eval = FALSE}
+#| fig-cap: "Según grupo de edad líneas"
+
+#Prueba de gráfico de edades
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_line(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, group = p207), stat="identity",  colour = "red", size = 2) +
+  geom_line(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=prop, group = p207), stat="identity",  colour = "blue", size = 2) +
+  #scale_y_continuous(name = abs * 100) +
+  # scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  # coord_flip() + 
+  theme_bw()
+
+```
+
+```{r, eval = FALSE}
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble()#MEJOR Y LUEGO CAMBIAR EL FORMATO A LONG
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble() %>% clean_names() %>% mutate(across(c(2:10), as.numeric)) %>% View()#clean_names al rescate, pero tengo que borrar la coma
+
+tbl_stack(list(tbl_gas_nacional, tbl_gas_sexo)) %>% as_tibble() %>% clean_names() %>% mutate(across(everything(), ~str_remove_all(., ","))) %>% mutate(across(c(2:10), as.numeric)) %>% View()#i love R
+
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot(aes(x=gedad, y=prop, fill = p207)) +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(y=..count..*(-1)), stat="identity") +
+  scale_y_continuous(
+    # scale the y-lab
+    breaks = seq(-0.4, 0.4, 0.05),
+  ) +
+  # scale_y_continuous(
+  #   # scale the y-lab
+  #   breaks = seq(-10, 10, 1),
+  #   labels = function(x) {
+  #     paste(abs(x), '%')
+  #   }
+  # ) +
+  # scale_y_continuous(labels = paste0(as.character(c(seq(2, 0, -1), seq(1, 2, 1))), "%")) +
+  coord_flip()
+
+
+  #seq(from, to, by)
+
+
+base %>% 
+  labelled::drop_unused_value_labels() %>% 
+  as_label() %>% 
+  as_survey_design(weight = factor07) %>% 
+  group_by(p207,gedad) %>% 
+  summarise(prop=survey_mean(),
+            total=survey_total()) %>% 
+  ggplot() +
+  geom_bar(data = . %>% filter(p207 %in% "Mujer"), aes(x=gedad, y=prop, fill = p207), stat="identity") +
+  geom_bar(data = . %>% filter(p207 %in% "Hombre"), aes(x=gedad, y=-prop, fill = p207), stat="identity") +
+  #scale_y_continuous(name = abs * 100) +
+  scale_y_continuous (labels = function(x){paste(abs(x *100), "%")}) +
+  coord_flip()
+  
+  tabla1(weight = factor07, strata = ano, by = ocupinf, include = gedad, percent = "row", overall=FALSE)
+```
+
+```{r, eval=FALSE}
+#| label: fig-edadsex
+#| fig-cap: "Pirámide demográfica de la PEA ocupada urbana entre 2019 y 2021"
+#| eval: false
+
+base1 %>% 
+  labelled::drop_unused_value_labels() %>%
+  haven::as_factor() %>%
+  group_by(ano, p207, gedad) %>% 
+  count(wt=fac500a) %>% 
+  group_by(ano, p207) %>% 
+  mutate(porc=round_half_up(n/sum(n), 2)*100,
+         label=paste0(porc, "%")) %>% 
+  ggplot(aes(x=gedad, fill = p207, label = label)) +
+  geom_bar(data = ~subset(., p207 %in% "Mujer"), aes(y=porc), stat="identity", colour = "white") +
+  geom_text(data = ~subset(., p207 %in% "Mujer"), aes(y=porc, label = label), position = position_stack(vjust = 0.5), size = 2.9, colour = "black") +
+  geom_bar(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc), stat="identity", colour = "white") +
+  geom_text(data = ~subset(., p207 %in% "Hombre"), aes(y=-porc, label = label), position = position_stack(vjust = 0.5), size = 2.9, colour = "white") +
+  scale_y_continuous(
+    breaks = seq(-30, 30, 15),
+    labels = function(x) {paste(abs(x), '%')}
+  ) +
+  coord_flip() +
+  scale_fill_grey(start = 0.2,end = 0.8) +
+  theme_pubr() +
+  facet_grid(cols = vars(ano)) +
+  theme(
+    legend.position = "bottom",
+    legend.title=element_blank(),
+    axis.title=element_blank(),
+    axis.text = element_text(size = 9)
+  )
+
+```

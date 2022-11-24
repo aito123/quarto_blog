@@ -1,0 +1,110 @@
+---
+title: "Bellabeat health-app casestudy"
+subtitle: "Google Data Analytics Capstone Final Project"
+date: "2022-11-20"
+categories: [google, capstone, data analytics]
+image: "image.png"
+fig-align: center
+fig-cap-location: top
+toc: false
+
+title-slide-attributes: 
+  data-background-color: "#e6effc"
+  # data-background-image: backgrounds/sample-title-slide-option-1.png
+  data-background-size: contain
+format:
+  revealjs: 
+    transition: fade
+    width: "1600"
+    height: "900"
+    footer: "[Google Data Analytics Professional Certificate](https://www.coursera.org/professional-certificates/google-data-analytics?)"
+---
+
+## Bellabeat situation
+
+- **Problem:** 
+    -   Is Bellabit training app effectively helping users get fit?
+
+. . .
+
+- **Solution:** 
+    -   Identify the relationship between Total steps recorded by the app and calories burnt.
+
+## Data
+
+```{r}
+#| output: false
+
+Sys.setlocale(category = "LC_ALL", locale = "english")
+pacman::p_load(tidyverse, lubridate, haven, rio, janitor, ggpubr)
+
+dailyactivity<-
+  import("data/Fitabase Data 4.12.16-5.12.16/dailyActivity_merged.csv") %>% 
+  mutate(ActivityDate = mdy(ActivityDate)) %>% 
+  rename(Date=ActivityDate)
+
+dailyactivity2<-
+  dailyactivity %>% 
+  mutate(Id = as.character(Id)) %>% 
+  select(-c(Date, LoggedActivitiesDistance)) %>% 
+  group_by(Id) %>% 
+  summarise(across(everything(), list(mean = ~ mean(.x, na.rm = TRUE)))) %>%  
+  mutate(
+    calories_int = Hmisc::cut2(Calories_mean, g = 3),
+    calories_int = case_when(
+      calories_int %in% levels(calories_int)[1] ~ "Low",
+      calories_int %in% levels(calories_int)[2] ~ "Medium",
+      calories_int %in% levels(calories_int)[3] ~ "High"
+    )
+  )
+
+```
+
+In BellaBeat dataset we can find information from 33 users about  total steps and calories burnt.
+
+Information was recorded between April and March of 2016.
+
+```{r}
+#| fig-width: 16
+
+dailyactivity %>% 
+  count(Date) %>% 
+  ggplot(aes(Date, n)) +
+  geom_line() +
+  theme_pubclean() +
+  ylab("") +
+  ggtitle("User activity in BellaBeat dataset by date (2016)") +
+  labs(caption = "Source: Bellabeat app 2016") +
+  theme(title = element_text(size = 16))
+
+```
+
+## Work hard, play hard!
+
+In the following graph we can see that effectively there is a possitive correlation between steps recorded in BellaBeat's app and calories burnt by the users. Also we can see that there is a group of 11 high performance users from which the company can target to learn about their healthy habits.
+
+```{r}
+#| fig-width: 16
+
+dailyactivity2 %>% 
+  ggplot() +
+  stat_smooth(method = "lm", aes(TotalSteps_mean, Calories_mean), se = FALSE, size = 0.5, color = "orange") +
+  geom_point(aes(TotalSteps_mean, Calories_mean, color = calories_int)) +
+  theme_pubclean() +
+  theme(legend.position = "bottom") +
+  ggtitle("Relationship between average total steps and calories burnt by Bellabit users in 2016") +
+  labs(x = "Average total steps", y = "Average calories burnt", caption = "Source: Bellabeat app 2016") +
+  guides(colour = guide_legend("Performance")) +
+  theme(title = element_text(size = 16))
+
+```
+
+## Take action
+
+From the previous study we can identify the following insights:
+
+-   The BellaBeat app is effective in its measurements and being engage with the app let users burn more calories.
+-   Based on the user performance of total steps using the app, it could be established that there are mainly three groups: high, medium and low performers.
+-   It is suggested that Bellabit shouls invest in studying the 11 high performance users about their life style, habits and more so that better practices can be shared with the other two categories.
+
+## Thank your for your time.
