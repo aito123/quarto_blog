@@ -2,7 +2,7 @@
 title: "Descripción del mercado laboral a partir de la ENAHO"
 subtitle: |
   El objetivo de este post es describir los cambios en el mercado laboral durante la pandemia a partir de la Encuesta Nacional de Hogares (ENAHO).
-date: 2023-03-28
+date: "2023-03-28"
 categories: [enaho, tablas, graficos]
 image: "image.jpg"
 fig-align: center
