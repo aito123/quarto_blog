@@ -7,23 +7,9 @@ website:
   title: "Santiago Sotelo"
   google-analytics: "G-34G2Z2VLGJ"
   favicon: peru.png
-  page-footer: "Copyright 2022, Santiago Sotelo"
   navbar:
-    right:
-      - index.qmd
-      - about.qmd
-      - text: CV
-        menu:
-          - text: Español
-            href: cv.html
-          - text: English
-            href: cv_english.html
-      - icon: github
-        href: https://github.com/aito123/
-      - icon: linkedin
-        href: https://www.linkedin.com/in/santiago-sotelo-989574171/
-      - icon: twitter
-        href: https://twitter.com/Santiag87589621/
+    search: false
+
 format:
   html:
     theme: ember.scss #base on litera
